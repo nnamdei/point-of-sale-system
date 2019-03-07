@@ -1,0 +1,252 @@
+body{
+    background: linear-gradient(rgba(52, 58, 64, 0.1),rgba(52, 100, 64, .5));
+    min-height: 100vh;
+    background-attachment: fixed;
+    font-size: 13px;
+}
+nav.theme-secondary-bg a.nav-link{
+    color: #fff
+}
+.theme-gradient-bg{
+    background: linear-gradient(rgba(52, 58, 64, 0.1),rgba(52, 100, 64, 1));
+}
+.theme-gradient-alt-bg{
+    background: linear-gradient(rgba(52, 100, 64, 1),rgba(52, 58, 64, 0.1));
+}
+.theme-bg{
+    background-color: rgba(52, 200, 64, 1);
+    color: #fff;
+}
+
+.lhs-fixed,
+.card-header,
+.theme-secondary-bg{
+    background-color: #343a40;
+    color: #fff;
+}
+.card{
+    border: 0;
+}
+.lhs-fixed .card{
+    background-color: transparent;
+}
+.lhs-fixed .card-header{
+    color: rgba(52, 200, 64, 1);
+    font-weight: bolder;
+}
+a,
+.theme-btn,
+.theme-btn-alt{
+    transition: all .4s ease-in-out;
+}
+a[role='tab']{
+    background-color: #343a40;
+    color: #fff;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+a[role='tab']:hover{
+    color: #fff;
+}
+.theme-btn,
+.theme-btn-alt:hover{
+    background-color: #343a40;
+    color:#fff;
+}
+
+.theme-btn-alt,
+.theme-btn:hover
+{
+    background-color: rgba(52, 200, 64, 1);
+    color:#fff;
+}
+.white-bg{
+    background-color: #fff;
+    color: #343a40;
+}
+
+.theme-color{
+    color: rgba(52, 200, 64, 1);
+}
+.theme-secondary-color{
+    color:#343a40;
+}
+.white{
+    color: #fff;
+}
+.grey{
+    color: grey;
+}
+a{
+    color: rgba(52, 200, 64, 1);
+}
+a:hover{
+    color:#343a40;
+    text-decoration: none;
+}
+a.navbar-brand{
+    margin-right: 50px;
+}
+a.navbar-brand:hover{
+    color: #fff;
+}
+.avatar{
+    border-radius: 50%;
+    border: 1px solid rgba(52, 200, 64, 1);
+}
+.product-type{
+    margin: 8px;
+    padding: 8px;
+    background-color: #f7f7f7;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+.operations{
+    margin: 0 5px;
+}
+.variable-values{
+    letter-spacing: 2px;
+    text-decoration: underline;
+}
+#variants-container{
+    background-color: #eee;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,.6);
+    margin-bottom:1rem;
+}
+.single-variant{
+    padding: 5px;
+}
+.single-variant:nth-child(1) .remover-container{
+    display: none;
+}
+.single-variant:nth-child(1) .remover-container .single-variant-remover{
+   cursor: pointer;
+}
+.single-variant:nth-child(odd){
+    background-color: #f7f7f7;
+}
+.single-variant:nth-child(even){
+    background-color: #fff;
+}
+.has-error{
+    color: #ff0000;
+}
+.no-padding{
+    padding: 0 !important;
+}
+
+.has-operations .operations-container{
+    display: none;
+}
+.has-operations:hover .operations-container{
+    display: block;
+}
+
+.confirmation-container{
+	display: none;
+	position:absolute;
+	z-index: 100;
+	width: 300px;
+	background-color: grey;
+	padding: 8px; 
+	box-shadow: 0px 0px 10px rgba(0,0,0,.3);
+	border-radius: 5px;
+	
+}
+.description-container{
+    background-color: #fff;
+    border: 1px solid #f7f7f7;
+    border-radius: 3px;
+    padding: 5px;
+    color: grey;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.stock-update-forms-container .inputs-container{
+    max-height: 60vh;
+    overflow-y: hidden;
+}
+.stock-update-forms-container .inputs-container:hover{
+    overflow-y: auto;
+}
+
+/*Products table*/
+.products-table-container
+{
+    width: 956px;
+}
+.products-table-body-container{
+    max-height: 65vh;
+    overflow:hidden;
+}
+.products-table-body-container:hover{
+    overflow-y: auto;
+}
+
+.products-table-container table tr .id>div
+{
+   width:30px;
+}
+.products-table-container table tr .product>div
+{
+  width: 100px;
+}
+.products-table-container table tr .category>div
+{
+    width: 60px
+}
+
+.products-table-container table tr .type>div
+{
+    width: 50px;
+}
+
+.products-table-container table tr .stock>div
+{
+    width: 400px;
+}
+.products-table-container table tr .base-price>div
+{
+    width: 70px
+}
+.products-table-container table tr .selling-price>div
+{
+    width: 70px
+}
+.products-table-container table th>div,
+.products-table-container table td>div
+{
+   /* overflow: auto;*/
+}
+
+.products-table-container th,
+.products-table-container td{
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+table.products-table-head tr:first-child th{
+    border: 0;
+} 
+.products-table-body .product-row .hidden{
+    display: none;
+}
+.products-table-body .product-row:hover .hidden{
+    display: block;
+}
+
+#insights-container .ngn{
+    font-size: 30px;
+    font-weight: bolder;
+    color: rgba(52, 200, 64, 1);;
+}  
+.card{
+    margin-bottom: 5px;
+}
+#insights-container .card-body{
+    overflow: hidden;
+}
+#insights-container .card-body:hover{
+    overflow: auto;
+}
