@@ -46,7 +46,7 @@
                             @endforeach
                         </div>
                         <div class="form-group text-center">
-                            <input class="btn btn-success" type="submit" value="Submit">
+                            <input class="btn btn-success" type="submit" value="Add to cart">
                         </div>
                     @endif
                 @endif

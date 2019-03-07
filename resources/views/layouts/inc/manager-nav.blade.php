@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg theme-secondary-bg fixed-top">
-		<a class="navbar-brand" href="/"><i class="fa fa-home"></i>WESANI</a>
+		<a class="navbar-brand" href="/"><i class="fa fa-home"></i>{{config('app.name')}}</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation-bar" aria-controls="navigation-bar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -67,7 +67,7 @@
 						<small>{{Auth::user()->firstname}}</small>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="auth-user">
-							<!--<a href="{{route('users.create')}}" class="dropdown-item"><i class="fa fa-plus theme-color"></i> Add new user</a>-->
+							<a href="{{route('users.create')}}" class="dropdown-item"><i class="fa fa-plus theme-color"></i> Add new user</a>
 							<a href="{{route('users.index')}}" class="dropdown-item"><i class="fa fa-user theme-color"></i> All Users</a>
 							<a class="dropdown-item text-danger" href="#"  onclick="event.preventDefault();
 								document.getElementById('logout-form').submit();">

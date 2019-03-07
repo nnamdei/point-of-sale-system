@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg theme-secondary-bg fixed-top">
-		<a class="navbar-brand" href="/"><i class="fa fa-home"></i>WESANI</a>
+		<a class="navbar-brand" href="/"><i class="fa fa-home"></i>{{config('app.name')}}</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation-bar" aria-controls="navigation-bar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>

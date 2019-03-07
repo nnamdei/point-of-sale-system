@@ -101,6 +101,7 @@ class DeskController extends Controller
         return view('desk.category')->with('category',Category::find($id));
     }
 
+
     public function recordSale(Request $request, $id){
         $product = Product::find($id);
         if($product == null){
