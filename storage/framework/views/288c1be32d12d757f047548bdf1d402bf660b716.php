@@ -7,7 +7,7 @@
     <a href="<?php echo e(route('transactions')); ?>" class="btn theme-btn" ><span class="badge badge-success"><?php echo e($today->format('d/m')); ?></span> Today </a>
     <button class="btn theme-btn" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
     <button class="btn theme-btn" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
-    <?php if($TRANSACTIONS->count() > 0): ?>
+    <?php if($_transaction::all()->count() > 0): ?>
     <a href="<?php echo e(route('transactions')); ?>?all=1" class="btn theme-btn" >All</a>
     <?php endif; ?>
     <div class="collapse" id="period-filter" data-parent="#app-accordion" style="margin-top: 5px">
@@ -54,7 +54,7 @@
     </div>
 
 </div>
-        <?php echo $__env->make('transactions.widgets.sales', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+        <?php echo $__env->make('transactions.widgets.sales', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('RHS'); ?>
@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="rhs-body">
-        <?php echo $__env->make('transactions.widgets.history', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+        <?php echo $__env->make('transactions.widgets.history', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     </div>
 <?php $__env->stopSection(); ?>
 
@@ -73,4 +73,4 @@
     <script type="text/javascript" src="<?php echo e(asset('js/vendors/fusioncharts/fusioncharts.js')); ?>"></script>
     <script type="text/javascript" src="<?php echo e(asset('js/vendors/fusioncharts/fusioncharts.theme.fusion.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.appRHSfixed', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('layouts.appRHSfixed', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>

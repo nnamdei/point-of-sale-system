@@ -9,7 +9,7 @@
 				<li class="nav-item dropdown">
 
 					<a class="nav-link dropdown-toggle" href="#" id="nav-bar-products-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-						<i class="fa fa-box-open"></i> Products <sup class="badge badge-success"><?php echo e($PRODUCTS->count()); ?></sup>
+						<i class="fa fa-box-open"></i> Products <sup class="badge badge-success"><?php echo e($_product::all()->count()); ?></sup>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="nav-bar-products-dropdown">
 						<a class="dropdown-item" href="<?php echo e(route('products.create')); ?>"><i class="fa fa-plus"></i> Add new</a>
@@ -18,12 +18,12 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="nav-bar-categories-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fa fa-th-list"></i> Categories <sup class="badge badge-success"><?php echo e($CATEGORIES->count()); ?></sup>
+						<i class="fa fa-th-list"></i> Categories <sup class="badge badge-success"><?php echo e($_category::all()->count()); ?></sup>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown">
 					<a class="dropdown-item" href="<?php echo e(route('categories.create')); ?>"><i class="fa fa-plus"></i> Create new</a>
-						<?php if($CATEGORIES->count() > 0): ?>
-							<?php $__currentLoopData = $CATEGORIES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+						<?php if($_category::all()->count() > 0): ?>
+							<?php $__currentLoopData = $_category::orderBy('name','asc')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<a class="dropdown-item" href="<?php echo e(route('categories.show',['id' => $category->id])); ?>"><?php echo e($category->name); ?> <sup class="badge badge-secondary"><?php echo e($category->products->count()); ?></sup></a>
 								<?php if(!$loop->last): ?>
 									<div class="dropdown-divider"></div>
@@ -60,7 +60,7 @@
 
 				</div>
 			</form> 
-				<?php echo $__env->make('widgets.todaySales', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				<?php echo $__env->make('widgets.today-sales', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 				<div class="dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<img src="<?php echo e(Auth::user()->avatar()); ?>" class="avatar" alt="<?php echo e(Auth::user()->firstname); ?>" width="30px" height="30px">	

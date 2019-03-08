@@ -23,9 +23,9 @@
                     </div>
                      
                 @endif
-            @elseif($PRODUCTS->count() > 0)
+            @elseif($_product::all()->count() > 0)
                 <div class="list-group">
-                    @foreach($PRODUCTS as $product)
+                    @foreach($_product::all() as $product)
                         @include('templates.product')
                     @endforeach
                 </div>

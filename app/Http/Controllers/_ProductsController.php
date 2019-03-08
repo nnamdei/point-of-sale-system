@@ -13,7 +13,7 @@ use App\Inventory\ProductsCollectionInsight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class ProductsController extends Controller
+class _ProductsController extends Controller
 {
 
     private function getVariables($request){//This privte function is to extract data from variable product and to check for their consistency7

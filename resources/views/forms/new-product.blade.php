@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-sm-8">
                         <select name="category" id="" class="form-control">
-                                @foreach($CATEGORIES as $category)
+                                @foreach($_category::orderBy('name','asc')->get() as $category)
                                     <option value="{{$category->id}}" {{old('category') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
                                 @endforeach
                             </select>

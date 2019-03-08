@@ -23,8 +23,8 @@
 					Go to Category 
 				</a>
 				<div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown">
-					@if($CATEGORIES->count() > 0)
-						@foreach($CATEGORIES as $category)
+					@if($_category::all()->count() > 0)
+						@foreach($_category::orderBy('name','asc')->get() as $category)
 							<a class="dropdown-item" href="{{route('desk.category',['id' => $category->id])}}">{{$category->name}} <sup class="badge badge-secondary">{{$category->products->count()}}</sup></a>
 							@if(!$loop->last)
 								<div class="dropdown-divider"></div>
@@ -38,7 +38,7 @@
 
 		</ul>
 		
-		@include('widgets.todaySales')
+		@include('widgets.today-sales')
 		<div class="dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	

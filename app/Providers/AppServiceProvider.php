@@ -21,16 +21,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
      Schema::defaultStringLength(191); 
-     date_default_timezone_set('Africa/Lagos');
 
      View::share([
-         'PRODUCTS' => Product::all(),
-         'PRODUCTS_' => Product::where('id','>',0),
-         'CATEGORIES' => Category::all(),
-         'CATEGORIES_' => Category::where('id','>',0),
-         'TRANSACTIONS' => Transaction::where('id','>',0),
-         'USERS' => User::all(),
-         'USERS_' => User::where('id','>',0)
+         '_product' => Product::class,
+         '_category' => Category::class,
+         '_transaction' => Transaction::class,
+         '_user' => User::class
      ]);
     }
 

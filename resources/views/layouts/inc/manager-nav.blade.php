@@ -9,7 +9,7 @@
 				<li class="nav-item dropdown">
 
 					<a class="nav-link dropdown-toggle" href="#" id="nav-bar-products-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-						<i class="fa fa-box-open"></i> Products <sup class="badge badge-success">{{$PRODUCTS->count()}}</sup>
+						<i class="fa fa-box-open"></i> Products <sup class="badge badge-success">{{$_product::all()->count()}}</sup>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="nav-bar-products-dropdown">
 						<a class="dropdown-item" href="{{route('products.create')}}"><i class="fa fa-plus"></i> Add new</a>
@@ -18,12 +18,12 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="nav-bar-categories-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fa fa-th-list"></i> Categories <sup class="badge badge-success">{{$CATEGORIES->count()}}</sup>
+						<i class="fa fa-th-list"></i> Categories <sup class="badge badge-success">{{$_category::all()->count()}}</sup>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown">
 					<a class="dropdown-item" href="{{route('categories.create')}}"><i class="fa fa-plus"></i> Create new</a>
-						@if($CATEGORIES->count() > 0)
-							@foreach($CATEGORIES as $category)
+						@if($_category::all()->count() > 0)
+							@foreach($_category::orderBy('name','asc')->get() as $category)
 								<a class="dropdown-item" href="{{route('categories.show',['id' => $category->id])}}">{{$category->name}} <sup class="badge badge-secondary">{{$category->products->count()}}</sup></a>
 								@if(!$loop->last)
 									<div class="dropdown-divider"></div>
@@ -60,7 +60,7 @@
 
 				</div>
 			</form> 
-				@include('widgets.todaySales')
+				@include('widgets.today-sales')
 				<div class="dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	

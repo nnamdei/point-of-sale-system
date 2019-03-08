@@ -25,9 +25,9 @@
                     <small><i class="fa fa-exclamation-triangle"></i>  No category found</small>
                 </div>
                 @endif
-            @elseif($CATEGORIES->count() > 0)
+            @elseif($_category::all()->count() > 0)
                 <div class="list-group">
-                    @foreach($CATEGORIES as $category)
+                    @foreach($_category::orderBy('name','asc')->get() as $category)
                         @include('templates.category')
                     @endforeach
                 </div>

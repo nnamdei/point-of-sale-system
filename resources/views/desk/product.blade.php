@@ -48,7 +48,7 @@
 @section('RHS')
     <?php
         $products_w_title = "Also in ".$product->category->name;
-        $products_w = $PRODUCTS_->where('category_id',$product->category->id)->get();
+        $products_w = $_product::where('category_id',$product->category->id)->get();
     ?>
     <div style="padding-top: 10px"> 
         @include('widgets.products')

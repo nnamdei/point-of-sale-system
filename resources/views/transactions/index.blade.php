@@ -9,7 +9,7 @@
     <a href="{{route('transactions')}}" class="btn theme-btn" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
     <button class="btn theme-btn" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
     <button class="btn theme-btn" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
-    @if($TRANSACTIONS->count() > 0)
+    @if($_transaction::all()->count() > 0)
     <a href="{{route('transactions')}}?all=1" class="btn theme-btn" >All</a>
     @endif
     <div class="collapse" id="period-filter" data-parent="#app-accordion" style="margin-top: 5px">

@@ -46,7 +46,7 @@
 @section('main')
 <?php
         $products_w_title = "Products in $category->name";
-        $products_w = $PRODUCTS_->where('category_id',$category->id)->get();
+        $products_w = $_product::where('category_id',$category->id)->get();
     ?>
     @include('widgets.products')
 @endsection
@@ -54,7 +54,7 @@
 @section('RHS')    
     <?php
         $categories_w_title = "Other categories";
-        $categories_w = $CATEGORIES_->where('id','!=',$category->id)->get();
+        $categories_w = $_category::orderBy('name','asc')->where('id','!=',$category->id)->get();
     ?>
 
 

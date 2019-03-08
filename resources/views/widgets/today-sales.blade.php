@@ -2,12 +2,12 @@
     $SALES = 0;
     $_today = new DateTime();
     if(Auth::user()->isManager()){
-        $_s = $TRANSACTIONS->whereDate('created_at',$_today->format('Y-m-d'))
+        $_s = $_transaction::whereDate('created_at',$_today->format('Y-m-d'))
                             ->where('operation',2)
                             ->get();//get all the sales by all attendants
     }
     else{
-        $_s = $TRANSACTIONS->whereDate('created_at',$_today->format('Y-m-d'))
+        $_s = $_transaction::whereDate('created_at',$_today->format('Y-m-d'))
                             ->where('user_id',Auth::id())
                             ->where('operation',2)
                             ->get();//get the sales recorded by the current attendant
