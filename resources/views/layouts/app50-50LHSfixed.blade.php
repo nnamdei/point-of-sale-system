@@ -11,22 +11,19 @@
 		   <main>
 			   <div id="app-accordion">
 					<div class="container-fluid">
-						<div class="app-lhs-rhs">
+						<div class="app-50-50-lhs-fixed">
 							<div class="row">
-								<div class="col-md-3 col-no-padding-xs">
-									<div class="lhs-content">
-										@yield('LHS')
-									</div>
-								</div>
 								<div class="col-md-6 col-no-padding-xs">
-									<div class="content">
-										@yield('main')
+                                    <div class="lhs-fixed">
+										<div class="lhs-content">
+											@yield('LHS')
+										</div>
 									</div>
 								</div>
-								<div class="col-md-3  col-no-padding-xs">
-									<div class="rhs-content">
-										@yield('RHS')
-									</div>
+								<div class="col-md-6  col-no-padding-xs">
+                                    <div class="rhs-content">
+                                        @yield('RHS')
+                                    </div>
 								</div>
 							</div>
 						</div>

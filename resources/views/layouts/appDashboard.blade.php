@@ -7,32 +7,34 @@
 	</head>
 	<body>
 		<div id="app">
-		   @include('layouts.inc.nav')
-		   <main>
-			   <div id="app-accordion">
+			@include('layouts.components.nav')
+			<main>
+				<div id="app-accordion">
 					<div class="container-fluid">
-						<div class="app-lhs">
+						<div class="app-dashboard">
 							<div class="row">
-								<div class=" col-sm-3 col-no-padding-xs">
-									<div class="lhs-content">
-										@yield('LHS')
+								<div class="col-2">
+									<div class="lhs-fixed">
+										<div class="lhs-content">
+											@yield('LHS')
+										</div>
 									</div>
 								</div>
-								<div class="col-sm-9 col-no-padding-xs">
+
+								<div class="col-10 col-no-padding-xs">
 									<div class="content">
-									@yield('main')
+										@yield('main')
 									</div>
 								</div>
-							</div>
+							</div>						
 						</div>
-						
+
 					</div>
-			   </div>
-				
-		   </main>
-		   
+				</div>
+			</main>
+			
 		</div>
 		
-	@include('layouts.inc.scripts')
+	@include('layouts.components.bottom-scripts')
 	</body>
 </html>

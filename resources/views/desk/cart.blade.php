@@ -1,4 +1,4 @@
-@extends('layouts.appLHSfixedRHSfixed')
+@extends('layouts.appLHSfixed')
 
 @section('LHS')
     <div class="card">
@@ -10,14 +10,10 @@
         </div>
     </div>
 @endsection
+
 @section('main')
-    <table class="table table-striped"></table>
-@endsection
-
-@section('RHS')
-
-    <div style="margin-top: 5px">
-        @include('widgets.products')
-    </div>
-   
+    <h5>Products in cart</h5>
+    <table class="table table-striped">
+        
+    </table>
 @endsection

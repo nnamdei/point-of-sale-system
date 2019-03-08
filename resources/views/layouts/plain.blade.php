@@ -7,7 +7,6 @@
     </head>
     <body>
         <div id="app">
-            @include('layouts.components.nav')
             <main>
                 <div id="app-accordion">
                     <div class="container-fluid">
