@@ -1,4 +1,4 @@
-## About Sales Management System
+## Sales Management System
 
 This application is for managing goods or products. It can be used in supermarket or stores.
 
