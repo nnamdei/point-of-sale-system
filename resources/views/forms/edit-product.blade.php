@@ -28,10 +28,10 @@
                         <label for="">Product Category</label>
                     </div>
                     <div class="col-sm-8">
-                        @if($CATEGORIES->count() > 0)
+                        @if($_category::count() > 0)
                             <select name="category" id="" class="form-control">
                                     <option value="0">Uncategorized</option>
-                                    @foreach($CATEGORIES as $category)
+                                    @foreach($_category::orderBy('name','asc')->get() as $category)
                                         <option value="{{$category->id}}" {{$product->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
                                     @endforeach
                                 </select>

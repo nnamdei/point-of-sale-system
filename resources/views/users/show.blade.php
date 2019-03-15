@@ -1,6 +1,11 @@
 
 @extends('layouts.appRHSfixed')
 
+@section('h-scripts')
+    <script type="text/javascript" src="{{asset('js/vendors/fusioncharts/fusioncharts.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/vendors/fusioncharts/fusioncharts.theme.fusion.js')}}"></script>
+@endsection
+
 @section('main')
    <div class="theme-bg" style="margin-top:20px; padding-top: 100px">
         <div class="white-bg" style="">
@@ -14,8 +19,19 @@
                         <p style="margin: 2px">{{$user->position()}}</p>
                         <small><i class="fa fa-clock"></i> Added {{ $user->created_at->diffForHumans() }}</small>
                         @if(Auth::user()->isManager())
-                            <div class="text-right">
-                                <a href="{{route('users.edit',['id'=>$user->id])}}"><i class="fa fa-pen"></i>  edit</a>
+                        <div class="d-flex py-3">
+                            <div class="mr-auto">
+                                    <a href="{{route('users.edit',['id'=>$user->id])}}"><i class="fa fa-pen"></i>  edit info</a>
+                                </div>
+                                @if($user->isAttendant())
+                                    <div class="ml-auto">
+                                        @if($user->deskClosed())
+                                            @include('desk.widgets.open')
+                                        @else
+                                            @include('desk.widgets.close')
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     </div>
@@ -23,30 +39,27 @@
             </div>
         </div>
    </div>
-
-    <div class="card">
-        <div class="card-header">
-            Activities
+   @if(Auth::user()->isManager() || Auth::id() == $user->id)
+        <div class="card">
+            <div class="card-header">
+               {{Auth::id() == $user->id ? 'My transactions' : 'Transactions by '.$user->firstname}} 
+            </div>
+            <div class="card-body" style="padding: 0">
+                @include('transactions.widgets.filter')
+                @include('transactions.widgets.sales')
+                @include('transactions.widgets.activities')
+            </div>
         </div>
-        <div class="card-body" style="padding: 0">
-            @if(Auth::user()->isManager())
-                @include('transactions.widgets.history')
-            @endif
-        </div>
-    </div>
-
+    @endif
 @endsection
 
 @section('RHS')
 <div style="margin-top: 5px">
     <?php
         $users_w_title = "Other Users";
-        $users_w = $USERS_->where('id','!=',$user->id)->get();
+        $users_w = $_user::where('id','!=',$user->id)->get();
     ?>
     @include('widgets.users')
 </div>
 @endsection
 
-@section('styles')
-
-@endsection

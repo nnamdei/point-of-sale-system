@@ -46,6 +46,7 @@
         $categories_w = $_category::orderBy('name','asc')->where('id','!=',$category->id)->get();
     ?>
 
-
+<div class="mt-2">
     @include('widgets.categories')
+</div>
 @endsection

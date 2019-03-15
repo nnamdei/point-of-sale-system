@@ -2,14 +2,21 @@
 
 @section('LHS')
     <div class="lhs-fixed-head white text-center">
-        <div class="theme-bg" style="height; padding: 15px 10px">
-            <h4> New Sale</h4>
+        <div class="theme-bg py-1" >
+            <h5><i class="fa fa-cart-plus"></i> Add {{$product->name}} to cart</h5>
         </div>
     </div>
-
     <div class="lhs-body">
-        <div style="padding-top: 20px">
-            @include('forms.new-sale')
+        <div class="py-3 px-2 bg-white">
+            <?php $item = $product->inCart() ?>
+            @if($item)
+                <div class="alert alert-info text-center">
+                    <i class="fa fa-cart-arrow-down"></i> {{$item->qty}} already in cart
+                </div>
+                @include('cart.widgets.update')
+            @else
+                @include('cart.widgets.add')
+            @endif
         </div>
     </div>
 @endsection
@@ -23,18 +30,14 @@
                 </div>
                 <div class="col-3">
                     <div style="font-size: 30px">
-                        <span class="badge badge-success"> &#8358;{{number_format($product->selling_price)}}</span>
+                        <h2>&#8358;{{number_format($product->selling_price)}}</h2>
                     </div>
                 </div>
                 <div class="col-3">
-                    Items Available: <span class="badge badge-secondary">{{number_format($product->remaining())}}</span> 
+                    Items Available: {{number_format($product->remaining())}} 
                 </div>
-                
-            
-
             </div>
         </div>
-        
     </div>
 
     <div class="content-body" style="padding-top: 70px">   

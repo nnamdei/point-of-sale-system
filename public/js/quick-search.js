@@ -1,4 +1,4 @@
-ROOT = 'http://inventory.io';
+ROOT = 'http://pos.io';
 jQuery(document).ready(function($) {
     // Set the Options for "Bloodhound" suggestion engine
     var engine = new Bloodhound({

@@ -23,7 +23,4 @@
         </div>
            
 @endsection
-@section('scripts')
-    <script src="{{ asset('js/image-preview.js') }}"></script>
-@endsection
 

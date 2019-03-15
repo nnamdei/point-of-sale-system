@@ -38,17 +38,24 @@
 
 		</ul>
 		
-		@include('widgets.today-sales')
+		@include('desk.widgets.cart')
 		<div class="dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
 				<small>{{Auth::user()->firstname}}</small>
 			</a>
 			<div class="dropdown-menu" aria-labelledby="auth-user">
+					<div class="p-2">
+						@include('widgets.today-sales')
+					</div>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="{{route('users.show',[Auth::id()])}}">
+						<i class="fa fa-hand-holding-usd"></i> My Transactions
+					</a>
+					<div class="dropdown-divider"></div>
 					<a class="dropdown-item text-danger" href="#"  onclick="event.preventDefault();
 						document.getElementById('logout-form').submit();">
 						<i class="fa fa-sign-out-alt"></i>Logout
-						
 					</a>
 					<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 							{{ csrf_field() }}

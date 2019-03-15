@@ -1,6 +1,6 @@
 @extends('layouts.appRHSfixed')
 
-@section('head-scripts')
+@section('h-scripts')
     <script type="text/javascript" src="{{asset('js/vendors/fusioncharts/fusioncharts.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/vendors/fusioncharts/fusioncharts.theme.fusion.js')}}"></script>
 @endsection

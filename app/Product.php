@@ -2,13 +2,17 @@
 
 namespace App;
 
+use Cart;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Product extends Model
-{
+{   
+    use SoftDeletes;
     use SearchableTrait;
     
+    protected $dates = ['deleted_at'];
     protected $fillable = ['category_id','user_id', 'name', 'description', 'stock', 'flat_price', 'sale','selling_price','preview'];
 
     protected $searchable = [
@@ -36,9 +40,13 @@ class Product extends Model
     public function variants(){
         return $this->hasMany('App\Variant');
     }
-    public function transactions(){
-        return $this->hasMany('App\Transaction');
+    public function actions(){
+        return $this->hasMany('App\Action');
    }
+
+   public function cart_sales(){
+    return $this->hasMany('App\Sale');
+    }
 
     public function isSimple(){
         return ($this->type == 'simple' ? true : false);
@@ -47,8 +55,19 @@ class Product extends Model
     public function isVariable(){
         return ($this->type == 'variable' ? true : false);
     }
+    
     function preview(){
         return $this->preview === null ? asset('storage/images/products/default.png') : asset('storage/images/products/'.$this->preview);
+    }
+    public function isSaleFeasible($qty){
+        
+    }
+
+    function inCart(){
+       $search = Cart::search(function ($cartItem, $rowId) {
+            return $cartItem->id === $this->id;
+        });
+        return $search->first();
     }
     public function stocks(){
         $stocks = 0;
@@ -79,6 +98,12 @@ class Product extends Model
     public function remaining(){
         return ($this->stocks() - $this->sales());
     }
+    
+    public function saleFeasible($qty){
+        $remaining = $this->remaining();
+        return $remaining >= $qty ? true : $remaining;
+    }
+
     public function profitIndex(){
         return round((($this->selling_price - $this->base_price)/$this->base_price)*100, 2);
     }

@@ -14,7 +14,7 @@
         </table>
 
         <div class="products-table-body-container">
-            <table class="table table-striped table-light table-hover table-bordered text-center products-table-body products-accordion">
+            <table class="table table-light table-hover table-bordered text-center products-table-body products-accordion">
                 <tbody>
                     @if($products !== null && $products->count() > 0)
                         @foreach($products as $product)

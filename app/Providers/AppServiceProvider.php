@@ -7,7 +7,7 @@ use Schema;
 use App\User;
 use App\Product;
 use App\Category;
-use App\Transaction;
+use App\Sale;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      View::share([
          '_product' => Product::class,
          '_category' => Category::class,
-         '_transaction' => Transaction::class,
+         '_sale' => Sale::class,
          '_user' => User::class
      ]);
     }

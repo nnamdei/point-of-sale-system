@@ -18,18 +18,18 @@
     <div class="content-fixed-head products-accordion">
         <div class="white-bg" style="padding: 5px">
             <div class="row">
-                <div class="col-4 text-left">
+                <div class="col-6 text-left">
                     <h5>{{$product->name}}</h5>
                     @include('products.widgets.add-stock')
                 </div>
-                <div class="col-5 text-center">
+                <div class="col-6 text-center">
                     <div class="row">
                         <div class="col-6">
                             <div>
                                 <small>Base Price</small>
                             </div>
                             <div>
-                                <span class="badge badge-primary"> &#8358;{{number_format($product->base_price)}}</span>
+                                <h4> &#8358;{{number_format($product->base_price)}}</h4>
                             </div>
                         </div>
                         <div class="col-6">
@@ -37,12 +37,12 @@
                                 <small>Selling Price</small>
                             </div>
                             <div>
-                                <span class="badge badge-success"> &#8358;{{number_format($product->selling_price)}}</span>
+                                <h4 class="text-primary"> &#8358;{{number_format($product->selling_price)}}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-3 text-right">
+                <div class="col-6 offset-md-6">
                     <div>
                         <a title="edit product {{$product->name}}" class="text-info" style="font-size: 16px" href="{{route('products.edit', ['id'  => $product->id])}}"><i class="fa fa-pen"></i> edit</a>
                         @include('products.templates.delete-btn')
@@ -53,7 +53,7 @@
         
     </div>
 
-    <div class="content-body" style="padding-top: 100px">   
+    <div class="content-body mt-3">   
         @include('products.widgets.basics')
         @include('products.widgets.statistics')
         <div class="card">
@@ -61,7 +61,18 @@
                 Transaction History of {{$product->name}}
             </div>
             <div class="card-body no-padding">
-                @include('transactions.widgets.history')
+                @include('transactions.widgets.filter')
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Sales</h4>
+                        @include('transactions.widgets.sales')
+                    </div>
+                    <div class="col-12">
+                        <h4>Actions</h4>
+                        @include('transactions.widgets.activities')
+                    </div>
+                </div>
+                
             </div>
         </div>
 

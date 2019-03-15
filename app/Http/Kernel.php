@@ -55,10 +55,13 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'authorized' => \App\Http\Middleware\AuthenticatedOnly::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+
         'attendant' => \App\Http\Middleware\AttendantsOnly::class,
         'manager' => \App\Http\Middleware\ManagersOnly::class,
         'sales-disabled' => \App\Http\Middleware\DisableSales::class,
-        'authorized' => \App\Http\Middleware\AuthenticatedOnly::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'check-desk' => \App\Http\Middleware\CheckDesk::class,
+
     ];
 }

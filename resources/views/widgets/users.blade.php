@@ -22,10 +22,12 @@
                     <small><i class="fa fa-exclamation-triangle"></i>  No user found</small>
                 </div>
                 @endif
-            @elseif($USERS->count() > 0)
+            @elseif($_user::all()->count() > 0)
                 <div class="list-group">
-                    @foreach($USERS as $user)
-                        @include('templates.user')
+                    @foreach($_user::all() as $user)
+                        @if($user->id != 1)
+                            @include('templates.user')
+                        @endif
                     @endforeach
                 </div>
             @else

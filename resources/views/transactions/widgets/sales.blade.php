@@ -1,5 +1,5 @@
 
-@include('templates.sales-disabled')
+{{--@include('templates.sales-disabled')--}}
 <ul class="nav nav-tabs " id="myTab" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="sales-table-tab" data-toggle="tab" href="#sales-table" role="tab" aria-controls="sales-table" aria-selected="true">Sales Table</a>

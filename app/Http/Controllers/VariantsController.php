@@ -87,10 +87,6 @@ class VariantsController extends Controller
         }
 
         $rules = array();
-        $variant = Variant::find($id);
-        if($variant === null){
-            return redirect()->route('products.index')->with('info','Records broken');
-        }
         $prevValuesArray = $variant->values();
         $newValuesArray = array();
         $newStocksArray = $variant->stocks();
@@ -161,11 +157,17 @@ class VariantsController extends Controller
               array_splice($sales,$i,1);
             }
         }
-        //couple back
-        $variant->values = join('|',$values);
-        $variant->stocks = join('|',$stocks);
-        $variant->sales = join('|',$sales);
-        $variant->save();
+        //if there are still other values
+        if(count($values) > 0){
+            //couple back
+            $variant->values = join('|',$values);
+            $variant->stocks = join('|',$stocks);
+            $variant->sales = join('|',$sales);
+            $variant->save();
+        }
+        else{
+            $variant->delete();
+        }
 
         $manager = new StockManager($variant->product->id);
         $manager->removeStock($stock);

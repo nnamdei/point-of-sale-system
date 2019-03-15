@@ -14,21 +14,33 @@
 Auth::routes();
 
 Route::get('/', 'AppController@index')->name('index');
-Route::group(['middleware' => 'authorized'],function(){
+Route::get('/desk/close','DeskController@closed')->name('desk.closed');
+
+Route::group(['middleware' => ['authorized','check-desk']],function(){
     Route::get('/find','DeskController@find');
     Route::get('/desk','DeskController@index')->name('desk');
     Route::get('/desk/products','DeskController@products')->name('desk.products');
     Route::get('/desk/product/{id}','DeskController@product')->name('desk.product');
-    Route::put('desk/product/{id}/sell','DeskController@recordSale')->name('desk.sale')->middleware('sales-disabled');
+    // Route::put('desk/product/{id}/sell','DeskController@recordSale')->name('desk.sale')->middleware('sales-disabled');
     Route::get('/desk/categories/','DeskController@categories')->name('desk.categories');
     Route::get('/desk/category/{id}','DeskController@category')->name('desk.category');
+    Route::post('desk/{user}/close','DeskController@close')->name('desk.close');
+    Route::post('desk/{user}/open','DeskController@open')->name('desk.open');
 
-    Route::get('desk/cart','CartController@cart')->name('cart');
+    Route::get('desk/cart','CartController@cart')->name('desk.cart');
+    Route::get('receipt','CartController@show')->name('cart.show');
+
     Route::post('desk/cart/add','CartController@add')->name('cart.add');
+    Route::put('desk/cart/{item}/update','CartController@update')->name('cart.update');
+    Route::put('desk/cart/{item}/remove','CartController@remove')->name('cart.remove');
+    Route::get('desk/cart/empty','CartController@empty')->name('cart.empty');
+    Route::post('desk/cart/checkout','CartController@checkout')->name('cart.checkout');
 
 
     Route::get('transactions','TransactionsController@index')->name('transactions');
     Route::resource('users','UsersController');
+    
+
     Route::resource('products','ProductsController');
     Route::resource('categories','CategoriesController');
     Route::resource('variants','VariantsController');

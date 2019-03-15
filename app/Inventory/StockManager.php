@@ -2,9 +2,10 @@
 namespace App\Inventory;
 
 use Auth;
+use App\Sale;
+use App\Action;
 use App\Product;
 use App\Variant;
-use App\Transaction;
 
 class StockManager{
     public $product_id;
@@ -12,12 +13,22 @@ class StockManager{
     public function __construct($id){
         $this->product_id = $id;
     } 
-    //record transaction
-        public function transact($user,$product,$operation,$price,$qty){
-            Transaction::create([
+    //record an action
+        public function action($user,$product,$operation,$price,$qty){
+            Action::create([
                 'user_id' => $user,
                 'product_id' => $product,
                 'operation' => $operation,
+                'price' => $price,
+                'quantity' => $qty
+            ]);
+        }
+
+        public function sale($user,$product,$cart,$price,$qty){
+            Sale::create([
+                'user_id' => $user,
+                'product_id' => $product,
+                'cart_id' => $cart,
                 'price' => $price,
                 'quantity' => $qty
             ]);
@@ -30,22 +41,22 @@ class StockManager{
         $product->stock = $product->stock + $qty;
         $product->save();
 
-        $this->transact(Auth::id(),$product->id,1,$product->selling_price,$qty);
+        $this->action(Auth::id(),$product->id,1,$product->selling_price,$qty);
 
         return ['success' => ["$qty stocks added to $product->name"]];
     }
 
-    public function addSale($qty){
+    public function addSale($cart_id,$item){
         $product = Product::find($this->product_id);
-        $remaining = $product->remaining() - $qty;
-        if($remaining <= 0 ){
-            return ['error' => ["$qty sales of $product->name not feasible, only <strong>".$product->remaining()."</strong> remaining"]];
+        $remaining = $product->remaining() - $item->qty;
+        if($remaining < 0 ){
+            return ['error' => ["$item->qty sales of $product->name not feasible, only <strong>".$product->remaining()."</strong> remaining"]];
         }
          else{
-            $product->sale = $product->sale + $qty;
+            $product->sale = $product->sale + $item->qty;
             $product->save();
-            $this->transact(Auth::id(),$product->id,2,$product->selling_price,$qty);
-            return ['success' => ["$qty sales added to $product->name"]];
+            $this->sale(Auth::id(),$product->id,$cart_id,$product->selling_price,$item->qty);
+            return ['success' => ["$item->qty sales added to $product->name"]];
          }
 
     }
@@ -55,20 +66,105 @@ class StockManager{
         $product->stock = $product->stock - $qty;
         $product->save();
 
-        $this->transact(Auth::id(),$product->id,3,$product->selling_price,$qty);
+        $this->action(Auth::id(),$product->id,2,$product->selling_price,$qty);
 
         return ['success' => ["$qty stocks removed from $product->name"]];
     }
+    
 
     public function removeSale($qty){
         $product = Product::find($this->product_id);
         $product->stock = $product->sale - $qty;
         $product->save();
 
-        $this->transact(Auth::id(),$product->id,4,$product->selling_price,$qty);
+        $this->action(Auth::id(),$product->id,3,$product->selling_price,$qty);
 
         return ['success' => ["$qty sales removed from $product->name"]];
     }
+
+    public function updateVariableStocks($request){
+
+        $response = array(
+                        'error' => array(),
+                        'success' => array(),
+                        'warning' => array(),
+                        'info' => array()
+                    );
+            $totalNewStock = 0;
+            $variant = Variant::find($request->v_id);
+            $product = Product::find($variant->product->id);            
+            $values = $variant->values();
+            $prevStocksArray = $variant->stocks();
+            $newStocksArray = array();
+
+            for($i = 0; $i<count($values); $i++){
+                $index = $variant->variable.'_'.$values[$i];
+                $newStock = $request->$index == null ? 0 : $request->$index;
+                $totalStock = $prevStocksArray[$i] + $newStock;
+                array_push($newStocksArray,  $totalStock);
+                $totalNewStock +=  $newStock;
+                if($newStock > 0){
+                    $response['success'][] = "$newStock $variant->variable $values[$i] added to $product->name";
+                }
+            }
+            //format and save the variable stocks
+            if(!empty($newStocksArray)){
+                    $variant->stocks = join('|',$newStocksArray);
+                    $variant->save();
+                    $this->addStock($totalNewStock);
+            }
+        return $response;
+    }
+
+    
+    // update the sales from an item in the cart
+    public function updateVariableSales($cart_id,$item){
+        $response = array(
+                        'error' => array(),
+                        'success' => array(),
+                        'warning' => array(),
+                        'info' => array()
+                    );
+
+        $product = Product::find($this->product_id); 
+        if($product->variants->count() > 0){
+            foreach($item->options as $key => $value){
+                foreach($product->variants as $variant){
+                    if($variant->variable == $key){
+                        $values = $variant->values();
+                        $sales = $variant->sales();
+                        $remainings = $variant->remainings();
+                     
+                        $newSales = array();
+                        for($i = 0; $i<count($values); $i++){
+                            if($values[$i] == $value){
+                                if($remainings[$i] - $item->qty < 0){
+                                    $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
+                                    array_push($newSales,$sales[$i]);
+                                }else{
+                                     $s = $sales[$i]+$item->qty;
+                                    array_push($newSales,$s);
+                                    $response['success'][] = $item->qty." of ".$product->name." sold";
+                                }
+                            }
+                            else{
+                                array_push($newSales,$sales[$i]);
+                            }
+                        }
+                        $variant->sales = join('|',$newSales);
+                        $variant->save();
+                        if(empty($response['error'])){
+                            $this->addSale($cart_id,$item);
+                        }
+                        return $response;
+                    }
+                }
+            }
+        }
+    }
+    
+
+
 
 
 
@@ -157,80 +253,6 @@ class StockManager{
         return $response;
     }
 
-
-
-    public function updateVariableStocks($request){
-
-        $response = array(
-                        'error' => array(),
-                        'success' => array(),
-                        'warning' => array(),
-                        'info' => array()
-                    );
-            $totalNewStock = 0;
-            $variant = Variant::find($request->v_id);
-            $product = Product::find($variant->product->id);            
-            $values = $variant->values();
-            $prevStocksArray = $variant->stocks();
-            $newStocksArray = array();
-
-            for($i = 0; $i<count($values); $i++){
-                $index = $variant->variable.'_'.$values[$i];
-                $newStock = $request->$index == null ? 0 : $request->$index;
-                $totalStock = $prevStocksArray[$i] + $newStock;
-                array_push($newStocksArray,  $totalStock);
-                $totalNewStock +=  $newStock;
-                if($newStock > 0){
-                    $response['success'][] = "$newStock $variant->variable $values[$i] added to $product->name";
-                }
-            }
-            //format and save the variable stocks
-            if(!empty($newStocksArray)){
-                    $variant->stocks = join('|',$newStocksArray);
-                    $variant->save();
-                    $this->addStock($totalNewStock);
-            }
-        return $response;
-    }
-
-    public function updateVariableSales($request){
-       
-        $response = array(
-                        'error' => array(),
-                        'success' => array(),
-                        'warning' => array(),
-                        'info' => array()
-                    );
-
-        $variant = Variant::find($request->v_id);
-        $product = Product::find($variant->product->id);  
-
-        $values = $variant->values();
-        $sales = $variant->sales();
-        $remainings = $variant->remainings();
-        $newSales = array();
-        for($i = 0; $i<count($values); $i++){
-            if($values[$i] === $request->variable){
-                if($remainings[$i] - $request->quantity < 0){
-                    $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
-                    array_push($newSales,$sales[$i]);
-                }else{
-                     $s = $sales[$i]+$request->quantity;
-                    array_push($newSales,$s);
-                    $response['success'][] = $request->quantity." of ".$product->name." sold";
-                }
-            }
-            else{
-                array_push($newSales,$sales[$i]);
-            }
-        }
-        $variant->sales = join('|',$newSales);
-        $variant->save();
-
-        $this->addSale($request->quantity);
-        return $response;
-    }
-    
 
      function report($feedback){
         $report = array();

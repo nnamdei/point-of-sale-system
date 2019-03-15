@@ -10,8 +10,6 @@
         @endif
         </div>
     </td>
-
-    
     <td  class="product" style="text-align: left">
         <div>
 
@@ -37,23 +35,20 @@
             <a  href="{{route('desk.category',['id' => $product->category->id])}}" data-toggle="popover" data-trigger="hover" data-placement="bottom"  data-title="{{$product->category->name}} <span class='badge badge-primary'>{{$product->category->products->count() -1 }}</span> <small> more products</small>" data-content="{{$product->category->description}}" >{{$product->category->name}} </a>
         </div>
     </td>
-
-       
     <td  class="type">
         <div>
-                @if($product->isVariable())
-                   <span class="{{$product->variants->count() == 0 ? 'text-warning': ''}}" data-toggle="tooltip" data-placement="top" title="{!!$product->variables()!!}">{{$product->type}}</span> 
-                @else
-                    {{$product->type}}
-                @endif
-           
+            @if($product->isVariable())
+                <span class="{{$product->variants->count() == 0 ? 'text-warning': ''}}" data-toggle="tooltip" data-placement="top" title="{!!$product->variables()!!}">{{$product->type}}</span> 
+            @else
+                {{$product->type}}
+            @endif
         </div>
     </td>
     <td  class="stock">
         <div>
             @include('products.widgets.quick-figures')
             <div style="text-align: right" class="">
-                @include('products.widgets.add-sale')
+                @include('desk.widgets.add-to-cart')
             </div>
         </div> 
     </td>

@@ -28,13 +28,13 @@
                     <h6>Products <span class="badge badge-success">{{$category->products->count()}}</span></h6>
                     @if($category->products->count() > 0)
                     <div class="text-center">
-                        <a href="{{route('products.index').'?filter=category&c='.$category->name}}" class="btn btn-secondary btn-lg"><i class="fa fa-box-open"></i> See Products & Insight</a>
+                        <a href="{{route('products.index').'?filter=category&c='.$category->name}}" class="btn btn-secondary"><i class="fa fa-box-open"></i> See Products & Insight</a>
                     </div>
                     @else
                         <div class="alert alert-danger text-center">
                         <i class="fa fa-exclamation-triangle"></i> No product in this category yet
                         </div>
-                        <a href="{{route('products.create').'?category='.$category->id}}" class="btn btn-secondary btn-lg">
+                        <a href="{{route('products.create').'?category='.$category->id}}" class="btn btn-secondary ">
                             <i class="fa fa-plus"></i> Add Product
                             </a>
                     @endif
@@ -48,7 +48,9 @@
         $products_w_title = "Products in $category->name";
         $products_w = $_product::where('category_id',$category->id)->get();
     ?>
-    @include('widgets.products')
+    <div class="mt-2">
+        @include('widgets.products')
+    </div>
 @endsection
 
 @section('RHS')    
@@ -57,6 +59,7 @@
         $categories_w = $_category::orderBy('name','asc')->where('id','!=',$category->id)->get();
     ?>
 
-
-    @include('widgets.categories')
+    <div class="mt-2">
+        @include('widgets.categories')
+    </div>
 @endsection

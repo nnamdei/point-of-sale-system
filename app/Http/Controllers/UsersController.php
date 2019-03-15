@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Matto\FileUpload;
+use App\Inventory\Transaction;
 
 class UsersController extends Controller
 {
@@ -12,6 +13,7 @@ class UsersController extends Controller
     public function __construct(){
         $this->middleware('manager')->except(['index','show']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +21,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('id', '!=', 1)->get();
+        $users = User::all();
         return view('users.index')->with('users',$users);
     }
 
@@ -81,8 +83,13 @@ class UsersController extends Controller
     {
         $user = User::findorfail($id);
 
+        $t = new Transaction();
+        $transactions = $t->userTransactions($user->id);
+
         return view('users.show')->with('user',$user)
-                                ->with('transactions',$user->transactions()->OrderBy('created_at','desc')->get());
+                                ->with('period', $transactions['period'])
+                                ->with('sales',$transactions['sales'])
+                                ->with('activities', $transactions['activities']);
     }
 
     /**

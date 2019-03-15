@@ -14,7 +14,6 @@
     
     <td  class="product" style="text-align: left">
         <div>
-
             @if($product->isVariable() && count($product->inconsistency()) > 0 )
             <?php $c = "<small class='text-danger'><i class='fa fa-exclamation-triangle'></i> There is inconsistency in $product->name variables: " ;
                 foreach($product->inconsistency() as $ic){
@@ -25,7 +24,7 @@
             <span style="font-size: 15px" class="text-danger animated flash infinite" data-toggle="tooltip" data-placement="top" title="{{$c}}"><i class="fa fa-exclamation-triangle"></i></span>
             <?php unset($c) ?>
             @endif
-            <span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}">{{$product->name}}</span>
+            <span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}"><a href="{{route('products.show',['id' =>$product->id])}}">{{$product->name}}</a></span>
             <img src="{{$product->preview()}}" alt="{{$product->name}}" width="100%">
             <div class="hidden" style="text-align: center">
                 <div>
@@ -60,9 +59,6 @@
     <td  class="stock">
         <div>
             @include('products.widgets.quick-figures')
-            <div style="text-align: right" class="">
-                @include('products.widgets.add-stock')
-            </div>
         </div> 
     </td>
     <td  class="base-price"><div>{{number_format($product->base_price)}}</div></td>

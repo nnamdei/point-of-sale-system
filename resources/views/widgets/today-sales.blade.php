@@ -2,14 +2,12 @@
     $SALES = 0;
     $_today = new DateTime();
     if(Auth::user()->isManager()){
-        $_s = $_transaction::whereDate('created_at',$_today->format('Y-m-d'))
-                            ->where('operation',2)
+        $_s = $_sale::whereDate('created_at',$_today->format('Y-m-d'))
                             ->get();//get all the sales by all attendants
     }
     else{
-        $_s = $_transaction::whereDate('created_at',$_today->format('Y-m-d'))
+        $_s = $_sale::whereDate('created_at',$_today->format('Y-m-d'))
                             ->where('user_id',Auth::id())
-                            ->where('operation',2)
                             ->get();//get the sales recorded by the current attendant
     }
 
@@ -17,4 +15,4 @@
 		$SALES += ($s->price * $s->quantity);
 	}
 ?>
-<div class="animated swing infinite slow" data-toggle="tooltip" data-placement="top" title="sales today" class="badge badge-success" style="font-size: 25px" >&#8358; {{number_format($SALES)}}</div>
+<div data-toggle="tooltip" data-placement="top" title="sales today" class="badge badge-success text-center" style="font-size: 25px" >{{number_format($SALES)}}</div>

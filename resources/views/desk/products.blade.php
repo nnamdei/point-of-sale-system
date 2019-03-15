@@ -7,7 +7,9 @@
 @endsection
 
 @section('RHS')
-    @include('widgets.categories')
+    <div class="mt-2">
+        @include('widgets.categories')
+    </div>
 
 @endsection
 

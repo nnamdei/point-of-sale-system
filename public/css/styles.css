@@ -4,6 +4,9 @@ body{
     background-attachment: fixed;
     font-size: 13px;
 }
+#nav-quick-search{
+    width: 150px !important;
+}
 nav.theme-secondary-bg a.nav-link{
     color: #fff
 }
@@ -18,7 +21,7 @@ nav.theme-secondary-bg a.nav-link{
     color: #fff;
 }
 
-.lhs-fixed,
+
 .card-header,
 .theme-secondary-bg{
     background-color: #343a40;
@@ -26,6 +29,12 @@ nav.theme-secondary-bg a.nav-link{
 }
 .card{
     border: 0;
+}
+.card-body{
+    overflow: auto;
+}
+.lhs-fixed{
+    /* background-color: #fff; */
 }
 .lhs-fixed .card{
     background-color: transparent;
@@ -146,7 +155,7 @@ a.navbar-brand:hover{
 .confirmation-container{
 	display: none;
 	position:absolute;
-	z-index: 100;
+	z-index: 1500;
 	width: 300px;
 	background-color: grey;
 	padding: 8px; 
@@ -249,4 +258,10 @@ table.products-table-head tr:first-child th{
 }
 #insights-container .card-body:hover{
     overflow: auto;
+}
+
+@media (min-width: 768px){
+    #nav-quick-search{
+        width: 350px !important;
+    }    
 }

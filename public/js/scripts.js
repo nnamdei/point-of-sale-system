@@ -24,37 +24,22 @@ $('document').ready(function(){
         $('.modal-body').empty();
     });
 
-});
-    
-function simpleProduct(){
-    $('div#simple-stocks').show();
-      $('div#variants-container').hide();
-  }
-  function variableProduct(){
-          $('div#variants-container').show();
-          $('div#simple-stocks').hide();
-  }
+    function simpleProduct(){
+        $('div#simple-stocks').show();
+          $('div#variants-container').hide();
+      }
 
-  if($("select#product-type-selector option[selected]").val() == 'simple'){
-    simpleProduct()
-  }else if($("select#product-type-selector option[selected]").val() == 'variable'){
-    variableProduct();
-  }
+    function variableProduct(){
+              $('div#variants-container').show();
+              $('div#simple-stocks').hide();
+      }
 
-   $('select#product-type-selector').bind('change',function(e){
-       if($(this).val() === 'variable'){
-            variableProduct();
-       }
-       else if($(this).val() === 'simple'){
-            simpleProduct();
-       }
-    });
-
-/**
- * 
- * @param {*} original original content to duplicate
- * @param {*} container container to add the duplicate to
- */
+          
+    /**
+     * 
+     * @param {*} original original content to duplicate
+     * @param {*} container container to add the duplicate to
+     */
     function duplicate(original,container){
         var duplicate = container.replace('.','')+'-duplicate-'+$(container).find(original).length;//unique indentifier for each duplicate
         var newItem = $(container).find(original).eq(0).clone().attr('duplicate',duplicate);
@@ -84,3 +69,26 @@ function confirmDelete(trigger,confirmationContainer){
         form.submit();
     });
 }
+
+    
+      if($("select#product-type-selector option[selected]").val() == 'simple'){
+        simpleProduct()
+      }else if($("select#product-type-selector option[selected]").val() == 'variable'){
+        variableProduct();
+      }
+    
+       $('select#product-type-selector').bind('change',function(e){
+         
+           if($(this).val() == 'variable'){
+                variableProduct();
+           }
+           else if($(this).val() == 'simple'){
+                simpleProduct();
+           }
+        });
+
+        
+
+
+});
+ 

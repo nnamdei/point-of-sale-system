@@ -10,6 +10,7 @@ use App\Inventory\StockManager;
 use App\Inventory\SingleProductInsight;
 use App\Inventory\ProductsCollectionInsight;
 use App\Inventory\FusionCharts;
+use App\Inventory\Transaction;
 use App\Matto\FileUpload;
 
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class ProductsController extends Controller
     {
 
         public function __construct(){
-            $this->middleware('manager');
+            $this->middleware('manager')->except(['show']);
         }
   /**
      * Display a listing of the resource.
@@ -214,19 +215,26 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-    $product =  Product::find($id);
-    if($product == null){
-        return redirect()->route('products.index')->with('info','Product not found');
+
+    if(Auth::user()->isAttendant()){
+        return redirect()->route('desk.product',$id);;
     }
+
+    $product =  Product::findorfail($id);
         $insight = new SingleProductInsight($data = [
                                             'stock' => $product->stocks(),
                                             'sale' => $product->sales(),
                                             'base_price' => $product->base_price,
                                             'selling_price' => $product->selling_price
                                               ]);
+        $t = new Transaction();
+        $transactions = $t->productTransactions($product->id);
+
         return view('products.show')->with('product',$product)
                                     ->with('insight', $insight)
-                                    ->with('transactions',$product->transactions()->OrderBy('created_at','desc')->get());
+                                    ->with('period', $transactions['period'])
+                                    ->with('sales',$transactions['sales'])
+                                    ->with('activities', $transactions['activities']);
     }
 
     /**
@@ -276,7 +284,7 @@ class ProductsController extends Controller
 
         if($formalPrice != $request->selling_price){//check for change in price
             $manager = new StockManager($product->id);
-            $manager->transact(Auth::id(),$product->id,4,$formalPrice,0);
+            $manager->action(Auth::id(),$product->id,4,$formalPrice,0);
         }
 
 

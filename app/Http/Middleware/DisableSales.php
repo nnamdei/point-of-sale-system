@@ -15,7 +15,7 @@ class DisableSales
      */
     public function handle($request, Closure $next)
     {
-        return redirect()->back()->with('warning',"Sales is currently disabled, you can only stock up your products for now");
+        return redirect()->back()->with('warning',"Sales is currently disabled");
         //return $next($request);
     }
 }

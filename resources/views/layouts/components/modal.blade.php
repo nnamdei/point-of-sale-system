@@ -1,8 +1,4 @@
 
-<!-- Button trigger modal -->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appModal" data-title="New Product" data-content="#variants-container">
-        Launch demo modal
-  </button>-->
 <!-- Modal -->
 <div class="modal fade" id="app-modal" tabindex="-1" role="dialog" aria-labelledby="appModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -25,3 +21,4 @@
     </div>
   </div>
 </div>
+<!-- Modal end -->
