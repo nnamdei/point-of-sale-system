@@ -14,7 +14,9 @@
                 @if($users_w->count() > 0)
                     <div class="list-group">
                         @foreach($users_w as $user)
-                            @include('templates.user')
+                            @if($user->id != 1 && $user->id != Auth::id())
+                                @include('templates.user')
+                            @endif
                         @endforeach
                     </div>
                 @else
@@ -25,7 +27,7 @@
             @elseif($_user::all()->count() > 0)
                 <div class="list-group">
                     @foreach($_user::all() as $user)
-                        @if($user->id != 1)
+                        @if($user->id != 1 && $user->id != Auth::id())
                             @include('templates.user')
                         @endif
                     @endforeach

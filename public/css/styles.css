@@ -36,9 +36,9 @@ nav.theme-secondary-bg a.nav-link{
 .lhs-fixed{
     /* background-color: #fff; */
 }
-.lhs-fixed .card{
+/* .lhs-fixed .card{
     background-color: transparent;
-}
+} */
 .lhs-fixed .card-header{
     color: rgba(52, 200, 64, 1);
     font-weight: bolder;

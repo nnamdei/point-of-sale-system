@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class VariantsController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('manager');
+    }
+
     /**
      * Display a listing of the resource.
      *

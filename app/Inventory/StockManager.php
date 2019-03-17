@@ -128,21 +128,22 @@ class StockManager{
 
         $product = Product::find($this->product_id); 
         if($product->variants->count() > 0){
-            foreach($item->options as $key => $value){
+            foreach($item->options as $variable){
                 foreach($product->variants as $variant){
-                    if($variant->variable == $key){
+                    if(isset($item->options[$variant->variable])){
                         $values = $variant->values();
                         $sales = $variant->sales();
                         $remainings = $variant->remainings();
                      
                         $newSales = array();
                         for($i = 0; $i<count($values); $i++){
-                            if($values[$i] == $value){
-                                if($remainings[$i] - $item->qty < 0){
+                            $qty = isset($variable[$values[$i]]) ? $variable[$values[$i]] : null;
+                            if($qty !== null){
+                                if($remainings[$i] - $qty < 0){
                                     $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
                                     array_push($newSales,$sales[$i]);
                                 }else{
-                                     $s = $sales[$i]+$item->qty;
+                                     $s = $sales[$i]+$qty;
                                     array_push($newSales,$s);
                                     $response['success'][] = $item->qty." of ".$product->name." sold";
                                 }

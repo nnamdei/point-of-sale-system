@@ -11,19 +11,38 @@
                     <img src="{{$item->model->preview()}}" alt="" style="width: 100%">
                     <div>
                         <a href="{{route('desk.product',[$item->model->id])}}">{{$item->name}}</a>
-                        <div class="d-flex justify-content-center" style="font-size: 12px">
-                            <span class="m-auto"> Price: {{$item->model->selling_price}}</span>
-                            <span class="m-auto">Qty: {{$item->qty}}</span>
-                            <span class="m-auto">Total: {{$item->total}}</span>
+                        <div class="d-flex justify-content-center align-items-start" style="font-size: 12px">
+                            <div class="m-auto"> Price: <br> &#8358; {{number_format($item->model->selling_price)}}</div>
+                            <div class="m-auto">
+                                Qty: {{number_format($item->qty)}}
+                                <br>
+                                @if(count($item->options) > 0)
+                                        @foreach($item->options as $variant => $variable)
+                                        <div>
+                                            {{$variant}} : 
+                                            @foreach($variable as $value => $qty)
+                                                {{$value}}({{$qty}})
+                                                <br>
+                                            @endforeach
+                                        </div>
+                                        @endforeach
+                                    @endif
+                            </div>
+                            <div class="m-auto">Total: <br> &#8358; {{number_format($item->total)}}</div>
                         </div>
-                        <div class="text-right"> @include('cart.widgets.remove')</div>
+                        <div class="d-flex justify-content-center mt-2">
+                            <div>
+                                <small><a href="{{route('desk.product',[$item->model->id])}}"><i class="fa fa-sync"></i> update item</a></small>
+                            </div>
+                            <div class="ml-auto"> @include('cart.widgets.remove')</div>
+                        </div>
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
                 @endforeach
             </div>
             <div class="d-flex p-2">
-                <small class="mr-auto"><a href="{{route('cart.empty')}}" class="text-danger"><i class="fa fa-ban"></i> clear cart</a></small>
+                <small class="mr-auto"><a href="{{route('cart.empty')}}" class="text-danger"><i class="fa fa-ban"></i> empty cart</a></small>
                 <small><a href="{{route('desk.cart')}}"><i class="fa fa-sign-out-alt"></i> Checkout</a></small>
             </div>
         @else

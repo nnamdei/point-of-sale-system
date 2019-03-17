@@ -53,7 +53,7 @@
         
     </div>
 
-    <div class="content-body mt-3">   
+    <div class="content-body mt-5">   
         @include('products.widgets.basics')
         @include('products.widgets.statistics')
         <div class="card">

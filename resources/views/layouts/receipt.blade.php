@@ -54,12 +54,10 @@
         <div>{{config('business.phone')}}</div>
     </div>
     <br>
-    <div class="text-center">
-        <strong>Receipt</strong>
-    </div>
     <div class="text-right">
         ref: {{$cart->identifier}}
     </div>
+    <br>
 
     <div id="items-table">
         @yield('items')

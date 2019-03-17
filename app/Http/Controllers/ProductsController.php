@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Input;
 
 class ProductsController extends Controller
     {
-
         public function __construct(){
             $this->middleware('manager')->except(['show']);
         }

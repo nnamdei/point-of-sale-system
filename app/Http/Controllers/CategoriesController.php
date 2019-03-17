@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
     public function __construct(){
-        $this->middleware('manager');
+        $this->middleware('manager')->except(['show']);
     }
 
     /**
@@ -58,7 +58,11 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {    
+        if(Auth::user()->isAttendant()){
+            return redirect()->route('desk.category',$id);;
+        }
+
         return view('categories.show')->with('category',Category::find($id));
     
     }

@@ -5,18 +5,21 @@
     @if($contents->count() > 0)
         <table>
             @foreach($contents as $item)
-                <tr>
-                    <td>
+                <tr style="border-bottom: 2px solid #000;">
+                    <td class="text-left">
                         {{$item->name}}
                         @if(count($item->options) > 0)
-                            @foreach($item->options as $key => $value)
+                            @foreach($item->options as $variant => $variable)
                             <div>
-                               <small>{{$key}} : {{$value}}</small> 
+                                {{$variant}} : 
+                                @foreach($variable as $value => $qty)
+                                    {{$value}}({{$qty}})
+                                @endforeach
                             </div>
                             @endforeach
                         @endif
                     </td>
-                    <td>
+                    <td  class="text-right">
                         N{{number_format($item->price)}} x {{$item->qty}}
                     </td>
                     <td class="text-right">

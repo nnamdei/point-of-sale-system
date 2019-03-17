@@ -44,7 +44,7 @@
                                 <td>
                                     <div class="d-flex">
                                         <div>
-                                            @if(!$item->model == null)
+                                            @if($item->model != null)
                                                 <a href="{{route('desk.product',[$item->model->id])}}">{{$item->name}}</a> 
                                             @else
                                                 <div>
@@ -54,13 +54,15 @@
                                                 </div>
                                             @endif
                                             @if(count($item->options) > 0)
-                                                @foreach($item->options as $key => $value)
+                                                @foreach($item->options as $variant => $variable)
                                                 <div>
-                                                    {{$key}} : {{$value}}
+                                                    {{$variant}} : 
+                                                    @foreach($variable as $value => $qty)
+                                                        {{$value}}({{$qty}})
+                                                    @endforeach
                                                 </div>
                                                 @endforeach
-                                            @endif
-                                        </div>
+                                            @endif                                        </div>
                                     
                                     </div>
                                 </td>

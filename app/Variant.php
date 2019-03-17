@@ -37,9 +37,20 @@ class Variant extends Model
 
         return $remainings;
     }
+    
     public function totalRemaining(){
         return $this->total($this->remainings());
     }
+    
+    public function saleFeasible($value,$qty){
+        foreach ($this->values() as $key => $val){
+            if($value == $val){
+               return $this->remainings()[$key] >= $qty ? true : $this->remainings()[$key];
+            }
+        }
+    }
+
+
 //explode() function used to extract values,stocks and sales from a variable always return
 //array of size 1 event if the string is empty, this is to confirm if there are truly values
 //available for a variable i.e not empty. 

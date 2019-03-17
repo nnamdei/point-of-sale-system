@@ -14,6 +14,7 @@ use App\CartDB;
 use App\Product;
 use App\Inventory\StockManager;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Validation\Rule;
 
 class CartController extends Controller
 {
@@ -35,6 +36,7 @@ class CartController extends Controller
 
         $contents = unserialize($cart->content);
         $summary['products'] = $contents->count();
+        $contents = unserialize($cart->content);
         $summary['items'] = 0;
         $summary['subtotal'] = 0;
         $summary['tax'] = 0;
@@ -51,64 +53,83 @@ class CartController extends Controller
                                 ->with('contents', $contents);
     }
 
-    public function add(Request $request){
-        $this->validate($request,[
-            'quantity' => ['required','min: 1']
-        ]);
-
+    public function arrangeCart($request){
         $product = Product::findorfail($request->product_id);
-        $feasibility = $product->saleFeasible($request->quantity);//check if the quantity is feasible to be sold
-        
-        if($feasibility !== true){
-            return redirect()->back()->with('info', 'Cannot add '.$request->quantity.' to cart, only '.$feasibility.' remaining');
-        }
-
+        $quantity = 0;
         $options = [];
-        if($product->isVariable()){
-            foreach($product->variants as $v){
-                $variant = $v->variable;
-                if($request->has($variant)){
-                    $options[$variant] = $request->$variant;
+        $infeasibility = array();
+
+        if($product->isSimple()){
+            $rule['quantity'] = ['required','min: 1'];
+            $this->validate($request,$rule);
+            $feasibility = $product->saleFeasible($request->quantity);//check if the quantity is feasible to be sold
+            if($feasibility !== true){
+                array_push($infeasibility, 'Cannot add '.$request->quantity.' to cart, only '.$feasibility.' remaining');
+            }
+            $quantity = $request->quantity;
+        }
+        elseif($product->isVariable()){
+            foreach($product->variants as $variant){
+                $variable = $variant->variable;
+                $qty = $request->qty;
+                if($request->has($variable) && count($request->$variable) > 0){
+                    $options[$variant->variable] = array();
+                    foreach($request->$variable as $key => $value){
+                        if(isset($qty[$key]) && $qty[$key] != null && $qty[$key] > 0){
+                            $v_feasibility = $variant->saleFeasible($value,$qty[$key]);
+                            if($v_feasibility !== true){
+                                array_push($infeasibility, 'Cannot add '.$qty[$key].' of '.$value.' only '.$v_feasibility.' remaining');
+                            }else{
+                                $quantity += $qty[$key];
+                                $options[$variant->variable][$value] = (int) $qty[$key];
+                            }
+                        }
+                    }
                 }
             }
         }
-        $cart = Cart::add($product->id,$product->name,$request->quantity,$product->selling_price,$options)->associate('App\Product');
-        // dd($cart);
-        return redirect()->back()->with('success',$request->quantity.' of '.$product->name.' added to the cart');
+
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'qty' => $quantity,
+            'price' => $product->selling_price,
+            'options' => $options,
+            'infeasibility' => $infeasibility
+        ];
+    }
+
+    public function add(Request $request){
+
+        $cart_set_up = $this->arrangeCart($request);
+        // dd($cart_set_up);
+        if(!empty($cart_set_up['infeasibility'])){
+            return redirect()->back()->withErrors($cart_set_up['infeasibility']);
+        }
+        $cart = Cart::add($cart_set_up['id'],$cart_set_up['name'],$cart_set_up['qty'],$cart_set_up['price'],$cart_set_up['options'])->associate('App\Product');
+        return redirect()->back()->with('success',$cart_set_up['qty'].' of '.$cart_set_up['name'].' added to the cart');
+
     }
 
     public function update(Request $request){
         $item = Cart::search(function ($cartItem, $rowId) {
-            return $rowId === request()->id;
+            return $rowId === request()->row_id;
         })->first();
 
         if($item == null){
             return redirect()->back()->with('error',"The item was not found in the cart");
         }
-        $this->validate($request,[
-            'quantity' => ['required']
-        ]);
         
-        $product = Product::findorfail($item->id);
+        $cart_update = $this->arrangeCart($request);
 
-        $feasibility = $product->saleFeasible($request->quantity);//check if the quantity is feasible to be sold
-        if($feasibility !== true){
-            return redirect()->back()->with('info', 'Cannot add '.$request->quantity.' to cart, only '.$feasibility.' remaining');
+        if(!empty($cart_update['infeasibility'])){
+            return redirect()->back()->withErrors($cart_update['infeasibility']);
         }
 
-        $options = [];
-        if($product->isVariable()){
-            foreach($product->variants as $v){
-                $variant = $v->variable;
-                if($request->has($variant)){
-                    $options[$variant] = $request->$variant;
-                }
-            }
-        }
+        $update = Cart::update(request()->row_id, ['qty' => $cart_update['qty']]);
+        $update->options = $cart_update['options'];
+        return redirect()->back()->with('success', $cart_update['name'].' updated in the cart');
 
-        $update = Cart::update($request->id, ['qty' => $request->quantity]);
-        $update->options = $options;
-        return redirect()->back()->with('success', $item->name.' updated in the cart');
     }
 
     public function remove(Request $request){

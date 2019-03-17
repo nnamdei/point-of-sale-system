@@ -48,7 +48,7 @@
         <thead>
             <tr>
                 <th>Product</th>
-                <th class="text-center">Price</th>
+                <th class="text-center">Price (&#8358;)</th>
                 <th class="text-center">Quantity</th>
                 <th class="text-center">Total</th>
             </tr>
@@ -62,9 +62,12 @@
                                 <div>
                                     <a href="{{route('desk.product',[$item->model->id])}}">{{$item->name}}</a> 
                                     @if(count($item->options) > 0)
-                                        @foreach($item->options as $key => $value)
+                                        @foreach($item->options as $variant => $variable)
                                         <div>
-                                            {{$key}} : {{$value}}
+                                            {{$variant}} : 
+                                            @foreach($variable as $value => $qty)
+                                                {{$value}}({{$qty}})
+                                            @endforeach
                                         </div>
                                         @endforeach
                                     @endif
@@ -74,15 +77,15 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="text-center">&#8358; {{$item->price}}</td>
+                        <td class="text-center"> {{number_format($item->price)}}</td>
                         <td class="text-center">
                             {{$item->qty}}
-                            <a href="#" class="ml-2" title="update quantity" data-toggle="collapse" data-target="#update-{{$item->rowId}}"><i class="fa fa-plus-circle"></i></a>
+                            <a href="#" class="ml-2" title="update quantity" data-toggle="collapse" data-target="#update-{{$item->rowId}}"><i class="fa fa-sync"></i></a>
                             <div class="collapse" id="update-{{$item->rowId}}">
                                 @include('cart.widgets.update')
                             </div>
                         </td>
-                        <td class="text-center">{{$item->total}}</td>
+                        <td class="text-center">{{number_format($item->total)}}</td>
                     </tr>
                 @endforeach
             @else

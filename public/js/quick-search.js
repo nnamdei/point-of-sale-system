@@ -50,5 +50,7 @@ jQuery(document).ready(function($) {
                 return result;
       }
         }
-    });
+    }).bind('typeahead:select', function(ev, suggestion) {
+        $(this).typeahead('val',suggestion.name)
+    }); 
 }); 

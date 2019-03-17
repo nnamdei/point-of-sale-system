@@ -7,10 +7,10 @@
             @if(Auth::check())
             
             <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="text-center bg-white p-3 mt-3">
-                        <h3 class="theme-secondary-color" id="brand">{{config('app.name')}}</h3>
-                        <h4>Welcome {{Auth::user()->fullname()}}</h4>
+                <div class="col-md-4">
+                    <div class="text-center theme-gradient-alt-bg px-2  py-5 mt-3 index-container">
+                        <h4 class="white" id="brand">{{config('app.name')}}</h4>
+                        <p>{{Auth::user()->fullname()}}</p>
                         <div class="my-2">
                             @include('products.widgets.search')
                         </div>
@@ -28,9 +28,9 @@
             </div>
             @else
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="bg-white p-3 text-center">
-                            <h3 class="theme-secondary-color" id="brand">{{config('app.name')}}</h3>
+                    <div class="col-md-4">
+                        <div class="theme-gradient-alt-bg px-2 py-5 text-center index-container">
+                            <h4 class="white" id="brand">{{config('app.name')}}</h4>
                             @include('forms.login')
                         </div>
                     </div>
@@ -45,17 +45,15 @@
     #brand{
         margin: 20px 0;
     }
-
+    .index-container{
+        box-shadow: 0px 10px 10px rgba(0,0,0,.2);
+        border-radius: 5px;
+    }
     @media (min-width: 576px){
         #container{
         margin: auto;
        
         }
-        #brand{
-            font-size: 80px;
-            letter-spacing: 20px;
-        }
-
     }
 </style>
 @endsection

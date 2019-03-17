@@ -35,25 +35,6 @@ $('document').ready(function(){
       }
 
           
-    /**
-     * 
-     * @param {*} original original content to duplicate
-     * @param {*} container container to add the duplicate to
-     */
-    function duplicate(original,container){
-        var duplicate = container.replace('.','')+'-duplicate-'+$(container).find(original).length;//unique indentifier for each duplicate
-        var newItem = $(container).find(original).eq(0).clone().attr('duplicate',duplicate);
-        newItem.find('input').val('');//if there is any input inside, cleaer the values
-        var removerContainer = $('<div></div>').attr('class','text-right text-danger');
-        var remover = $('<span></span>').attr('class','fa fa-minus-circle text-right').attr('remove', duplicate);
-        removerContainer.append(remover);
-        newItem.children().first().before(removerContainer);
-        $(container).append(newItem);
-        $(container).on('click', '[remove = "'+duplicate+'"]', function(e){
-            $(container).find("[duplicate = '"+duplicate+"']").remove()
-        })
-          
-    }
 
 
 function confirmDelete(trigger,confirmationContainer){
@@ -87,8 +68,24 @@ function confirmDelete(trigger,confirmationContainer){
            }
         });
 
-        
-
-
 });
  
+    /**
+     * 
+     * @param {*} original original content to duplicate
+     * @param {*} container container to add the duplicate to
+     */
+    function duplicate(original,container){
+      var duplicate = container.replace('.','')+'-duplicate-'+$(container).find(original).length;//unique indentifier for each duplicate
+      var newItem = $(container).find(original).eq(0).clone().attr('duplicate',duplicate);
+      newItem.find('input').val('');//if there is any input inside, cleaer the values
+      var removerContainer = $('<div></div>').attr('class','text-right text-danger pull-right');
+      var remover = $('<span></span>').attr('class','fa fa-minus-circle text-right').attr('remove', duplicate);
+      removerContainer.append(remover);
+      newItem.children().first().before(removerContainer);
+      $(container).append(newItem);
+      $(container).on('click', '[remove = "'+duplicate+'"]', function(e){
+          $(container).find("[duplicate = '"+duplicate+"']").remove()
+      })
+        
+  }
