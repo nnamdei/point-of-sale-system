@@ -42,15 +42,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-right text-danger">
-                                            <small style="cursor: pointer" onclick="javascript: document.querySelector('#{{$variant->variable.'_'.$key.'_'.$value}}').remove()" ><i class="fa fa-times"></i> remove this {{$value.' '.$variant->variable.' '.$key}} </small>
-                                        </div>
+                                        @if(!$loop->first)
+                                            <div class="text-right text-danger">
+                                                <small style="cursor: pointer" onclick="javascript: document.querySelector('#{{$variant->variable.'_'.$key.'_'.$value}}').remove()" ><i class="fa fa-times"></i> remove this {{$value.' '.$variant->variable.' '.$key}} </small>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
                             @endif
                         </div>
                         <div class="text-right mt-2">
-                            <button class="btn btn-sm btn-secondary" onclick="javascript: duplicate('.single-variant','.variables-container')"><i class="fa fa-plus-circle" ></i> Add another {{$variant->variable}}</button>
+                            <button class="btn btn-sm btn-secondary" role="button" onclick="javascript: duplicate('.single-variant','.variables-container')"><i class="fa fa-plus-circle" ></i> Add another {{$variant->variable}}</button>
                         </div>
 
                     @endforeach

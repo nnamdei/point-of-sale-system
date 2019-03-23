@@ -26,7 +26,7 @@
         <div class="white-bg" style="padding: 5px">
             <div class="row">
                 <div class="col-6 text-left">
-                    <h3>{{$product->name}}</h3>
+                    <h5>{{$product->name}}</h5>
                 </div>
                 <div class="col-3">
                     <div style="font-size: 30px">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="content-body" style="padding-top: 70px">   
+    <div class="content-body">   
          @include('products.widgets.basics')
         @include('products.widgets.statistics')
     </div>
@@ -51,9 +51,9 @@
 @section('RHS')
     <?php
         $products_w_title = "Also in ".$product->category->name;
-        $products_w = $_product::where('category_id',$product->category->id)->get();
+        $products_w = $_product::where([['category_id',$product->category->id],['id', '!=', $product->id]])->get();
     ?>
-    <div style="padding-top: 10px"> 
+    <div class="mt-1"> 
         @include('widgets.products')
     </div>
 @endsection

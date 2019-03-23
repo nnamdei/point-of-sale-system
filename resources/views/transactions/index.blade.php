@@ -1,8 +1,10 @@
 @extends('layouts.appRHSfixed')
 
 @section('main')
-    @include('transactions.widgets.filter')
-    @include('transactions.widgets.sales')
+    <div style="overflow: auto">
+        @include('transactions.widgets.filter')
+        @include('transactions.widgets.sales')
+    </div>
 @endsection
 @section('RHS')
     <div class="rhs-fixed-head theme-bg" style="padding: 20px">

@@ -1,12 +1,10 @@
 body{
-    background: linear-gradient(rgba(52, 58, 64, 0.1),rgba(52, 100, 64, .5));
     min-height: 100vh;
-    background-attachment: fixed;
     font-size: 13px;
 }
-#nav-quick-search{
+/* #nav-quick-search{
     width: 150px !important;
-}
+} */
 nav.theme-secondary-bg a.nav-link{
     color: #fff
 }
@@ -93,9 +91,7 @@ a:hover{
     color:#343a40;
     text-decoration: none;
 }
-a.navbar-brand{
-    margin-right: 50px;
-}
+
 a.navbar-brand:hover{
     color: #fff;
 }
@@ -260,8 +256,8 @@ table.products-table-head tr:first-child th{
     overflow: auto;
 }
 
-@media (min-width: 768px){
-    #nav-quick-search{
-        width: 350px !important;
-    }    
+@media (max-width: 576px){
+    nav .product-quick-search{
+        width: 150px !important
+    }     
 }

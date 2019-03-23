@@ -3,20 +3,20 @@
 
 @section('main')
 
-<div class="row" style="margin-top: 10px">
-    <div class="col-md-6 offset-md-3">
-        <h4>Users</h4>
+<div class="row" >
+    <div class="col-md-6 offset-md-3 col-no-padding-xs">
+        <h5>Users</h5>
         @if($users->count() > 0)
         @foreach($users as $user)
-            <div class="row">
-                <div class="col-2" style="padding-right:0">
-                    <div class="text-right">
-                        <img src="{{$user->avatar()}}" alt="{{$user->fullname()}}" class="avatar" width="70px" height="70px">
-                    </div>
-                </div>
-                <div class="col-10" style="padding-left:0">
-                    <div class="card">
-                        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-no-padding-xs">
+                            <div class="">
+                                <img src="{{$user->avatar()}}" alt="{{$user->fullname()}}" class="avatar" width="70px" height="70px">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-no-padding-xs">
                             <h5><a href="{{route('users.show',['id' => $user->id])}}">{{$user->fullname()}}</a></h5>
                             <div class="grey">
                                 <p><i class="fa fa-user theme-color"></i>  {{$user->position()}}</p>

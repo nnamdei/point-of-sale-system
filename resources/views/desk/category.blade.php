@@ -2,7 +2,7 @@
 
 @section('LHS')
             <div class="card" style="margin-top: 5px">
-                <div class="card-header theme-secondary-bg">
+                <div class="card-header bg-white">
                     <h5>{{$category->name}} </h5>
                     
                     <div class="description-container">

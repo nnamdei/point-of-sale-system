@@ -1,9 +1,9 @@
 <div class="list-group-item list-group-item-action flex-column align-items-start has-operations" >
     <div class="d-flex w-100 justify-content-between">
         @if(Auth::user()->isManager())
-            <h5 class="mb-1"> <a href="{{route('categories.show',['id' => $category->id])}}">{{$category->name}}<sup class="badge badge-secondary"> {{$category->products->count()}}</sup></a></h5>
+            <strong class="d-block mb-1"> <a href="{{route('categories.show',['id' => $category->id])}}">{{$category->name}}<sup class="badge badge-secondary"> {{$category->products->count()}}</sup></a></strong>
         @else
-            <h5 class="mb-1"> <a href="{{route('desk.category',['id' => $category->id])}}">{{$category->name}}<sup class="badge badge-secondary"> {{$category->products->count()}}</sup></a></h5>
+            <strong class="d-block mb-1"> <a href="{{route('desk.category',['id' => $category->id])}}">{{$category->name}}<sup class="badge badge-secondary"> {{$category->products->count()}}</sup></a></strong>
         @endif
     </div>
     <div class="mb-1">

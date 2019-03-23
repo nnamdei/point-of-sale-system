@@ -1,10 +1,10 @@
 <div class="list-group-item list-group-item-action flex-column align-items-start has-operations" >
     <div class="d-flex w-100 justify-content-between">
         @if(Auth::user()->isManager())
-            <h5 class="mb-1"> <a href="{{route('products.show',['id' => $product->id])}}">{{$product->name}}</a></h5>
+            <strong class="d-block mb-1"> <a href="{{route('products.show',['id' => $product->id])}}">{{$product->name}}</a></strong>
             <small>Category: <a href="{{route('categories.show',['id'=>$product->category->id])}}">{{$product->category->name}}</a></small>
         @else
-            <h5 class="mb-1"> <a href="{{route('desk.product',['id' => $product->id])}}">{{$product->name}}</a></h5>
+            <strong class="d-block mb-1"> <a href="{{route('desk.product',['id' => $product->id])}}">{{$product->name}}</a></strong>
             <small>Category: <a href="{{route('desk.category',['id'=>$product->category->id])}}">{{$product->category->name}}</a></small>
         @endif
     </div>

@@ -1,4 +1,5 @@
-<div class="card">
+<?php $product_w_collection = isset($products_w) ? $products_w : $_product::orderBy('created_at','desc')->take(10)->get() ?>
+    <div class="card">
        <div class="card-header">
        <h5>{{isset($products_w_title) ? $products_w_title: 'Recent Products' }}</h5>
          @if(Auth::user()->isManager())
@@ -10,22 +11,9 @@
         @endif
         </div>
        <div class="card-body no-padding">
-            @if(isset($products_w))
-                @if($products_w->count() >0 )
-                    <div class="list-group">
-                        @foreach($products_w as $product)
-                            @include('templates.product')
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center" style="padding: 10px">
-                        <small class="text-danger"><i class="fa fa-exclamation-triangle"></i>  No product found</small>
-                    </div>
-                     
-                @endif
-            @elseif($_product::all()->count() > 0)
+          @if($product_w_collection->count() > 0)
                 <div class="list-group">
-                    @foreach($_product::all() as $product)
+                    @foreach($product_w_collection as $product)
                         @include('templates.product')
                     @endforeach
                 </div>

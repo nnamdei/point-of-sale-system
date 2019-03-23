@@ -1,9 +1,11 @@
 @extends('layouts.appLHSfixedRHSfixed')
 @section('LHS')
-    @include('widgets.products')
+    <div class="d-none d-sm-block pt-1">
+        @include('widgets.products')
+    </div>
 @endsection
 @section('main')
-    <div style="margin-top: 5px">
+    <div class="pt-1">
         <div class="card">
             <div class="card-header theme-secondary-bg">
                 <h5>Add New Category</h5>
@@ -16,7 +18,7 @@
 @endsection
 
 @section('RHS')
-    <div style="margin-top: 5px">
+    <div class="pt-1">
         @include('widgets.categories')
     </div>
 @endsection

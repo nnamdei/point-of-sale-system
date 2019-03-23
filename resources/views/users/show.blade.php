@@ -7,14 +7,14 @@
 @endsection
 
 @section('main')
-   <div class="theme-bg" style="margin-top:20px; padding-top: 100px">
+   <div class="theme-bg" style="margin-top:-5px; padding-top: 120px">
         <div class="white-bg" style="">
             <div class="row">
-                <div class="col-3">
+                <div class="col-sm-3 text-center">
                     <img src="{{$user->avatar()}}" alt="{{$user->fullname()}}" class="avatar" style="width: 200px; height: 200px; margin-top: -100px; border-width: 3px ">
                 </div>
-                <div class="col-9">
-                    <h4 class="theme-secondary-color">{{$user->fullname()}}</h4>
+                <div class="col-sm-9  text-center">
+                    <h5 class="theme-secondary-color">{{$user->fullname()}}</h5>
                     <div class="grey">
                         <p style="margin: 2px">{{$user->position()}}</p>
                         <small><i class="fa fa-clock"></i> Added {{ $user->created_at->diffForHumans() }}</small>

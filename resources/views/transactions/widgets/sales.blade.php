@@ -9,7 +9,7 @@
   </li>
 </ul>
 
-<div class="tab-content" id="myTabContent">
+<div class="tab-content" id="myTabContent" style="max-height: 70vh; overflow: auto">
   <div class="tab-pane fade show active" id="sales-table" role="tabpanel" aria-labelledby="sales-table-tab">
         @include('transactions.templates.sales-table')
   </div>
