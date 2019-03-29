@@ -17,13 +17,13 @@ Route::get('/', 'AppController@index')->name('index');
 Route::get('/desk/close','DeskController@closed')->name('desk.closed');
 
 Route::group(['middleware' => ['authorized','check-desk']],function(){
-    Route::get('/find','DeskController@find');
-    Route::get('/desk','DeskController@index')->name('desk');
-    Route::get('/desk/products','DeskController@products')->name('desk.products');
-    Route::get('/desk/product/{id}','DeskController@product')->name('desk.product');
+    Route::get('find','DeskController@find');
+    Route::get('desk','DeskController@index')->name('desk');
+    Route::get('desk/products','DeskController@products')->name('desk.products');
+    Route::get('desk/product/{id}','DeskController@product')->name('desk.product');
     // Route::put('desk/product/{id}/sell','DeskController@recordSale')->name('desk.sale')->middleware('sales-disabled');
-    Route::get('/desk/categories/','DeskController@categories')->name('desk.categories');
-    Route::get('/desk/category/{id}','DeskController@category')->name('desk.category');
+    Route::get('desk/categories/','DeskController@categories')->name('desk.categories');
+    Route::get('desk/category/{id}','DeskController@category')->name('desk.category');
     Route::post('desk/{user}/close','DeskController@close')->name('desk.close');
     Route::post('desk/{user}/open','DeskController@open')->name('desk.open');
 
@@ -47,6 +47,7 @@ Route::group(['middleware' => ['authorized','check-desk']],function(){
     Route::put('/products/{id}/stock','ProductsController@stock')->name('stock');
     Route::post('/products/{id}/variables/add','ProductsController@addVariables')->name('variables.add');
     Route::delete('variants/{variant_id}/{index}','VariantsController@removeSingleValue')->name('remove.value');
+
 });
 
 

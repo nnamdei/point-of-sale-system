@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('desk_closed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

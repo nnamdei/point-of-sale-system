@@ -1,15 +1,18 @@
 <div class="list-group-item list-group-item-action flex-column align-items-start has-operations" >
     <div class="d-flex w-100 justify-content-between">
         @if(Auth::user()->isManager())
-            <strong class="d-block mb-1"> <a href="{{route('products.show',['id' => $product->id])}}">{{$product->name}}</a></strong>
+            <strong class="d-block mb-1"> <a href="{{route('products.show',['id' => $product->id])}}">{{$product->name}}</a> (&#8358; {{number_format($product->selling_price)}})</strong>
             <small>Category: <a href="{{route('categories.show',['id'=>$product->category->id])}}">{{$product->category->name}}</a></small>
         @else
-            <strong class="d-block mb-1"> <a href="{{route('desk.product',['id' => $product->id])}}">{{$product->name}}</a></strong>
+            <strong class="d-block mb-1"> <a href="{{route('desk.product',['id' => $product->id])}}">{{$product->name}}</a> (&#8358; {{number_format($product->selling_price)}})</strong>
             <small>Category: <a href="{{route('desk.category',['id'=>$product->category->id])}}">{{$product->category->name}}</a></small>
         @endif
     </div>
     <div class="mb-1">
         <small>{{$product->type}}</small>
+        <div>
+            <strong>{{number_format($product->remaining())}}</strong> available
+        </div>
         <div class="description-container">
             @if($product->description == null)
             <small class="text-danger"><i class="fa fa-exclamation-triangle"></i> No description </small>

@@ -21,6 +21,7 @@ class CreateSalesTable extends Migration
             $table->float('price');
             $table->integer('quantity');
             $table->timestamps();
+
         });
     }
 

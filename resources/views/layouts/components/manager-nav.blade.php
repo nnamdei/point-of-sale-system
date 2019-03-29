@@ -66,20 +66,17 @@
 
 			</ul>
 
-
-
-
-
-			<div class="mb-2">
-				@include('widgets.today-sales')
-			</div>
-
-				<div class="dropdown">
+			<!-- Right side nav -->
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					@include('widgets.today-sales')
+				</li>
+				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
 						<small>{{Auth::user()->firstname}}</small>
 					</a>
-					<div class="dropdown-menu" aria-labelledby="auth-user">
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="auth-user">
 							<a href="{{route('users.create')}}" class="dropdown-item"><i class="fa fa-plus theme-color"></i> Add new user</a>
 							<div class="dropdown-divider"></div>
 							<a href="{{route('users.index')}}" class="dropdown-item"><i class="fa fa-user theme-color"></i> All Users</a>
@@ -92,7 +89,7 @@
 									{{ csrf_field() }}
 							</form>
 					</div>
-				</div>
-
+				</li>
+			</ul>
 		</div>
 	</nav>

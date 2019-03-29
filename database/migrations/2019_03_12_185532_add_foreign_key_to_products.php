@@ -14,7 +14,7 @@ class AddForeignKeyToProducts extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedInteger('category_id', 10)->change();
+            
             $table->index('category_id');
             $table->foreign('category_id')
                     ->references('id')
