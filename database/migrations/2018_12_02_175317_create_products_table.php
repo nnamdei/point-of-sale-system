@@ -26,6 +26,8 @@ class CreateProductsTable extends Migration
             $table->float('selling_price');
             $table->string('preview')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

@@ -3,7 +3,11 @@
         <div>
         #{{$product->id}}
         <br>
-        @if($product->stocksLow())
+        @if($product->finished())
+            <h1 class="text-center text-danger">
+                <span class="animated flash infinite slow" data-toggle="tooltip" title='No stock remaining'><i class="fa fa-exclamation-triangle"></i></span>
+            </h1>
+        @elseif($product->stocksLow())
             <h1 class="text-center text-warning">
                 <span class="animated flash infinite slow" data-toggle="tooltip" title='Stocks running low <span class="badge badge-warning"> {{$product->remaining()}}</span> remaining'><i class="fa fa-exclamation-triangle"></i></span>
             </h1>

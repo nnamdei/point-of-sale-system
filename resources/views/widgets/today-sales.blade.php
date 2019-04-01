@@ -15,4 +15,4 @@
 		$SALES += ($s->price * $s->quantity);
 	}
 ?>
-<div data-toggle="tooltip" data-placement="top" title="sales today" class="badge badge-success text-center" style="font-size: 25px" >{{number_format($SALES)}}</div>
+<div data-toggle="tooltip" data-placement="top" title="sales today" class="text-center" style="font-size: 25px" >{{number_format($SALES)}}</div>

@@ -42,13 +42,13 @@
         </div>
 
 
-        <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+        <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
             <div class="row">
                 <div class="col-sm-4">
                     <label for="">Description <i><small>(optional)</small></i></label>
                 </div>
                 <div class="col-sm-8">
-                    <textarea class="form-control" name="description" id="" cols="30" rows="10" placeholder="product description">{{old('description')}}</textarea>
+                    <textarea class="form-control" name="description" id="" placeholder="product description">{{old('description')}}</textarea>
                     @if ($errors->has('description'))
                         <span class="help-block">
                             <strong>{{ $errors->first('description') }}</strong>
@@ -103,7 +103,13 @@
 
         
 
-        
+        <div class="alert alert-info">
+            <p>
+                <h4><i class="fa fa-info-circle"></i> Update!</h4>
+                <p>Base price and selling price are now optional, you can continue with adding product without prices.</p>
+            </p>
+            <p><strong>NOTE:</strong> Products with no selling price will not be sellable</p>
+        </div>
         <div class="form-group {{ $errors->has('base_price') ? ' has-error' : '' }}" >
             <div class="row">
                 <div class="col-sm-4">

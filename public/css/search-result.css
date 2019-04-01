@@ -5,6 +5,10 @@
     color: #343a40;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
     width: 400px;
+    border-radius: 3px;
+    box-shadow: 0px 50px 50px rgba(0, 0, 0, .5);
+    max-height: 70vh;
+    overflow: auto;
 }
 .tt-dataset-products-list{
   

@@ -108,6 +108,11 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
+        if($category->products->count() > 0){
+            foreach($category->products as $product){
+                $product->delete();
+            }
+        }
         $category->delete();
 
         return redirect()->route('products.index')->with('success','Category <strong>'.$category->name.'</strong> deleted'); 

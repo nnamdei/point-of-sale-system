@@ -105,7 +105,17 @@ class Product extends Model
     }
 
     public function profitIndex(){
-        return round((($this->selling_price - $this->base_price)/$this->base_price)*100, 2);
+        if($this->basePriceSet() && $this->sellingPriceSet()){
+            return round((($this->selling_price - $this->base_price)/$this->base_price)*100, 2);
+        }
+        return 0;
+    }
+
+    public function basePriceSet(){
+        return $this->base_price > 0 ? true : false;
+    }
+    public function sellingPriceSet(){
+        return $this->selling_price > 0 ? true : false;
     }
 
     public function profitIndexLevel(){
@@ -115,6 +125,11 @@ class Product extends Model
     public function stocksLow(){
         return $this->remaining() < 10 ? true : false;
     }
+
+    public function finished(){
+        return $this->remaining() > 0 ? false : true;
+    }
+
 
     public function variables(){
         $var = "";

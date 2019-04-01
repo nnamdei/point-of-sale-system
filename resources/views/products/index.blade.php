@@ -24,7 +24,7 @@
         </li>
     </ul>
 
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content" id="myTabContent" style="overflow: auto">
         <div class="tab-pane fade show active" id="products-table" role="tabpanel" aria-labelledby="products-table-tab">
                 @include('products.widgets.products-table')
         </div>

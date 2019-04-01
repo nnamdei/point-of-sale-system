@@ -1,13 +1,13 @@
 @extends('layouts.appRHSfixed')
 
 @section('main')
-    <div style="margin-top: 5px">
+    <div class="pt-1" style="overflow: auto">
         @include('transactions.widgets.sales')
     </div>
 @endsection
 
 @section('RHS')
-<div style="margin-top: 5px">
+<div class="pt-1">
     @include('widgets.categories')
 </div>
 @endsection

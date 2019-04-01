@@ -1,3 +1,4 @@
+<?php $category_w_collection = isset($categories_w) ? $categories_w : $_category::orderBy('created_at','desc')->get() ?>
    <div class="card">
        <div class="card-header">
             <h5>{{isset($categories_w_title) ? $categories_w_title: 'Categories' }}</h5>
@@ -13,21 +14,9 @@
             @endif
         </div>
        <div class="card-body no-padding">
-           @if(isset($categories_w))
-                @if($categories_w->count() > 0)
-                    <div class="list-group">
-                        @foreach($categories_w as $category)
-                            @include('templates.category')
-                        @endforeach
-                    </div>
-                @else
-                <div class="text-center text-danger"style="padding: 20px">
-                    <small><i class="fa fa-exclamation-triangle"></i>  No category found</small>
-                </div>
-                @endif
-            @elseif($_category::all()->count() > 0)
+            @if($category_w_collection->count() > 0)
                 <div class="list-group">
-                    @foreach($_category::orderBy('name','asc')->get() as $category)
+                    @foreach($category_w_collection as $category)
                         @include('templates.category')
                     @endforeach
                 </div>

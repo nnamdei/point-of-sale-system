@@ -231,13 +231,13 @@ class StockManager{
                 for($i = 0; $i<count($v['stocks']); $i++){
                     if(is_numeric($v['stocks'][$i])){
                         array_push($normalizedStocks, $v['stocks'][$i]);
-                        array_push($sales, 0);
                         $response['success'][] = "<strong>".$v['stocks'][$i]." ".$v['variable']." ".$v['values'][$i]."</strong> of  <strong>$product->name</strong> added";
                         $totalStock += $v['stocks'][$i];
                     }else{//if string was provided, change it to zero
                         array_push($normalizedStocks, 0);
                         $response['warning'][] = "stock input for <strong>".$v['values'][$i]."</strong> is invalid, <strong>0</strong> used instead";
                      }
+                     array_push($sales, 0);
                 }
                 //couple back the values, stocks and sales
                 $variant->variable = str_replace('-','_',str_slug($v['variable']));
@@ -268,7 +268,7 @@ class StockManager{
        if(isset($feedback['info']) && count($feedback['info']) > 0){
         $report['info'] = "<ul class='list-group'>";
         foreach($feedback['info'] as $i){
-            $report['info'] .= "<li class='list-group-item text-success'>$i</li>";
+            $report['info'] .= "<li class='list-group-item text-info'>$i</li>";
         }
         $report['info'] .= "</ul>";
    }

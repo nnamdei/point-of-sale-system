@@ -79,7 +79,7 @@
                         <label for="">Base Price</label>
                     </div>
                     <div class="col-sm-6">
-                        <input class="form-control" type="number" name="base_price" id="base-price" value="{{$product->base_price}}">
+                        <input class="form-control" type="number" name="base_price" id="base-price" value="{{$product->base_price}}" required>
                         @if ($errors->has('stock'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('base_price') }}</strong>
@@ -96,7 +96,7 @@
                         <label for="">Selling Price</label>
                     </div>
                     <div class="col-sm-6">
-                        <input class="form-control" type="number" name="selling_price" id="selling-price"  value="{{$product->selling_price}}">
+                        <input class="form-control" type="number" name="selling_price" id="selling-price"  value="{{$product->selling_price}}" required>
                         @if ($errors->has('stock'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('selling_price') }}</strong>
@@ -104,10 +104,6 @@
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group text-center">
-                <input class="btn btn-success" type="submit" value="Update Product">
             </div>
         </div>
         <div class="col-sm-4">
@@ -118,6 +114,12 @@
             <div class="form-group">
                 <label for="preview" class="control-label grey">Preview Image (optional)</label>
                 <input type="file" name="preview" id="preview">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group text-center">
+                <input class="btn btn-success" type="submit" value="Update Product">
             </div>
         </div>
     </div>

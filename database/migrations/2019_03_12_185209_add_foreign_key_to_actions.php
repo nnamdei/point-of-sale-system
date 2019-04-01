@@ -14,14 +14,12 @@ class AddForeignKeyToActions extends Migration
     public function up()
     {
         Schema::table('actions', function (Blueprint $table) {
-            $table->unsignedInteger('product_id', 10)->change();
             $table->index('product_id');
             $table->foreign('product_id')
                     ->references('id')
                     ->on('products')
                     ->onDelete('cascade');
 
-            $table->unsignedInteger('user_id', 10)->change();
             $table->index('user_id');
             $table->foreign('user_id')
                     ->references('id')
@@ -39,6 +37,7 @@ class AddForeignKeyToActions extends Migration
     public function down()
     {
         Schema::table('actions', function (Blueprint $table) {
+            
             $table->dropIndex(['product_id']);
             $table->dropForeign(['product_id']);
 

@@ -16,7 +16,7 @@ class CreateShoppingcartTable extends Migration
             $table->string('identifier');
             $table->string('instance');
             $table->longText('content');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->string('payment')->nullable();
             $table->timestamps();
 

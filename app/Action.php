@@ -50,11 +50,19 @@ class Action extends Model
                 return
                 $this->product()->trashed()
                 ? 
-                "<span  class='text-danger' data-toggle='tooltip' title='deleted  ".$this->product()->deleted_at->toDayDateTimeString()."'>".$this->product()->name."'>".$this->product()->name."</span>  price changed from $this->price to ".$this->product()->selling_price
+                "<span  class='text-danger' data-toggle='tooltip' title='deleted  ".$this->product()->deleted_at->toDayDateTimeString()."'>".$this->product()->name."</span>  price changed from $this->price"
                 :
-                "<a href='".route('products.show',['id'=>$this->product()->id])."'>".$this->product()->name."</a> price changed from $this->price to ".$this->product()->selling_price;
+                "<a href='".route('products.show',['id'=>$this->product()->id])."'>".$this->product()->name."</a> price changed from $this->price";
             break;
-            
+            case 5:
+            return
+                $this->product()->trashed()
+                ? 
+                "<span  class='text-danger' data-toggle='tooltip' title='deleted  ".$this->product()->deleted_at->toDayDateTimeString()."'>".$this->product()->name."</span>  was reset"
+                :
+                "<a href='".route('products.show',['id'=>$this->product()->id])."'>".$this->product()->name."</a> was reset";
+            break;
+
             default:
                 return "Unrecognized action";
             break;

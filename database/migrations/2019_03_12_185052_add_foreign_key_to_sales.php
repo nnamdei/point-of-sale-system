@@ -14,20 +14,24 @@ class AddForeignKeyToSales extends Migration
     public function up()
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->unsignedInteger('product_id', 10)->change();
             $table->index('product_id');
             $table->foreign('product_id')
                     ->references('id')
                     ->on('products')
                     ->onDelete('cascade');
 
-            $table->unsignedInteger('user_id', 10)->change();
             $table->index('user_id');
             $table->foreign('user_id')
                     ->references('id')
                     ->on('users')
                     ->onDelete('cascade');
-            
+
+            $table->index('cart_id');
+            $table->foreign('cart_id')
+                    ->references('id')
+                    ->on(config('cart.database.table'))
+                    ->onDelete('cascade');
+                                    
         });
     }
 
@@ -44,6 +48,9 @@ class AddForeignKeyToSales extends Migration
 
             $table->dropIndex(['user_id']);
             $table->dropForeign(['user_id']);
+
+            $table->dropIndex(['cart_id']);
+            $table->dropForeign(['cart_id']);
 
         });
     }

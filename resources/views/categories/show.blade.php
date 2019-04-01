@@ -3,7 +3,7 @@
 @section('LHS')
 
             <div class="card" style="margin-top: 5px">
-                <div class="card-header theme-secondary-bg">
+                <div class="card-header bg-white">
                     <h5>{{$category->name}} 
                         <div style="height: 40px; float:right">
                             <a title="edit category {{$category->name}}" class="text-info" style="font-size: 16px" href="{{route('categories.edit', ['id'  => $category->id])}}"><i class="fa fa-pen"></i> edit</a>

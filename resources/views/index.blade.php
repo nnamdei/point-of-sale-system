@@ -11,12 +11,9 @@
                     <div class="text-center theme-gradient-alt-bg px-2  py-5 mt-3 index-container">
                         <h4 class="white" id="brand">{{config('app.name')}}</h4>
                         <p>{{Auth::user()->fullname()}}</p>
-                        <div class="my-2">
-                            @include('products.widgets.search')
-                        </div>
                         @if(Auth::user()->isManager())
-                            <a href="{{route('products.create')}}" class="btn btn-sm theme-btn-alt"><i class="fa fa-plus"></i>  Add New Product</a>
-                            <a href="{{route('categories.create')}}" class="btn btn-sm theme-btn-alt"><i class="fa fa-plus"></i>  Create a category</a>
+                            <a href="{{route('products.create')}}" class="btn btn-sm theme-btn-alt m-1"><i class="fa fa-plus"></i>  Add New Product</a>
+                            <a href="{{route('categories.create')}}" class="btn btn-sm theme-btn-alt m-1"><i class="fa fa-plus"></i>  Create a category</a>
                         @else
                             <a href="{{route('desk')}}" class="btn btn-sm theme-btn-alt"><i class="fa fa-plus"></i> Go to Desk</a>
                         @endif

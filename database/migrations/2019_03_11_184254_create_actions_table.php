@@ -21,6 +21,7 @@ class CreateActionsTable extends Migration
             $table->float('price')->nullable();
             $table->integer('quantity');
             $table->timestamps();
+
         });
     }
 

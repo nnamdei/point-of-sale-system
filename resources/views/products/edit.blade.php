@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="row">
-    <div class="col-md-10 offset-md-1">
+    <div class="col-md-10 offset-md-1 col-no-padding-xs">
         <div class="card" style="margin-top: 5px">
             <div class="card-header">
                 Edit Product: {{$product->name}}

@@ -8,7 +8,7 @@
                     <div class="inputs-container">
                         <div class="form-group">
                             <label for="" class="label-control">Quantity</label>
-                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add">
+                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add" onchange="javascript: checkQty(this)" required>
                         </div>
                     </div>
 
@@ -27,7 +27,7 @@
                             <div style="padding: 10px; background-color: {{($loop->index % 2) == 0 ? ' #f5f8fa' : '#fff' }}">
                                     <div class="form-group">
                                         <small>{{$value}}:</small>
-                                        <input class="form-control" type="number" name="{{$variant->variable.'_'.$value}}" placeholder="quantity of {{$variant->variable.' '.$value}}">
+                                        <input class="form-control" type="number" name="{{$variant->variable.'_'.$value}}" placeholder="quantity of {{$variant->variable.' '.$value}}" onchange="javascript: checkQty(this)" required>
                                     </div>
                             </div>
                                 

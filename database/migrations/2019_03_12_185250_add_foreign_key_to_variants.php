@@ -14,7 +14,7 @@ class AddForeignKeyToVariants extends Migration
     public function up()
     {
         Schema::table('variants', function (Blueprint $table) {
-            $table->unsignedInteger('product_id', 10)->change();
+            
             $table->index('product_id');
             $table->foreign('product_id')
                     ->references('id')

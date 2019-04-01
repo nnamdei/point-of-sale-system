@@ -28,7 +28,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::where('id',-1)->get(); //initialize with a dummy collection
+        $products = collect([]); //initialize with a dummy collection
 
         $filter = Input::get('filter');
         $search = Input::get('search');
@@ -82,7 +82,7 @@ class ProductsController extends Controller
                 "subCaption" => '',
                 "xAxisName" => "Product",
                 "yAxisName" => "Quantity",
-                "numberSuffix" => "stocks",
+                "numberSuffix" => "items",
                 "theme" => "candy"
             )
         );
@@ -92,7 +92,7 @@ class ProductsController extends Controller
                 "subCaption" => '',
                 "xAxisName" => "Product",
                 "yAxisName" => "Quantity",
-                "numberSuffix" => "stocks",
+                "numberSuffix" => "items",
                 "theme" => "candy"
             )
         ); 
@@ -103,7 +103,7 @@ class ProductsController extends Controller
                 "subCaption" => '',
                 "xAxisName" => "Product",
                 "yAxisName" => "Quantity",
-                "numberSuffix" => "stocks",
+                "numberSuffix" => "items",
                 "theme" => "candy"
             )
         );
@@ -137,6 +137,7 @@ class ProductsController extends Controller
         $remainingsChart = new FusionCharts("column3d", "products-remainings-fchart" , "900", "500", "remainings-chart-container", "json", json_encode($stocksRemainingChartConfig));
 
         $insight = new ProductsCollectionInsight($products,$display);
+            
         return view('products.index')->with('products', $products)
                                     ->with('insight', $insight)
                                     ->with('stocksChart',$stocksChart)
@@ -169,8 +170,8 @@ class ProductsController extends Controller
 			'name' => 'required|unique:products',
 			'category' => 'required',
 			'type' => 'required',
-			'base_price' => 'required|numeric',
-			'selling_price' => 'required|numeric',
+			// 'base_price' => 'required|numeric',
+			// 'selling_price' => 'required|numeric',
         ]);
 
 
@@ -180,8 +181,8 @@ class ProductsController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->type = $request->type;
-        $product->base_price = $request->base_price;
-        $product->selling_price = $request->selling_price;
+        $product->base_price = $request->base_price == null || $request->base_price < 0 ? 0 : $request->base_price ;
+        $product->selling_price = $request->selling_price == null || $request->selling_price < 0 ? 0 : $request->selling_price;
         if($request->hasFile('preview')){
             $upload = new FileUpload(
                         $request,
@@ -216,16 +217,20 @@ class ProductsController extends Controller
     {
 
     if(Auth::user()->isAttendant()){
-        return redirect()->route('desk.product',$id);;
+        return redirect()->route('desk.product',$id);
     }
 
     $product =  Product::findorfail($id);
-        $insight = new SingleProductInsight($data = [
-                                            'stock' => $product->stocks(),
-                                            'sale' => $product->sales(),
-                                            'base_price' => $product->base_price,
-                                            'selling_price' => $product->selling_price
-                                              ]);
+        if($product->basePriceSet() && $product->sellingPriceSet()){
+                $insight = new SingleProductInsight($data = [
+                'stock' => $product->stocks(),
+                'sale' => $product->sales(),
+                'base_price' => $product->base_price,
+                'selling_price' => $product->selling_price
+                  ]);
+        }else{
+            $insight = null;
+        }
         $t = new Transaction();
         $transactions = $t->productTransactions($product->id);
 
@@ -321,9 +326,78 @@ class ProductsController extends Controller
          }
     }
 
+    /**
+     * reset stocks,sales and variants of a product
+     */
+    public function reset($id){
+        $product = Product::findorfail($id);
+        $product->stock = 0;
+        $product->sale = 0;
+        if($product->isVariable()){
+            $this->deleteVariants($product);
+        }
+        $manager = new StockManager($product->id);
+        $manager->action(Auth::id(),$product->id,5,0,0);
 
+        // // Remove all the sales record
+        // if($product->sales->count() > 0){
+        //     foreach($product->sales as $sale){
+        //         $sale->delete();
+        //     }
+        // }
+        
+        // // Remove all action records
+        // if($product->actions->count() > 0){
+        //     foreach($product->actions as $action){
+        //         $action->delete();
+        //     }
+        // }
 
-    
+        return redirect()->back()->with('success', $product->name." reset");
+
+    }
+
+    /**
+     * convert product to simple
+     */
+    public function convertToSimple($id){
+        $product = Product::findorfail($id);
+        if($product->isSimple()){
+            return redirect()->back()->with('info', $product->name." is already a simple product");
+        }
+        $product->type = 'simple';
+        $product->save();
+        $this->deleteVariants($product);
+        return redirect()->back()->with('success',$product->name.' converted to simple product');
+    }
+
+    public function convertToVariable($id){
+        $product = Product::findorfail($id);
+        if($product->isVariable()){
+            return redirect()->back()->with('info', $product->name." is already a variable product");
+        }
+        $product->type = 'variable';
+        // reset the stock and sales
+        $product->stock = 0;
+        $product->sale = 0;
+
+        $product->save();
+
+        return redirect()->back()->with('success',$product->name.' converted to variable product, you can now add variant');
+    }
+
+/**
+ * remove all the variants attached to $product
+ */
+
+    private function deleteVariants($product){
+        if($product->variants->count() > 0){
+            foreach($product->variants as $variant){
+                $variant->delete();
+            }
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -335,7 +409,6 @@ class ProductsController extends Controller
         $product = Product::find($id);
         $product->delete();
         return redirect()->route('products.index')->with('success',"$product->name deleted!");
-
     }
 
 } 
