@@ -43,5 +43,8 @@
                 </div>
             </div>
         </div>
+        @if(Auth::user()->isManager())
+            @include('products.templates.operations')
+        @endif
     </div>
 </div>

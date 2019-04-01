@@ -11,7 +11,7 @@
                     $totalSale += $s->price * $s->quantity;
                 }
             ?>
-            <td colspan="2" style="border:0"><h2 data-toggle="tooltip" title="Total sales: {{$period}}"><span class="badge badge-secondary">&#8358;{{number_format($totalSale)}}</span></h2></td>
+            <td colspan="2" style="border:0"><h2><span class="" data-toggle="tooltip" title="Total sales: {{$period}}">&#8358;{{number_format($totalSale)}}</span></h2></td>
             <td class="text-center" style="border:0"><i class="fa fa-arrow-up"></i> Highest Sold: 
                 @if(isset($mostSold))
                     <a href="{{Auth::user()->isManager() ? route('products.show',['id'=>$mostSold->product()->id]) : route('desk.product',['id'=>$mostSold->product()->id])}}" data-toggle="tooltip" data-placement="top" title="{{$mostSold->total}} sold {{$period}}"> {{$mostSold->product()->name}} <span class="badge badge-primary">{{$mostSold->total}}</span></a>

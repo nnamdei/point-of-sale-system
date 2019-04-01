@@ -29,10 +29,8 @@ class SingleProductInsight
     public function profitIndex(){
 
         $insight = $this->init();
-        if($this->base_price > 0 && $this->selling_price > 0){
-            $profit = $this->selling_price - $this->base_price;
-            $insight['figure'] = round(($profit/$this->base_price)*100, 2);
-        }
+        $profit = $this->selling_price - $this->base_price;
+        $insight['figure'] = round(($profit/$this->base_price)*100, 2);
         $insight['explanation'] = "Percentage of profit on every sale<br><span class='text-info'><i class='fa fa-info-circle'></i> You make &#8358;$profit on every sale</span>";
         return $insight;
     }

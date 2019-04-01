@@ -26,11 +26,7 @@
         <br>
         <small>last updated {{$product->updated_at->diffForHumans()}}</small>
     @endif
-    @if(Auth::user()->isManager())
-        <div class="operations-container">
-            <a title="Inspect {{$product->name}}" href="{{route('products.show',['id'=>$product->id])}}"><i class="fa fa-eye"></i>  view product</a>
-            <a title="edit product {{$product->name}}" class="text-info" style="font-size: 16px" href="{{route('products.edit', ['id'  => $product->id])}}"><i class="fa fa-pen"></i> edit</a>
-            @include('products.templates.delete-btn')
-        </div>
-    @endif
+    <div class="operations-container">
+        <a title="Inspect {{$product->name}}" href="{{route('products.show',['id'=>$product->id])}}"><i class="fa fa-eye"></i>  view product</a>
+    </div>
 </div>

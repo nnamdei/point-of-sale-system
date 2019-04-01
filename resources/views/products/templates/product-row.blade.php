@@ -3,7 +3,11 @@
         <div>
             #{{$product->id}}
             <br>
-            @if($product->stocksLow())
+            @if($product->finished())
+                <h1 class="text-center text-danger">
+                    <span class="animated flash infinite slow" data-toggle="tooltip" title='No stock remaining'><i class="fa fa-exclamation-triangle"></i></span>
+                </h1>
+            @elseif($product->stocksLow())
                 <h1 class="text-center text-warning">
                     <span class="animated flash infinite slow" data-toggle="tooltip" title='Stocks running low <span class="badge badge-warning"> {{$product->remaining()}}</span> remaining'><i class="fa fa-exclamation-triangle"></i></span>
                 </h1>
@@ -26,15 +30,6 @@
             @endif
             <span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}"><a href="{{route('products.show',['id' =>$product->id])}}">{{$product->name}}</a></span>
             <img src="{{$product->preview()}}" alt="{{$product->name}}" width="100%">
-            <div class="hidden" style="text-align: center">
-                <div>
-                    <small>
-                            <a class="text-primary operations" href="{{route('products.show',['id' =>$product->id])}}" data-toggle="tooltip" data-placement="bottom" title="view {{$product->name}}"><i class="fa fa-eye"></i> </a>
-                            <a class="text-info operations" href="{{route('products.edit',['id' =>$product->id])}}" data-toggle="tooltip" data-placement="bottom" title="edit {{$product->name}}"  ><i class="fa fa-pen"></i> </a>
-                            @include('products.templates.delete-btn')
-                    </small>
-                </div>
-            </div>
         </div>
     </td>
 

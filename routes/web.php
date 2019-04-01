@@ -42,8 +42,12 @@ Route::group(['middleware' => ['authorized','check-desk']],function(){
     
 
     Route::resource('products','ProductsController');
+    Route::put('product/{id}/convert/simple','ProductsController@convertToSimple')->name('product.to.simple');
+    Route::put('product/{id}/convert/variable','ProductsController@convertToVariable')->name('product.to.variable');
+    Route::put('product/{id}/reset','ProductsController@reset')->name('product.reset');
     Route::resource('categories','CategoriesController');
     Route::resource('variants','VariantsController');
+
     Route::put('/products/{id}/stock','ProductsController@stock')->name('stock');
     Route::post('/products/{id}/variables/add','ProductsController@addVariables')->name('variables.add');
     Route::delete('variants/{variant_id}/{index}','VariantsController@removeSingleValue')->name('remove.value');

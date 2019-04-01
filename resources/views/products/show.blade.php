@@ -38,18 +38,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 offset-md-6">
-                    <div>
-                        <a title="edit product {{$product->name}}" class="text-info" style="font-size: 16px" href="{{route('products.edit', ['id'  => $product->id])}}"><i class="fa fa-pen"></i> edit</a>
-                        @include('products.templates.delete-btn')
-                    </div>
-                </div>
             </div>
         </div>
         
     </div>
 
-    <div class="content-body mt-5">   
+    <div class="content-body mt-2">   
         @include('products.widgets.basics')
         @include('products.widgets.statistics')
         <div class="card">
@@ -64,7 +58,6 @@
                         @include('transactions.widgets.sales')
                     </div>
                     <div class="col-12">
-                        <h4>Actions</h4>
                         @include('transactions.widgets.activities')
                     </div>
                 </div>
