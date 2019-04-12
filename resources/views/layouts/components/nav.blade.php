@@ -1,7 +1,7 @@
 @if (Auth::check())
-	@if(Auth::user()->isManager())
-		@include('layouts.components.manager-nav')
-	@else
+	@if(Auth::user()->isAdminOrManager())
+		@include('layouts.components.admin-nav')
+	@elseif(Auth::user()->isAttendant())
 		@include('layouts.components.desk-nav')
 	@endif
 @endif

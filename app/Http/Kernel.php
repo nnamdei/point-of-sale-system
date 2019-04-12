@@ -57,11 +57,13 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'authorized' => \App\Http\Middleware\AuthenticatedOnly::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-
-        'attendant' => \App\Http\Middleware\AttendantsOnly::class,
-        'manager' => \App\Http\Middleware\ManagersOnly::class,
+        
+        'admin' => \App\Http\Middleware\AdminLevel::class,
+        'manager' => \App\Http\Middleware\ManagerLevel::class,
+        'attendant' => \App\Http\Middleware\AttendantLevel::class,
         'sales-disabled' => \App\Http\Middleware\DisableSales::class,
         'check-desk' => \App\Http\Middleware\CheckDesk::class,
+        'check-shop' => \App\Http\Middleware\CheckShop::class,
 
     ];
 }

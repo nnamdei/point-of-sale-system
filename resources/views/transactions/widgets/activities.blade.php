@@ -5,8 +5,14 @@
             <li class="list-group-item py-1">
                 <p>{!!$action->interprete()!!}</p>
                 <div class="text-right grey">
-                    <img src="{{$action->user->avatar()}}" alt="$action->user->fullname()" class="avatar" width="40px" height="40px">
-                    <small><a href="{{route('users.show',['id' => $action->user->id])}}">{{$action->user->fullname()}}</a></small>
+                    <img src="{{$action->user->profile->avatar()}}" alt="$action->user->profile->fullname()" class="avatar" width="40px" height="40px">
+                    <small>
+                     @if($action->user->isStaff())
+                        <a href="{{route('staff.show',['id' => $action->user->id])}}">{{$action->user->profile->fullname()}}</a>
+                     @else
+                        <span>{{$action->user->profile->fullname()}}</span>
+                     @endif
+                     </small>
                     <small>
                         <br>
                         <i class="fa fa-clock"></i>{{$action->created_at->diffForHumans()}}

@@ -15,6 +15,7 @@ class CreateActionsTable extends Migration
     {
         Schema::create('actions', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('shop_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('product_id')->unsigned();
             $table->integer('operation');

@@ -14,9 +14,11 @@
 Auth::routes();
 
 Route::get('/', 'AppController@index')->name('index');
-Route::get('/desk/close','DeskController@closed')->name('desk.closed');
+Route::get('/desk/close','AppController@deskClosed')->name('desk.closed');
+Route::get('/no/shop','AppController@noShop')->name('no.shop');
+Route::get('update','AppController@update');
 
-Route::group(['middleware' => ['authorized','check-desk']],function(){
+Route::group(['middleware' => ['authorized','check-shop','check-desk']],function(){
     Route::get('find','DeskController@find');
     Route::get('desk','DeskController@index')->name('desk');
     Route::get('desk/products','DeskController@products')->name('desk.products');
@@ -37,20 +39,28 @@ Route::group(['middleware' => ['authorized','check-desk']],function(){
     Route::post('desk/cart/checkout','CartController@checkout')->name('cart.checkout');
 
 
-    Route::get('transactions','TransactionsController@index')->name('transactions');
-    Route::resource('users','UsersController');
+    Route::get('transactions','TransactionController@index')->name('transactions');
+    Route::resource('staff','StaffController');
     
 
-    Route::resource('products','ProductsController');
-    Route::put('product/{id}/convert/simple','ProductsController@convertToSimple')->name('product.to.simple');
-    Route::put('product/{id}/convert/variable','ProductsController@convertToVariable')->name('product.to.variable');
-    Route::put('product/{id}/reset','ProductsController@reset')->name('product.reset');
-    Route::resource('categories','CategoriesController');
-    Route::resource('variants','VariantsController');
+    Route::resource('products','ProductController');
+    Route::put('product/{id}/convert/simple','ProductController@convertToSimple')->name('product.to.simple');
+    Route::put('product/{id}/convert/variable','ProductController@convertToVariable')->name('product.to.variable');
+    Route::put('product/{id}/reset','ProductController@reset')->name('product.reset');
+    
+    Route::resource('categories','CategoryController');
+    Route::resource('variants','VariantController');
 
-    Route::put('/products/{id}/stock','ProductsController@stock')->name('stock');
-    Route::post('/products/{id}/variables/add','ProductsController@addVariables')->name('variables.add');
+    Route::put('/products/{id}/stock','ProductController@stock')->name('stock');
+    Route::post('/products/{id}/variables/add','ProductController@addVariables')->name('variables.add');
     Route::delete('variants/{variant_id}/{index}','VariantsController@removeSingleValue')->name('remove.value');
+
+    Route::resource('shop','ShopController');
+    Route::get('shop/checkin/{shop}', 'UserController@switchShop')->name('shop.switch');
+    Route::resource('staff','StaffController');
+    Route::put('staff/{id}/position','StaffController@changePosition')->name('staff.position.change');
+    Route::resource('service','ServiceController');
+    Route::post('service/{id}/record','ServiceController@record')->name('service.record');
 
 });
 

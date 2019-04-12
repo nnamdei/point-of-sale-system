@@ -2,14 +2,14 @@
 <?php
     $today = new DateTime();
 ?>
-    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#sales" class="btn theme-btn m-1" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
-    <button class="btn theme-btn  m-1" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
-    <button class="btn theme-btn  m-1" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
+    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#_sales" class="btn btn-sm theme-btn m-1" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
+    <button class="btn btn-sm theme-btn  m-1" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
+    <button class="btn btn-sm theme-btn  m-1" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
     @if($_sale::all()->count() > 0)
-        <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>?all=1#sales" class="btn theme-btn  m-1" >All</a>
+        <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>?all=1#sales" class="btn btn-sm theme-btn  m-1" >All</a>
     @endif
     <div class="collapse" id="period-filter" data-parent="#app-accordion" style="margin-top: 5px">
-        <form action="#sales" method="GET">
+        <form action="#_sales" method="GET">
           
                 <div class="row">
                     <div class="col-md-4">
@@ -34,7 +34,7 @@
         </form>
     </div>
     <div class="collapse" id="day-filter" data-parent="#app-accordion" style="margin-top: 5px">
-        <form action="#sales" method="GET">
+        <form action="#_sales" method="GET">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">

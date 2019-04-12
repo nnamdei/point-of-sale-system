@@ -20,7 +20,7 @@ nav.theme-secondary-bg a.nav-link{
 }
 
 
-.card-header,
+
 .theme-secondary-bg{
     background-color: #343a40;
     color: #fff;
@@ -28,8 +28,16 @@ nav.theme-secondary-bg a.nav-link{
 .card{
     border: 0;
 }
+.card-header,
+.card-body
+{
+    background-color: #fff;
+}
 .card-body{
     overflow: auto;
+}
+.no-radius{
+    border-radius: 0 !important;
 }
 .lhs-fixed{
     /* background-color: #fff; */

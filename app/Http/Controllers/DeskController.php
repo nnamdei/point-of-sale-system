@@ -36,13 +36,6 @@ class DeskController extends Controller
       }
 
 
-    public function closed(){
-        if(!Auth::user()->deskClosed()){
-            return redirect()->route('desk');
-        }
-        return view('desk.closed');
-    }
-
     public function index(){
       
         $t = new Transaction();

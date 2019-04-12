@@ -43,8 +43,8 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
-						<small>{{Auth::user()->firstname}}</small>
+						<img src="{{Auth::user()->profile->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
+						<small>{{Auth::user()->profile->firstname}}</small>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="auth-user">
 							<div class="p-2 text-center">

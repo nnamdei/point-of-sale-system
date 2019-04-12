@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,6 +30,10 @@ class Product extends Model
 
         ];
 
+    public function shop(){
+        return $this->belongsTo('App\Shop');
+    }
+    
     public function category(){
         return $this->belongsTo('App\Category');
     }
@@ -48,6 +53,10 @@ class Product extends Model
     return $this->hasMany('App\Sale');
     }
 
+    public function inShop($shop_id){
+        return $this->shop->id == $shop_id ? true : false;
+    }
+
     public function isSimple(){
         return ($this->type == 'simple' ? true : false);
     }
@@ -59,8 +68,9 @@ class Product extends Model
     function preview(){
         return $this->preview === null ? asset('storage/images/products/default.png') : asset('storage/images/products/'.$this->preview);
     }
-    public function isSaleFeasible($qty){
-        
+
+    public function inMyShop(){
+        return $this->shop->id == Auth::user()->shop->id ? true : false;
     }
 
     function inCart(){

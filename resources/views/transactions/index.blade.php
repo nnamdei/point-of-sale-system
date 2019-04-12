@@ -3,7 +3,7 @@
 @section('main')
     <div style="overflow: auto">
         @include('transactions.widgets.filter')
-        @include('transactions.widgets.sales')
+        @include('transactions.widgets.sales-services-tab')
     </div>
 @endsection
 @section('RHS')

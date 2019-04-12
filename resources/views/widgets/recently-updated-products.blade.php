@@ -14,12 +14,12 @@
           @if($product_w_collection->count() > 0)
                 <div class="list-group">
                     @foreach($product_w_collection as $product)
-                        @include('templates.product')
+                        @include('widgets.templates.product')
                     @endforeach
                 </div>
             @else
-                    <div class="text-center" style="padding: 10px">
-                        <small class="text-danger"><i class="fa fa-exclamation-triangle"></i>  No product found</small>
+                    <div class="alert alert-danger text-center">
+                        <i class="fa fa-exclamation-triangle"></i>  No product found
                     </div>
             @endif
 

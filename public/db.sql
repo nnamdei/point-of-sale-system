@@ -1,0 +1,11 @@
+create table if not exists `shops` (`id` int unsigned not null auto_increment primary key, `name` varchar(191) not null, `address` varchar(191) not null, `about` longtext not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+create table if not exists `staff` (`id` int unsigned not null auto_increment primary key, `user_id` int unsigned null, `shop_id` int unsigned null, `firstname` varchar(191) not null, `lastname` varchar(191) not null, `email` varchar(191) null, `role` varchar(191) not null, `avatar` varchar(191) null, `created_at` timestamp null, `updated_at` timestamp null, `deleted_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+alter table `staff` add unique if not exists `staff_email_unique`(`email`);
+create table if not exists `admins` (`id` int unsigned not null auto_increment primary key, `user_id` int unsigned null, `firstname` varchar(191) not null, `lastname` varchar(191) not null, `email` varchar(191) not null, `level` varchar(191) not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+alter table `admins` add unique if not exists `admins_email_unique`(`email`);
+alter table `users` add `role` varchar(191) not null;
+alter table `users` drop if exists `firstname`;
+alter table `users` drop if exists `lastname`;
+alter table `users` drop if exists `avatar`;
+alter table `users` drop if exists `position`;
+alter table `users` drop if exists `deleted_at`;

@@ -16,7 +16,7 @@ class CheckDesk
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->isAttendant() && Auth::user()->deskClosed()){
+        if(Auth::check() && Auth::user()->deskClosed()){
             return redirect()->route('desk.closed')->with('info', 'Your register is closed');
         }
         return $next($request);

@@ -43,7 +43,7 @@
 					</a>
 					<div class="dropdown-menu" aria-labelledby="nav-bar-receipt-search-dropdown" style="width: 300px">
 						<div class="p-2">
-							@include('forms.search-cart')
+							@include('cart.search')
 						</div>
 					</div>
 				</li>
@@ -73,8 +73,8 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img src="{{Auth::user()->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
-						<small>{{Auth::user()->firstname}}</small>
+						<img src="{{Auth::user()->profile->avatar()}}" class="avatar" alt="{{Auth::user()->firstname}}" width="30px" height="30px">	
+						<small>{{Auth::user()->profile->firstname}}</small>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="auth-user">
 							<a href="{{route('users.create')}}" class="dropdown-item"><i class="fa fa-plus theme-color"></i> Add new user</a>

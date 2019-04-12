@@ -3,13 +3,13 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use SoftDeletes;
+    use Notifiable,softDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +18,7 @@ class User extends Authenticatable
      */
     protected $dates = ['desk_closed_at'];
     protected $fillable = [
-        'firstname', 'lastname', 'email', 'password','avatar'
+       'shop_id','email', 'role', 'password','dest_closed_at'
     ];
 
     /**
@@ -30,6 +30,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function shop(){
+        return $this->belongsTo('App\Shop');
+    }
     public function products(){
         return $this->hasMany('App\Product');
     }
@@ -49,38 +52,56 @@ class User extends Authenticatable
        return $this->hasMany('App\CartDB');
    }
 
-   public function fullname(){
-       return $this->firstname.' '.$this->lastname;
-   }
-
-   function isAttendant(){
-        return $this->position == 0 ? true : false;
-   }
-
-   function isManager(){
-        return $this->position == 1 ? true : false;
+   public function services_recorded(){
+        return $this->hasMany('App\ServiceRecord');
     }
-    
+
+    public function profile(){
+       switch($this->role){
+           case 'staff':
+            return $this->hasOne('App\Staff');
+           break;
+
+           case 'admin':
+                return $this->hasOne('App\Admin');
+            break;
+        }
+    }
+
+    public function fullname(){
+       return $this->firstname.' '.$this->lastname;
+    }
+
+    public function hasShop(){
+        return $this->shop_id == null || $this->shop == null ? false : true;
+    }
+    public function otherShops(){
+        return Shop::where('id','!=',$this->shop->id)->get();
+    }
+    public function isAdmin(){
+        return $this->role == 'admin' ? true : false;
+    }
+
+    public function isManager(){
+        return $this->isStaff() && $this->profile->isManager() ? true : false;
+    }
+
+    public function isAdminOrManager(){
+        return $this->isAdmin() || $this->isManager() ? true : false;
+    }
+
+
+    public function isAttendant(){
+        return $this->isStaff() && $this->profile->isAttendant() ? true : false;
+    }
+
+    public function isStaff(){
+       return $this->role == 'staff' ? true : false;
+    }
+
     public function deskClosed(){
         return $this->desk_closed_at == null ? false : true;
     }
     
-    function avatar(){
-        return $this->avatar === null ? asset('storage/images/users/default.png') : asset('storage/images/users/'.$this->avatar);
-    }
-    function position(){
-        switch ($this->position){
-            case 0:
-                return "Attendant";
-            break;
-            case 1:
-                return "Manager";
-            break;
-            default:
-            return "Unknown";
-            break;
-
-        }
-    }
 }
 

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="mt-2">
-                @include('forms.search-cart')
+                @include('cart.widgets.search')
             </div>
         </div>
     </div>

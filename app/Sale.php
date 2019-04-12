@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    protected $fillable = ['user_id','product_id','cart_id','price','quantity'];
+    protected $fillable = ['shop_id','user_id','product_id','cart_id','price','quantity'];
+
+    public function shop(){
+        return $this->belongsTo('App\Shop');
+    }
 
     public function product(){
         return Product::withTrashed()->where('id',$this->product_id)->first();
