@@ -9,7 +9,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-4">
                     <div class="text-center theme-gradient-alt-bg px-2  py-5 mt-3 index-container">
-                        <h4 class="white" id="brand">{{config('app.name')}}</h4>
+                        <h4 class="white" id="brand">{{config('business.name')}}</h4>
                         <p>{{Auth::user()->fullname()}}</p>
                         @if(Auth::user()->isManager())
                             <a href="{{route('products.create')}}" class="btn btn-sm theme-btn-alt m-1"><i class="fa fa-plus"></i>  Add New Product</a>
@@ -27,7 +27,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-4">
                         <div class="theme-gradient-alt-bg px-2 py-5 text-center index-container">
-                            <h4 class="white" id="brand">{{config('app.name')}}</h4>
+                            <h4 class="white" id="brand">{{config('business.name')}}</h4>
                             @include('forms.login')
                         </div>
                     </div>

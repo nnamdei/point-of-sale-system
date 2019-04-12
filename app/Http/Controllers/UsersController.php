@@ -21,7 +21,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::where('id','!=', 1)->get();
         return view('users.index')->with('users',$users);
     }
 
