@@ -1,4 +1,4 @@
-## Point of Sale Management System
+## Point of Sale System
 
 This application is for managing goods or products and their sales. It can be used in supermarket or stores.
 
