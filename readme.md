@@ -16,6 +16,7 @@ This application is for managing goods or products and their sales. It can be us
 ##Installation
 run
 ```
+composer install
 php artisan migrate
 php artisan db:seed
 ```
