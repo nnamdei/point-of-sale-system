@@ -16,6 +16,7 @@ class StockManager{
     //record an action
         public function action($user,$product,$operation,$price,$qty){
             Action::create([
+                'shop_id' => Auth::user()->shop->id,
                 'user_id' => $user,
                 'product_id' => $product,
                 'operation' => $operation,
@@ -26,6 +27,7 @@ class StockManager{
 
         public function sale($user,$product,$cart,$price,$qty){
             Sale::create([
+                'shop_id' => Auth::user()->shop->id, 
                 'user_id' => $user,
                 'product_id' => $product,
                 'cart_id' => $cart,

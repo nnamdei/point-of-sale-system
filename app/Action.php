@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    protected $fillable = ['user_id','product_id','operation','price','quantity'];
+    protected $fillable = ['shop_id','user_id','product_id','operation','price','quantity'];
     
     public function product(){
         return Product::withTrashed()->where('id',$this->product_id)->first();
     }
+
+    public function shop(){
+        return $this->belongsTo('App\Shop');
+    }
     
     public function user(){
-        return $this->belongsTo('App\User');
+        return User::withTrashed()->where('id',$this->user_id)->first();
     }
 
     public function interprete(){

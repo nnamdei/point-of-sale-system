@@ -16,7 +16,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
-    ];
+        'App\Events\StaffAuthorization' => [
+            'App\Listeners\SendStaffPassword',
+        ],
+];
 
     /**
      * Register any events for your application.

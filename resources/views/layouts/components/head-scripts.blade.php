@@ -40,10 +40,10 @@
                     var result = '<div class="search-result">';
                             result += '<div class="row">';
                                 result += '<div class="col-4">';
-                                    result += '<img src="'+ROOT+(data.preview == null ? '/storage/images/products/default.png' : '/storage/images/products/'+data.preview)+'" width="100%">';
+                                    result += '<img class="product-preview" src="'+ROOT+(data.preview == null ? '/storage/images/products/default.png' : '/storage/images/products/'+data.preview)+'" width="80px" height="80px">';
                                 result += '</div>';
                                 result += '<div class="col-8">';
-                                    result += '<strong class="product-name"><a href="'+ROOT+'/desk/product/'+data.id+'">'+data.name+'</a> </strong>';
+                                    result += '<strong class="product-name"><a href="'+ROOT+'/product/'+data.id+'">'+data.name+'</a> </strong>';
                                     result += '<small class="grey">in '+data.category.name+'</small><br>';
                                     result += '<small>'+(data.description == null ? '<span class="text-danger">no description</span>' : data.description) +'</small>';
                                     result += '<div class="row">';

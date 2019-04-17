@@ -18,39 +18,14 @@ use Illuminate\Validation\Rule;
 
 class CartController extends Controller
 {
-    public function cart(){
-        return view('cart.index')->with('cart',Cart::content());
+    public function __construct(){
+        $this->middleware('product-activated');
+        $this->middleware('strictly-attendant');
+
     }
 
-    //restore and view a stored cart
-    public function show(){
-        $ref = Input::get('ref');
-        if($ref == null){
-            return view('cart.show');
-        }
-
-        $cart = CartDB::where('identifier',$ref)->first();
-        if($cart == null){
-            return view('cart.show')->with('ref',$ref);
-        }
-
-        $contents = unserialize($cart->content);
-        $summary['products'] = $contents->count();
-        $contents = unserialize($cart->content);
-        $summary['items'] = 0;
-        $summary['subtotal'] = 0;
-        $summary['tax'] = 0;
-        foreach($contents as $item){
-            $summary['items'] += $item->qty;
-            $summary['subtotal'] += $item->total;
-            $summary['tax'] += $item->taxRate * $item->price;
-        }
-        $summary['total'] = $summary['subtotal'] + $summary['tax'];
- 
-        return view('cart.show')->with('ref', $ref)
-                                ->with('cart', $cart)
-                                ->with('summary',$summary)
-                                ->with('contents', $contents);
+    public function cart(){
+        return view('cart.show')->with('cart',Cart::content());
     }
 
     public function arrangeCart($request){
@@ -148,7 +123,7 @@ class CartController extends Controller
         return redirect()->back()->with('success','cart emptied');
     }
 
-    public function generateID(){
+    private function generateID(){
         $date_id = Carbon::now()->format('Ymd');
         $unique_id = substr(Hash::make(time()), 10,7);
         $sanitized_u_id = str_replace('/','_',$unique_id); //remove '/' and replace with '_' because it would cause issues in routing
@@ -189,7 +164,7 @@ class CartController extends Controller
             }
             if(empty($sale['error']))
             {//if there are no errors in recording the sales
-                    $receipt = PDF::loadView('desk.templates.receipt', ['cart' => $cart_db,'contents' => Cart::content()]);//Load the receipt
+                    $receipt = PDF::loadView('desk.templates.sale-receipt', ['cart' => $cart_db,'contents' => Cart::content()]);//Load the receipt
                     Cart::destroy();
                     return $receipt->stream('receipt.pdf');
                 }
@@ -203,7 +178,4 @@ class CartController extends Controller
         }
     }
 
-    public function recordSale($cart_id,$cart){
-
-    }
 }

@@ -4,23 +4,28 @@
             <div class="card" style="margin-top: 5px">
                 <div class="card-header bg-white">
                     <h5>{{$category->name}} </h5>
-                    
-                    <div class="description-container">
+                </div>
+                <div class="card-body">
+                    <div class="py-2">
                         @if($category->description !== null)
                             {{$category->description}}
                         @else
                             <small class="text-danger"><i class="fa fa-exclamation-triangle"></i> No description</small>
                         @endif
                     </div>
-                    <small class="grey"><i class="fa fa-user"></i> created by {{$category->user->fullname()}}, {{$category->created_at->diffForHumans()}}</small>
+                    <div class="my-1">
+                        created {{$category->created_at->toDayDateTimeString()}}, {{$category->created_at->diffForHumans()}}
+                    </div>
+                    <div class="d-flex">
+                        <div class="ml-auto">
+                            @include('staff.templates.auth-user-name',['user' => $category->user()])
+                        </div>
+                    </div>
                     @if($category->created_at->diffForHumans() !== $category->updated_at->diffForHumans())
-                        <br>
-                        <small>last updated {{$category->updated_at->diffForHumans()}}</small>
+                        <div class="my-1">last updated {{$category->updated_at->diffForHumans()}}</div>
                     @endif
-                </div>
-                <div class="card-body">
-                    <h6>Products <span class="badge badge-success">{{$category->products->count()}}</span></h6>
-                    @if($category->products->count() == 0)
+                    <h6>Products <span class="badge badge-success">{{$category->products()->count()}}</span></h6>
+                    @if($category->products()->count() == 0)
                         <div class="alert alert-danger text-center">
                         <i class="fa fa-exclamation-triangle"></i> No product in this category yet
                         </div>

@@ -2,7 +2,16 @@
 
 @section('main')
     <div class="pt-1" style="overflow: auto">
-        @include('transactions.widgets.sales')
+        @if(Auth::user()->shop->setting->productActivated() && Auth::user()->shop->setting->serviceActivated())
+            @include('transactions.widgets.sales-services-tab')
+        @elseif(Auth::user()->shop->setting->productActivated())
+            @include('transactions.widgets.sales')
+        @elseif(Auth::user()->shop->setting->serviceActivated())
+            @include('transactions.widgets.services')
+        @else
+            @include('product.templates.not-enabled')
+            @include('service.templates.not-enabled')
+        @endif
     </div>
 @endsection
 

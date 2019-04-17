@@ -6,11 +6,11 @@
       @endif
 
     @if($product->inCart())
-      <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#app-modal" data-title="Update <strong>{{$product->name}}</strong> in cart"  data-content="#product-{{$product->id}}-to-cart">
+      <button class="btn theme-btn btn-sm" data-toggle="modal" data-target="#app-modal" data-title="Update <strong>{{$product->name}}</strong> in cart"  data-content="#product-{{$product->id}}-to-cart">
         <i class="fa fa-cart-plus"></i> Update item
       </button>
     @else
-      <button class="btn btn-link text-success" data-toggle="modal" data-target="#app-modal" data-title="Add <strong>{{$product->name}}</strong> to cart"  data-content="#product-{{$product->id}}-to-cart" title="Add {{$product->name}} to cart">
+      <button class="btn btn-link theme-color" data-toggle="modal" data-target="#app-modal" data-title="Add <strong>{{$product->name}}</strong> to cart"  data-content="#product-{{$product->id}}-to-cart" title="Add {{$product->name}} to cart">
         <i class="fa fa-cart-plus"></i>
       </button>
     @endif

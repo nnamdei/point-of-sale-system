@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Auth;
 use Cart;
+use App\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Nicolaslopezj\Searchable\SearchableTrait;
@@ -28,14 +30,27 @@ class Product extends Model
         ]
 
         ];
+    public function shop(){
+        return $this->belongsTo('App\Shop');
+    }
 
     public function category(){
         return $this->belongsTo('App\Category');
     }
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function category_(){
+        return Category::withTrashed()->where('id',$this->category_id)->first();
     }
+
+    public function user(){
+        return User::withTrashed()->where('id',$this->user_id)->first();
+    }
+
+    public function manager(){
+        return $this->user() == null ? null : $this->user()->profile;
+    }
+
+
 
     public function variants(){
         return $this->hasMany('App\Variant');
@@ -46,6 +61,10 @@ class Product extends Model
 
    public function cart_sales(){
     return $this->hasMany('App\Sale');
+    }
+
+    public function inShop($shop_id){
+        return $this->shop->id == $shop_id ? true : false;
     }
 
     public function isSimple(){
@@ -59,8 +78,9 @@ class Product extends Model
     function preview(){
         return $this->preview === null ? asset('storage/images/products/default.png') : asset('storage/images/products/'.$this->preview);
     }
-    public function isSaleFeasible($qty){
-        
+
+    public function inMyShop(){
+        return $this->shop->id == Auth::user()->shop->id ? true : false;
     }
 
     function inCart(){
@@ -123,7 +143,10 @@ class Product extends Model
     }
 
     public function stocksLow(){
-        return $this->remaining() < 10 ? true : false;
+        if($this->shop->setting->lowStockWarningActivated()){
+            return $this->remaining() <= $this->shop->setting->lowStock() ? true : false;
+        }
+        return false;
     }
 
     public function finished(){

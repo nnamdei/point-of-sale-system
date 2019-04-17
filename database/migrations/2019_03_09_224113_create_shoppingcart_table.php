@@ -13,6 +13,7 @@ class CreateShoppingcartTable extends Migration
     {
         Schema::create(config('cart.database.table'), function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('shop_id')->unsigned();
             $table->string('identifier');
             $table->string('instance');
             $table->longText('content');
