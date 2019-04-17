@@ -1,6 +1,6 @@
-## Sales Management System
+## Point of Sale Management System
 
-This application is for managing goods or products. It can be used in supermarket or stores.
+This application is for managing goods or products and their sales. It can be used in supermarket or stores.
 
 ## What it can do
 
@@ -12,3 +12,11 @@ This application is for managing goods or products. It can be used in supermarke
 - Multiple sale. The application uses [Laravel shopping cart](https://github.com/Crinsane/LaravelShoppingcart) to add multiple items to cart for one customer.
 - Receipt printing. The application uses [barryvdh/laravel-dompdf](https://github.com/barryvdh/laravel-dompdf) to generate receipt that can be printed when a cart is checked out. The receipt is configured for Thermal printer of paper with width of 58mm.
 - Receipt verification. Every cart used for sale by the attendant has unique reference and are saved and also inscribed on the customer's receipt.This can be used for verification of customer's receipt incase of any issue.
+
+##Installation
+run
+```
+php artisan migrate
+php artisan db:seed
+```
+That's all!
