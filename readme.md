@@ -12,7 +12,7 @@ This application is for managing goods or products and their sales. It can be us
 - Multiple sale. The application uses [Laravel shopping cart](https://github.com/Crinsane/LaravelShoppingcart) to add multiple items to cart for one customer.
 - Receipt printing. The application uses [barryvdh/laravel-dompdf](https://github.com/barryvdh/laravel-dompdf) to generate receipt that can be printed when a cart is checked out. The receipt is configured for Thermal printer of paper with width of 58mm.
 - Receipt verification. Every cart used for sale by the attendant has unique reference and are saved and also inscribed on the customer's receipt.This can be used for verification of customer's receipt incase of any issue.
-##New in V2.0
+## New in V2.0
 - System central control. The whole system can now be controlled by a superadmin.
 - Added premium package to the app. The package plan is only changeable by  the superadmin.
 - Multiple shop. You can now use the application to manage more than one store.(Premium only) 
