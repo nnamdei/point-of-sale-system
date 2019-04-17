@@ -1,6 +1,6 @@
 <div class="text-center">
     @if($insight == null)
-        <div class="alert alert-danger">
+        <div class="py-4 px-2 text-muted bg-white">
             <h1><i class="fa fa-exclamation-triangle"></i></h1>
             <p>Insight is not available. Set the product base price and selling price</p>
         </div>

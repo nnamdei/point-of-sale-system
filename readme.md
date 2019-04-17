@@ -1,6 +1,6 @@
-## Sales Management System
+## Point of Sale Management System
 
-This application is for managing goods or products. It can be used in supermarket or stores.
+This application is for managing goods or products and their sales. It can be used in supermarket or stores.
 
 ## What it can do
 
@@ -13,8 +13,18 @@ This application is for managing goods or products. It can be used in supermarke
 - Receipt printing. The application uses [barryvdh/laravel-dompdf](https://github.com/barryvdh/laravel-dompdf) to generate receipt that can be printed when a cart is checked out. The receipt is configured for Thermal printer of paper with width of 58mm.
 - Receipt verification. Every cart used for sale by the attendant has unique reference and are saved and also inscribed on the customer's receipt.This can be used for verification of customer's receipt incase of any issue.
 ##New in V2.0
-- Multiple shop. You can now use the application to manage more than one store.
+- System central control. The whole system can now be controlled by a superadmin.
+- Added premium package to the app. The package plan is only changeable by  the superadmin.
+- Multiple shop. You can now use the application to manage more than one store.(Premium only) 
 - New user priviledge Admin. A new user level has been added (admin). The admin will be charge of all the shops while managers are restricted to the shop assigned to them.
 - Services. Not only product you can now manage, services can also be added and recorded by attendant. Service receipts can also be verified.
 - Aesthaetic control. You can now set the color of shops different, cool isn't it???
 - Control Low stocks notification. You can now choose to enable low stock warning and also specify the number of remaining to be considered as low
+
+## Installation
+Run 
+```
+php artisan:migrate
+php artisan  db:seed
+```
+That's all!

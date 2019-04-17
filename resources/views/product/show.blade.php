@@ -12,7 +12,7 @@
 
 @section('main')
     <div class="content-fixed-head">
-        <div class="bg-white" style="padding: 5px">
+        <div class="white-bg" style="padding: 5px">
             <div class="row">
                 <div class="col-6 text-left">
                     <strong>{{$product->name}}</strong>

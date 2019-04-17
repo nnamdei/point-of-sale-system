@@ -36,7 +36,7 @@
                                 <label for="">Package: {{$system->package}}</label>
                                 <select name="package" class="form-control" id="">
                                     <option value="basic" {{$system->package == 'basic' ? 'selected' : ''}}>Basic</option>
-                                    <option value="basic" {{$system->package == 'premium' ? 'selected' : ''}}>Premium</option>
+                                    <option value="premium" {{$system->package == 'premium' ? 'selected' : ''}}>Premium</option>
                                 </select>
                             </div>
 
