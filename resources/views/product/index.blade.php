@@ -11,16 +11,16 @@
 
     <ul class="nav nav-tabs " id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="products-table-tab" data-toggle="tab" href="#products-table" role="tab" aria-controls="products-table" aria-selected="true">Table</a>
+            <a class="nav-link active" id="products-table-tab" data-toggle="tab" href="#products-table" role="tab" aria-controls="products-table" aria-selected="true"><i class="fa fa-table"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="products-stocks-chart-tab" data-toggle="tab" href="#products-stocks-chart" role="tab" aria-controls="products-stocks-chart" aria-selected="false">Stocks Chart</a>
+            <a class="nav-link" id="products-stocks-chart-tab" data-toggle="tab" href="#products-stocks-chart" role="tab" aria-controls="products-stocks-chart" aria-selected="false"><i class="fa fa-chart-bar"></i> stocks</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="products-sales-chart-tab" data-toggle="tab" href="#products-sales-chart" role="tab" aria-controls="products-sales-chart" aria-selected="false">Sales Chart</a>
+            <a class="nav-link" id="products-sales-chart-tab" data-toggle="tab" href="#products-sales-chart" role="tab" aria-controls="products-sales-chart" aria-selected="false"><i class="fa fa-chart-bar"></i> sales</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="products-remainings-chart-tab" data-toggle="tab" href="#products-remainings-chart" role="tab" aria-controls="products-remainings-chart" aria-selected="false">Remainings Chart</a>
+            <a class="nav-link" id="products-remainings-chart-tab" data-toggle="tab" href="#products-remainings-chart" role="tab" aria-controls="products-remainings-chart" aria-selected="false"><i class="fa fa-chart-bar"></i> remains</a>
         </li>
     </ul>
 

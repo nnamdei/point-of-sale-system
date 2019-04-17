@@ -58,12 +58,20 @@ class Kernel extends HttpKernel
         'authorized' => \App\Http\Middleware\AuthenticatedOnly::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         
+        'system-status' => \App\Http\Middleware\SystemStatus::class,
+        'superadmin' => \App\Http\Middleware\SuperAdminLevel::class,
         'admin' => \App\Http\Middleware\AdminLevel::class,
+        'strictly-admin' => \App\Http\Middleware\AdminOnly::class,
         'manager' => \App\Http\Middleware\ManagerLevel::class,
+        'strictly-manager' => \App\Http\Middleware\ManagerOnly::class,
         'attendant' => \App\Http\Middleware\AttendantLevel::class,
+        'strictly-attendant' => \App\Http\Middleware\AttendantOnly::class,
+        
+        'premium' => \App\Http\Middleware\PremiumOnly::class,
         'sales-disabled' => \App\Http\Middleware\DisableSales::class,
         'check-desk' => \App\Http\Middleware\CheckDesk::class,
         'check-shop' => \App\Http\Middleware\CheckShop::class,
-
+        'product-activated' => \App\Http\Middleware\CheckProductActivation::class,
+        'service-activated' => \App\Http\Middleware\CheckServiceActivation::class,
     ];
 }

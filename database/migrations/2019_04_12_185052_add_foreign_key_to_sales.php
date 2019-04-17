@@ -20,7 +20,7 @@ class AddForeignKeyToSales extends Migration
                     ->on('shops')
                     ->onDelete('cascade');
 
-                    $table->index('product_id');
+            $table->index('product_id');
             $table->foreign('product_id')
                     ->references('id')
                     ->on('products')

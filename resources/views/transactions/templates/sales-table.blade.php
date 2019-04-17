@@ -1,6 +1,6 @@
 <table class="table table-light table-bordered">
     <thead >
-        <tr class="white-bg" >
+        <tr class="bg-white" >
             <td class="text-center " colspan="{{Auth::user()->isAdminOrManager() ? 3 : 2}}" style="border:0">
                 <h5 class="theme-color"><i class="fa fa-calendar theme-color"></i> {{$period}}</h5>
             </td>
@@ -27,7 +27,7 @@
                 @endif
              </td>
         </tr>
-        <tr class="theme-secondary-bg">
+        <tr class="theme-bg border-0">
             <td>Product</td>
             <td>Category</td>
             <td>Price sold</td>
@@ -36,23 +36,19 @@
             @if(Auth::user()->isAdminOrManager())
                 <td>Attendant</td>
             @endif
-            <td>Cart</td>
+            <td>Receipt</td>
         </tr>
     </thead>
     <tbody>
     @if($sales->count() > 0)
         @foreach($sales as $sale)
-            <tr class="{{$sale->product()->trashed() ? 'text-danger' : ''}}">
+            <tr>
                  <td>
-                 <img src="{{$sale->product()->preview()}}" alt="{{$sale->product()->name}}" width="100px">
+                 <img class="product-preview" src="{{$sale->product()->preview()}}" alt="{{$sale->product()->name}}" width="70px" height="70px">
                 @if($sale->product()->trashed())
-                    {{$sale->product()->name}}
-                    <br>
-                    <small class="text-danger">
-                        <i class="fa fa-trash"></i> product deleted {{$sale->product()->deleted_at->toDayDateTimeString()}}
-                    </small>
+                    <span class="text-danger" data-toggle="tooltip" title="product trashed {{$sale->product()->deleted_at->toDayDateTimeString()}}">{{$sale->product()->name}} <i class="fa fa-exclamation-triangle animated flash infinite slow"></i></span>
                 @else
-                    <a href="{{route('desk.product',['id'=>$sale->product()->id])}}"  data-toggle="tooltip" data-placement="top" title="{{$sale->product()->description}}">
+                    <a href="{{route('products.show',['id'=>$sale->product()->id])}}"  data-toggle="tooltip" data-placement="top" title="{{$sale->product()->description}}">
                         {{$sale->product()->name}}
                     </a>
                     <br>
@@ -62,7 +58,7 @@
                 @endif
 
                 </td>
-                <td>{{$sale->product()->category->name}}</td>
+                <td>@include('category.templates.category-name', ['category' => $sale->product()->category_()])</td>
                 <td>{{number_format($sale->price)}}</td>
                 <td>
                     {{$sale->quantity}}
@@ -77,22 +73,25 @@
                 <td>{{number_format($sale->price * $sale->quantity)}}</td>
                 @if(Auth::user()->isAdminOrManager())
                     <td>
-                        <img src="{{$sale->user->avatar()}}" alt="$sale->user->fullname()" class="avatar" width="40px" height="40px">
-                        <span><a href="{{route('users.show',[$sale->user->id])}}">{{$sale->user->fullname()}}</a> </span>
+                        @include('staff.templates.auth-user-name',['user' => $sale->user()])
                     </td>
                 @endif
                 <td>
-                    <a href="{{route('cart.show',['ref'=>$sale->cart->identifier])}}">{{$sale->cart->identifier}}</a>
+                    <a href="{{route('receipt.verify',['receipt' => 'sale','ref'=>$sale->cart->identifier])}}">{{$sale->cart->identifier}}</a>
                     <p class="text-right grey" style="margin: 0">
                         <small><i class="fa fa-clock"></i> {{$sale->created_at->toDayDateTimeString()}}, {{$sale->created_at->diffForHumans()}}</small>
                     </p>
-
                 </td>
             </tr>
         @endforeach
     @else
         <tr>
-            <td colspan="7" class="text-center"><i class="fa fa-info-circle"></i>  No Sales</td>
+            <td colspan="7">
+                <div class="py-2 text-center text-muted">
+                    <h2><i class="fa fa-exclamation-triangle"></i></h2>
+                    No sale
+                </div>
+            </td>
         </tr>
     @endif
     </tbody>

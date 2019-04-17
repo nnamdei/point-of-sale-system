@@ -1,7 +1,7 @@
-@if(Auth::user()->isAdmin())
-    <div class="d-flex justify-content-end  py-3">
+@if(Auth::user()->isAdminOrManager())
+    <div class="d-flex">
         <div class="m-1">
-            <a href="{{route('staff.edit',['id'=>$staff->id])}}" class="btn btn-sm btn-info" ><i class="fa fa-pen"></i>  edit info</a>
+            <a href="{{route('staff.edit',['id'=>$staff->id])}}" class="btn btn-sm btn-outline-info" ><i class="fa fa-pen"></i>  edit info</a>
         </div>
         @if($staff->isAttendant())
             <div class="m-1">
@@ -9,10 +9,10 @@
             </div>
         @endif
         <div class="m-1">
-            <button class="btn btn-danger btn-sm" data-toggle="collapse" data-target="#delete-staff-{{$staff->id}}-collapse"><i class="fa fa-trash"></i>delete</button>
+            <button class="btn btn-outline-danger btn-sm" data-toggle="collapse" data-target="#delete-staff-{{$staff->id}}-collapse"><i class="fa fa-trash"></i>delete</button>
         </div>
     </div>
-    <div class="collapse" id="delete-staff-{{$staff->id}}-collapse">
+    <div class="collapse p-2" id="delete-staff-{{$staff->id}}-collapse">
         <form action="{{route('staff.destroy',[$staff->id])}}" method="post">
             @csrf
             @method('DELETE')

@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use Cart;
+use App\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Nicolaslopezj\Searchable\SearchableTrait;
@@ -29,18 +30,27 @@ class Product extends Model
         ]
 
         ];
-
     public function shop(){
         return $this->belongsTo('App\Shop');
     }
-    
+
     public function category(){
         return $this->belongsTo('App\Category');
     }
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function category_(){
+        return Category::withTrashed()->where('id',$this->category_id)->first();
     }
+
+    public function user(){
+        return User::withTrashed()->where('id',$this->user_id)->first();
+    }
+
+    public function manager(){
+        return $this->user() == null ? null : $this->user()->profile;
+    }
+
+
 
     public function variants(){
         return $this->hasMany('App\Variant');
@@ -133,7 +143,10 @@ class Product extends Model
     }
 
     public function stocksLow(){
-        return $this->remaining() < 10 ? true : false;
+        if($this->shop->setting->lowStockWarningActivated()){
+            return $this->remaining() <= $this->shop->setting->lowStock() ? true : false;
+        }
+        return false;
     }
 
     public function finished(){

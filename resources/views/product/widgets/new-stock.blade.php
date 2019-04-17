@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="form-group text-center">
-                        <input class="btn btn-primary" type="submit" value="Add Stock">
+                        <input class="btn theme-btn" type="submit" value="Add Stock">
                     </div>
                 </div>
             @elseif($product->isVariable())
@@ -35,7 +35,7 @@
                         @endforeach
                     </div>
                     <div class="form-group text-center">
-                        <input class="btn btn-primary btn-sm" type="submit" value="Add Stocks">
+                        <input class="btn theme-btn" type="submit" value="Add Stocks">
                     </div>
                 @endif
             @endif

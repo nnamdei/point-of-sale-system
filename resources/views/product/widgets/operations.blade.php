@@ -1,11 +1,11 @@
-<a class="btn btn-info btn-sm m-1" title="edit product {{$product->name}}"  style="font-size: 16px" href="{{route('products.edit', ['id'  => $product->id])}}"><i class="fa fa-pen"></i> edit</a>
+<a class="btn btn-outline-info btn-sm m-1" title="edit product {{$product->name}}"  href="{{route('products.edit', ['id'  => $product->id])}}"><i class="fa fa-pen"></i> edit</a>
 @if($product->isSimple())
-    <button class="btn btn-primary btn-sm m-1" data-toggle="collapse" data-target="#covert-{{$product->id}}-to-variable"><i class="fa fa-sync"></i> convert to variable</button>
+    <button class="btn btn-outline-primary btn-sm m-1" data-toggle="collapse" data-target="#covert-{{$product->id}}-to-variable"><i class="fa fa-sync"></i> convert to variable</button>
 @elseif($product->isVariable())
-    <button class="btn btn-primary btn-sm m-1" data-toggle="collapse" data-target="#covert-{{$product->id}}-to-simple"><i class="fa fa-sync"></i> convert to simple</button>
+    <button class="btn btn-outline-primary btn-sm m-1" data-toggle="collapse" data-target="#covert-{{$product->id}}-to-simple"><i class="fa fa-sync"></i> convert to simple</button>
 @endif
-<button class="btn btn-secondary btn-sm m-1" data-toggle="collapse" data-target="#reset-product-{{$product->id}}-collapse" title="reset {{$product->name}}"><i class="fa fa-undo"></i> Reset</button>            
-<button class="btn btn-danger btn-sm m-1" data-toggle="collapse" data-target="#discard-product-{{$product->id}}-collapse" title="trash {{$product->name}}"><i class="fa fa-times"></i> Delete</button>            
+<button class="btn btn-outline-secondary btn-sm m-1" data-toggle="collapse" data-target="#reset-product-{{$product->id}}-collapse" title="reset {{$product->name}}"><i class="fa fa-undo"></i> Reset</button>            
+<button class="btn btn-outline-danger btn-sm m-1" data-toggle="collapse" data-target="#discard-product-{{$product->id}}-collapse" title="trash {{$product->name}}"><i class="fa fa-times"></i> Delete</button>            
 
 <div class="mt-1">
     @if($product->isSimple())

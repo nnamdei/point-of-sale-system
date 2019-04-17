@@ -48,27 +48,27 @@
 
 <body>
     <div class="text-center">
-        <div><strong>{{config('business.name')}}</strong></div>
-        <div>{{config('business.address')}}</div>
-        <div> {{config('business.email')}}</div>
-        <div>{{config('business.phone')}}</div>
+        <div><strong>{{Auth::user()->shop->name}}</strong></div>
+        <div>{{Auth::user()->shop->address}}</div>
+        <div> {{Auth::user()->shop->email}}</div>
+        <div>{{Auth::user()->shop->phone}}</div>
     </div>
     <br>
     <div class="text-right">
-        ref: {{$cart->identifier}}
+        ref: {{$service_record->identifier}}
     </div>
     <br>
 
     <div id="items-table">
-        @yield('items')
+        @yield('service')
     </div>
 
 <div style="margin-top: 20px">
     <div>
-        <small>Attendant: {{Auth::user()->fullname()}}</small>
+        <small>Attendant: {{Auth::user()->profile()->fullname()}}</small>
     </div>
     <div>
-        <small>Payment: {{$cart->payment}}</small>
+        <small>Payment: {{$service_record->payment}}</small>
     </div>
     <div class="container text-right">
         <small>{{ \Carbon\Carbon::now()->toDayDateTimeString() }}</small>

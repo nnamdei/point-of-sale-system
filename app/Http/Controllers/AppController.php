@@ -17,12 +17,25 @@ class AppController extends Controller
     }
 
     public function index(){
-        return view('index');
+        if(Auth::check()){
+            if(!Auth::user()->hasShop()){
+                return view('pages.no-shop');
+            }
+            return view('shop.show')->with('shop',Auth::user()->shop);
+        }
+        else{
+            if(Admin::where('level','!=','superadmin')->count() > 0){//if there is admin asides the default superadmin
+                return view('user.login');
+            }
+            else{
+                return view('welcome'); //welcome page to set admin account up
+            }
+        }
     }
 
     public function deskClosed(){
         if(!Auth::user()->deskClosed()){
-            return redirect()->route('desk');
+            return redirect()->route('index');
         }
         return view('pages.desk-closed');
     }
@@ -34,26 +47,26 @@ class AppController extends Controller
         return view('pages.no-shop');
     }
 
-    public function update(){
+   /* public function update(){
         $users = User::all();
        if(DB::unprepared(file_get_contents('db.sql'))){
             foreach($users as $user){
-                // if($user->position == 1){
-                //     Admin::create([
-                //         'firstname' => $user->firstname == '' ? 'missing' : $user->firstname,
-                //         'lastname' => $user->lastname == '' ? 'missing' : $user->lastname,
-                //         'level' => 1
-                //     ]);
-                // }
-                // else{
-                //     Staff::create([
-                //         'firstname' => $user->firstname == '' ? 'missing' : $user->firstname,
-                //         'lastname' => $user->lastname == '' ? 'missing' : $user->lastname,
-                //         'role' => 'staff'
-                //     ]);
-                // }
+                if($user->position == 1){
+                    Admin::create([
+                        'firstname' => $user->firstname == '' ? 'missing' : $user->firstname,
+                        'lastname' => $user->lastname == '' ? 'missing' : $user->lastname,
+                        'level' => 1
+                    ]);
+                }
+                else{
+                    Staff::create([
+                        'firstname' => $user->firstname == '' ? 'missing' : $user->firstname,
+                        'lastname' => $user->lastname == '' ? 'missing' : $user->lastname,
+                        'role' => 'staff'
+                    ]);
+                }
             }
        }
 
-    }
+    }*/
 }

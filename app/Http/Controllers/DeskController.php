@@ -16,7 +16,8 @@ use App\Inventory\Transaction;
 class DeskController extends Controller
 {
     public function __construct(){
-        $this->middleware('attendant')->except(['find','product','close','open']);
+        $this->middleware('attendant');
+        $this->middleware('strictly-attendant')->except(['close','open']);
     }
 
     public function close($id){
@@ -39,29 +40,21 @@ class DeskController extends Controller
     public function index(){
       
         $t = new Transaction();
-        $transactions = $t->userTransactions(Auth::id());
-
-        return view('desk.index')->with('period',$transactions['period'])
-                                ->with('mostSold',$transactions['most_sold'])
-                                ->with('leastSold',$transactions['least_sold'])
-                                ->with('sales',$transactions['sales'])
-                                ->with('chart',$transactions['chart']);
+        $transactions = $t->attendantTransactions(Auth::id());
+       
+        return view('desk.index')->with('period', $transactions['period'])
+                        ->with('sales',$transactions['sales'])
+                        ->with('activities', $transactions['activities'])
+                        ->with('sales_chart',$transactions['sales_chart'])
+                        ->with('service_records',$transactions['service_records'])
+                        ->with('services_chart',$transactions['services_chart']);
     }
     
-    public function find(Request $request)
-    {
-        return Product::search($request->get('q')) ->with('category')
-                                                    ->with('variants')
-                                                    ->get();
-    }
-
     public function products(){
-        return view('desk.products')->with('products',Product::all());
+        return view('desk.products')->with('products',Auth::user()->shop->products);
     }
+    
     public function product($id){
-        if(Auth::user()->isManager()){
-            return redirect()->route('products.show',$id);;
-        }
         $product = Product::findorfail($id);
         return view('desk.product')->with('product',$product);
     }

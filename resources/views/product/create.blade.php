@@ -5,7 +5,7 @@
     </div>
 @endsection
 @section('main')
-    <div class="card" style="margin-top: 5px">
+    <div class="card shadow-lg mt-2" >
         <div class="card-header">
             <h5>Add New Product</h5>
         </div>
@@ -48,7 +48,7 @@
                                     </select>
                                 @else
                                     <div class="text-danger text-center">
-                                        <i class="fa fa-exclamation-triangle"></i> There is no category in {{Auth::user()->shop->name}} <a href="{{route('categories.create')}}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> create category first</a>
+                                        <i class="fa fa-exclamation-triangle"></i> There is no category in {{Auth::user()->shop->name}} <a href="{{route('categories.create')}}" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i> create category first</a>
                                     </div>
                                 @endif
                         
@@ -105,7 +105,7 @@
                                     <label for="">Stock</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="stock" id="stock" value="{{old('stock')}}">
+                                    <input class="form-control" type="number" name="stock" id="stock" placeholder="quantity available" value="{{old('stock')}}">
                                     @if ($errors->has('stock'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('stock') }}</strong>
@@ -121,22 +121,13 @@
                         @include('variant.templates.add-variants')
                     </div><!--variants-container-->
 
-                    
-
-                    <div class="alert alert-info">
-                        <p>
-                            <h4><i class="fa fa-info-circle"></i> Update!</h4>
-                            <p>Base price and selling price are now optional, you can continue with adding product without prices.</p>
-                        </p>
-                        <p><strong>NOTE:</strong> Products with no selling price will not be sellable</p>
-                    </div>
                     <div class="form-group {{ $errors->has('base_price') ? ' has-error' : '' }}" >
                         <div class="row">
                             <div class="col-sm-4">
                                 <label for="">Base Price</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" type="number" name="base_price" id="base-price" value="{{old('base_price')}}">
+                                <input class="form-control" type="number" name="base_price" id="base-price" placeholder="how much the product was bought for..." value="{{old('base_price')}}">
                                 @if ($errors->has('stock'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('base_price') }}</strong>
@@ -145,6 +136,7 @@
                             </div>
                         </div>
                     </div>
+                   
 
 
                     <div class="form-group {{ $errors->has('selling_price') ? ' has-error' : '' }}" >
@@ -153,12 +145,15 @@
                                 <label for="">Selling Price</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" type="number" name="selling_price" id="selling-price"  value="{{old('selling_price')}}">
+                                <input class="form-control" type="number" name="selling_price" id="selling-price" placeholder="how much you want to sell the product ..."  value="{{old('selling_price')}}">
                                 @if ($errors->has('stock'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('selling_price') }}</strong>
                                     </span>
                                 @endif
+                                <div class="text-muted">
+                                    <i class="fa fa-info-circle"></i> Products with no selling price will not be sellable</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -177,7 +172,7 @@
                     </div>
 
                     <div class="form-group text-center">
-                        <input class="btn btn-success" type="submit" value="Add Product">
+                        <input class="btn theme-btn" type="submit" value="Add Product">
                     </div>
 
             </form>

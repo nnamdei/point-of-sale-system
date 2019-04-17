@@ -1,13 +1,11 @@
-<div style="padding: 10px 0" id="sales">
+<div class="bg-white py-3 px-2" id="sales">
 <?php
     $today = new DateTime();
 ?>
-    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#_sales" class="btn btn-sm theme-btn m-1" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
-    <button class="btn btn-sm theme-btn  m-1" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
-    <button class="btn btn-sm theme-btn  m-1" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
-    @if($_sale::all()->count() > 0)
-        <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>?all=1#sales" class="btn btn-sm theme-btn  m-1" >All</a>
-    @endif
+    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#_sales" class="btn btn-outline-secondary btn-sm m-1" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
+    <button class="btn btn-outline-secondary btn-sm m-1" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
+    <button class="btn btn-outline-secondary btn-sm m-1" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
+    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>?all=1#sales" class="btn btn-outline-secondary btn-sm m-1" >All</a>
     <div class="collapse" id="period-filter" data-parent="#app-accordion" style="margin-top: 5px">
         <form action="#_sales" method="GET">
           

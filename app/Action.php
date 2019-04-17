@@ -18,7 +18,7 @@ class Action extends Model
     }
     
     public function user(){
-        return $this->belongsTo('App\User');
+        return User::withTrashed()->where('id',$this->user_id)->first();
     }
 
     public function interprete(){

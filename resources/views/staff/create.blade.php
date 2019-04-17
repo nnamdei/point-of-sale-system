@@ -1,13 +1,13 @@
 
-@extends('layouts.app')
+@extends('layouts.appRHSfixed')
 
 @section('main')
 
-<div class="row" style="margin-top: 10px">
-    <div class="col-md-8 offset-md-2">
-        <div class="card">
+<div class="row justify-content-center mt-2">
+    <div class="col-md-10">
+        <div class="card shadow-lg">
             <div class="card-header">
-                New staff
+                <h6>New staff</h6>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('staff.store') }}" class="has-image-upload" enctype="multipart/form-data">
@@ -61,46 +61,8 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
-                                <label for="position" class="control-label">Position</label>
-
-                                <div class="">
-                                    <select name="position" id="position" class="form-control">
-                                        <option value="staff">Regular staff</option>
-                                        <option value="attendant">Attendant</option>
-                                        <option value="manager">Manager</option>
-                                    </select>
-                                    @if ($errors->has('position'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('position') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div> -->
-
-
-                            <!-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="control-label">Password</label>
-
-                                <div class="">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div> -->
-
-                            <!-- <div class="form-group">
-                                <label for="password-confirm" class="control-label">Confirm Password</label>
-
-                                <div class="">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                </div>
-                            </div> -->
                         </div>
+
                         <div class="col-sm-4">
                         <div class="text-center">
                                 <img id="user-avatar-preview" src="{{asset('storage/images/users/default.png')}}" alt="User Avatar" width="100%"> 
@@ -115,7 +77,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <div class="text-center" >
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn theme-btn">
                                         Add Staff
                                     </button>
                                 </div>
@@ -130,6 +92,10 @@
     </div>
 </div>
    
+@endsection
+
+@section('RHS')
+    @include('widgets.staff')
 @endsection
 
 @section('scripts')

@@ -2,35 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use PDF;
 use Auth;
+use Hash;
 use App\Shop;
 use App\Service;
 use App\ServiceRecord;
+use App\Inventory\Transaction;
+use Carbon\Carbon;
+
+
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-
-    public function record(Request $request, $id){
-        $this->validate($request,[
-            'staff' => ['required'],
-            'ammount_paid' => ['required','numeric'] 
-        ]);
-
-        $service = Service::findorfail($id);
-        $record = ServiceRecord::create([
-            'shop_id' => Auth::user()->shop->id,
-            'user_id' => Auth::id(),
-            'staff_id' => $request->staff,
-            'service_id' => $service->id,
-            'paid' => $request->ammount_paid,
-            'note' => $request->note,
-            'customer_name' => $request->customer_name,
-            'customer_phone' => $request->customer_phone
-        ]);
-
-        return redirect()->route('shop.show',[$service->shop->id])->with('success', 'Service recorded');
+    public function __construct(){
+        $this->middleware('service-activated');
+        $this->middleware('manager')->except(['show','index']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +29,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Auth::user()->shop->services;
+        return view('service.index')->with('services', $services);
     }
 
     /**
@@ -90,7 +82,14 @@ class ServiceController extends Controller
         if(!$service->inMyShop()){
             return redirect()->route('index')->with('info', 'You are not checked in to the shop the service is in');
         }
-        return view('service.show')->with('service', $service);
+        if(Auth::user()->isAttendant()){
+            return view('desk.service')->with('service', $service);
+        }
+        $t = new Transaction;
+        $records = $t->serviceRecords($service->id);
+        return view('service.show')->with('service', $service)
+                                    ->with('period', $records['period'])
+                                    ->with('service_records',$records['service_records']);
     }
 
     /**
@@ -105,7 +104,7 @@ class ServiceController extends Controller
         if(!$service->inMyShop()){
             return redirect()->route('index')->with('info', 'You are not checked in to the shop the service is in');
         }
-        return view('service.edit')->with('servioe', $service);
+        return view('service.edit')->with('service', $service);
     }
 
     /**
@@ -118,7 +117,6 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[ 
-            'shop' => 'required',
 			'name' => 'required',
 			'price' => 'required|numeric',
         ]);
@@ -132,7 +130,7 @@ class ServiceController extends Controller
         $service->price = $request->price;
         $service->save();
 
-        return redirect()->route('shop.show',[$shop->id])->with('success','service '.$service->name.' in '.$shop->name.' updated');
+        return redirect()->route('shop.show',[$service->shop->id,'tab' => 'services'])->with('success','service '.$service->name.' in '.$service->shop->name.' updated');
         
     }
 
@@ -150,6 +148,6 @@ class ServiceController extends Controller
         }
 
         $service->delete();
-        return redirect()->route('shop.show',[$shop->id])->with('success','service '.$service->name.' deleted from '.$shop->name);
+        return redirect()->route('shop.show',[$service->shop->id])->with('success','service '.$service->name.' deleted from '.$service->shop->name);
     }
 }

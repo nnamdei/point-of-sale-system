@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DB;
 use Auth;
 use View;
 use Schema;
@@ -12,6 +13,7 @@ use App\Sale;
 use App\Staff;
 use App\Service;
 use App\Shop;
+use App\Software;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
      Schema::defaultStringLength(191); 
-
      View::share([
          '_product' => Product::class,
          '_category' => Category::class,
@@ -35,7 +36,9 @@ class AppServiceProvider extends ServiceProvider
          '_shop' => Shop::class,
          '_service' => Service::class,
          '_staff' => Staff::class,
+         '_software' => Software::class,
      ]);
+
     }
 
     /**

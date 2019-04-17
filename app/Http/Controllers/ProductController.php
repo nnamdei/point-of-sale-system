@@ -20,7 +20,18 @@ use Illuminate\Support\Facades\Input;
 class ProductController extends Controller
     {
         public function __construct(){
-            $this->middleware('manager')->except(['show']);
+            $this->middleware('product-activated');
+            $this->middleware('manager')->except(['find','show','index']);
+        }  
+
+        public function find(Request $request)
+        {
+            return Auth::user()->shop
+                                ->products()
+                                ->search($request->get('q'))
+                                ->with('category')
+                                ->with('variants')
+                                ->get();
         }
   /**
      * Display a listing of the resource.
@@ -29,6 +40,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->isAttendant()){
+            return view('desk.products')->with('products',Auth::user()->shop->products);
+        }
         $products = collect([]); //initialize with a dummy collection
 
         $filter = Input::get('filter');
@@ -169,7 +183,7 @@ class ProductController extends Controller
         //dd($request);
         $this->validate($request,[ 
             'shop' => 'required',
-			'name' => 'required|unique:products',
+			'name' => 'required',
 			'category' => 'required',
 			'type' => 'required',
 			// 'base_price' => 'required|numeric',
@@ -177,6 +191,10 @@ class ProductController extends Controller
         ]);
 
         $shop = Shop::findorfail($request->shop);
+
+        if(Product::where([['shop_id',$shop->id],['name',$request->name]])->count() > 0){
+            return redirect()->back()->with('error', 'There is already '.$request->name.' in '.$product->shop->name);
+        }
 
         $product = new Product();
         $product->shop_id = $shop->id;
@@ -226,27 +244,26 @@ class ProductController extends Controller
     }
 
     if(Auth::user()->isAttendant()){
-        return redirect()->route('desk.product',$id);
+        return view('desk.product')->with('product',$product);
     }
+    if($product->basePriceSet() && $product->sellingPriceSet()){
+            $insight = new SingleProductInsight($data = [
+            'stock' => $product->stocks(),
+            'sale' => $product->sales(),
+            'base_price' => $product->base_price,
+            'selling_price' => $product->selling_price
+                ]);
+    }else{
+        $insight = null;
+    }
+    $t = new Transaction();
+    $transactions = $t->productTransactions($product->id);
 
-        if($product->basePriceSet() && $product->sellingPriceSet()){
-                $insight = new SingleProductInsight($data = [
-                'stock' => $product->stocks(),
-                'sale' => $product->sales(),
-                'base_price' => $product->base_price,
-                'selling_price' => $product->selling_price
-                  ]);
-        }else{
-            $insight = null;
-        }
-        $t = new Transaction();
-        $transactions = $t->productTransactions($product->id);
-
-        return view('product.show')->with('product',$product)
-                                    ->with('insight', $insight)
-                                    ->with('period', $transactions['period'])
-                                    ->with('sales',$transactions['sales'])
-                                    ->with('activities', $transactions['activities']);
+    return view('product.show')->with('product',$product)
+                                ->with('insight', $insight)
+                                ->with('period', $transactions['period'])
+                                ->with('sales',$transactions['sales'])
+                                ->with('activities', $transactions['activities']);
     }
 
     /**
@@ -285,6 +302,11 @@ class ProductController extends Controller
         if(!$product->inMyShop()){
                 return redirect()->route('index')->with('info', 'You are not checked in to the shop the product is in');
         }
+
+        if(Product::where([['shop_id',$product->shop->id],['name',$request->name],['id','!=',$product->id]])->count() > 0){
+            return redirect()->back()->with('error', 'There is already '.$request->name.' in '.$product->shop->name);
+        }
+
     
         $formalPrice = $product->selling_price;
         $product->category_id = $request->category;

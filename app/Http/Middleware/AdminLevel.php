@@ -15,9 +15,11 @@ class AdminLevel
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::guest() || !Auth::user()->isAdmin()){
-            return redirect()->back()->with('info', 'Only admin is authorized for that');
+        if(Auth::check() && Auth::user()->isAdmin()){
+            return $next($request);
         }
-        return $next($request);
+        else{
+            return redirect()->back()->with('info', 'Only the admin is authorized for that');
+        }
     }
 }

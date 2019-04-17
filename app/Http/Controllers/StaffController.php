@@ -25,20 +25,19 @@ class StaffController extends Controller
         $e = filter_var($email, FILTER_SANITIZE_EMAIL);
         return filter_var($e, FILTER_VALIDATE_EMAIL) ? true : false;
     }
+
     private function emailAlreadyAuthorized($email){
-        return User::where('email',$email)->get()->count() > 0 ? true : false;
-    }
-    private function staffAlreadyAuthorized($staff){
-        return User::withTrashed()->where('email',$staff->email)->first();
+        return User::withTrashed()->where('email',$email)->get()->count() > 0 ? true : false;
     }
 
 
     private function authenticate($staff,$position){
         $password = $this->generatePassword();
-        $auth = $this->staffAlreadyAuthorized($staff);
+        $auth = $staff->user();
 
         if($auth != null){ //if staff already authorized, just change the password
            $auth->password = Hash::make($password);
+           $auth->deleted_at = null;
            $auth->save();
            event(new StaffAuthorization($staff,$position,$password));
            return true;
@@ -46,12 +45,10 @@ class StaffController extends Controller
         elseif(!$this->emailAlreadyAuthorized($staff->email)){ //check if the email is not authorized for another staff
             $auth = User::create([
                 'shop_id' => $staff->shop->id,
+                'staff_id' =>$staff->id,
                 'email' => $staff->email,
-                'role' => 'staff',
                 'password' => Hash::make($password)
             ]);
-            $staff->user_id = $auth->id;
-            $staff->save();
             event(new StaffAuthorization($staff,$position,$password));
             return true;
         }
@@ -126,7 +123,7 @@ class StaffController extends Controller
 
         $t = new Transaction();
         if($staff->isAttendant() || $staff->isManager()){
-            $transactions = $t->attendantTransactions($staff->user->id);
+            $transactions = $t->attendantTransactions($staff->user()->id);
             return view('staff.show')->with('staff',$staff)
                                         ->with('period', $transactions['period'])
                                         ->with('sales',$transactions['sales'])
@@ -182,8 +179,13 @@ class StaffController extends Controller
                     );
             $staff->avatar = isset($upload->slugs[0]) ? $upload->slugs[0] : null;
         }
-
         $staff->save();
+
+        if($staff->user() != null){ //update the authentication email also
+            $staff->user()->email = $request->email;
+            $staff->user()->save();
+        }
+        
         return redirect()->route('staff.show',[$staff->id])->with('success','staff updated');
 
 
@@ -194,7 +196,7 @@ class StaffController extends Controller
             'new_position' => 'required'
         ]);
         $staff = Staff::findorfail($id);
-        $auth = $this->staffAlreadyAuthorized($staff);
+        $auth = $staff->user();
 
         if($request->new_position == 'attendant' || $request->new_position == 'manager'){
             if($this->isAuthorizable($staff->email)){
@@ -213,8 +215,7 @@ class StaffController extends Controller
         }
         else{
             if($auth != null){ //if the staff was authorized before
-                $auth->delete();
-                $staff->user_id = null;
+                $auth->delete(); //delete staff authentication
             }
             $staff->position = $request->new_position;
             $staff->save();
@@ -231,8 +232,11 @@ class StaffController extends Controller
     public function destroy($id)
     {
         $staff = Staff::findorfail($id);
+        if($staff->user() != null){
+            $staff->user()->delete(); //trash authentication
+        }
         $staff->delete();
 
-        return redirect()->route('staff.index')->with('success',$staff->fullname().' deleted');
+        return redirect()->route('staff.index')->with('success',$staff->fullname().' removed');
     }
 }

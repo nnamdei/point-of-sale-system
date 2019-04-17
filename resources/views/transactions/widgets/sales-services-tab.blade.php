@@ -9,9 +9,9 @@
 
 <div class="tab-content bg-white px-1" id="sales-services-tab-content" >
   <div class="tab-pane fade show active" id="_sales" role="tabpanel" aria-labelledby="sales-tab">
-        @include('transactions.widgets.sales')
+      @include('transactions.widgets.sales')
   </div>
   <div class="tab-pane fade" id="_services" role="tabpanel" aria-labelledby="services-tab">
-    @include('transactions.widgets.services')
+      @include('transactions.widgets.services')
   </div>
 </div>

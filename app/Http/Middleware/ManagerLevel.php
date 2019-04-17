@@ -15,12 +15,11 @@ class ManagerLevel
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::guest() || Auth::user()->isAdmin() || Auth::user()->isManager()){
-   
+        if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager())){
+            return $next($request);
         }
         else{
-            return   redirect()->back()->with('info',"only managers and admin are allowed for that");
+            return redirect()->back()->with('info',"You must be at least a manager for that priviledge");
         }
-        return $next($request);
     }
 }

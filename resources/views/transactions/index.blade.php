@@ -3,7 +3,17 @@
 @section('main')
     <div style="overflow: auto">
         @include('transactions.widgets.filter')
-        @include('transactions.widgets.sales-services-tab')
+        @if(Auth::user()->shop->setting->productActivated() && Auth::user()->shop->setting->serviceActivated())
+            @include('transactions.widgets.sales-services-tab')
+        @elseif(Auth::user()->shop->setting->productActivated())
+            @include('transactions.widgets.sales')
+        @elseif(Auth::user()->shop->setting->serviceActivated())
+            @include('transactions.widgets.services')
+        @else
+            @include('product.templates.not-enabled')
+            @include('service.templates.not-enabled')
+        @endif
+
     </div>
 @endsection
 @section('RHS')

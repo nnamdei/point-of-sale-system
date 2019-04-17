@@ -9,20 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Service extends Model
 {
     use SoftDeletes;
-    
-    protected $fillable = ['user_id', 'shop_id', 'staff_id', 'name', 'description', 'price'];
+    protected $dates = ['deleted_at'];
+    protected $fillable = ['user_id', 'shop_id','name', 'description', 'price'];
 
     
     public function user(){
-        return $this->belongTo('App\User');
+        return User::withTrashed()->where('id',$this->user_id)->first();
     }
-
+    
     public function shop(){
         return $this->belongsTo('App\Shop');
-    }
-
-    public function staff(){
-        return $this->belongTo('App\Staff');
     }
     
     public function records(){

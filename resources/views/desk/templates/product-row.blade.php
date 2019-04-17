@@ -28,15 +28,15 @@
             <?php unset($c) ?>
             @endif
 
-            <a href={{route('desk.product',['id'=>$product->id])}} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}">{{$product->name}}</a>
-            <img src="{{$product->preview()}}" alt="{{$product->name}}" width="100px">
+            <img class="product-preview" src="{{$product->preview()}}" alt="{{$product->name}}" width="100px" height="100px">
+            <a href={{route('products.show',['id'=>$product->id])}} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}">{{$product->name}}</a>
         </div>
     </td>
 
 
     <td  class="category">
         <div>
-            <a  href="{{route('desk.category',['id' => $product->category->id])}}" data-toggle="popover" data-trigger="hover" data-placement="bottom"  data-title="{{$product->category->name}} <span class='badge badge-primary'>{{$product->category->products->count() -1 }}</span> <small> more products</small>" data-content="{{$product->category->description}}" >{{$product->category->name}} </a>
+            @include('category.templates.category-name', ['category' => $product->category_()])
         </div>
     </td>
     <td  class="type">
@@ -50,7 +50,7 @@
     </td>
     <td  class="stock">
         <div>
-            @include('products.widgets.quick-figures')
+            @include('product.widgets.quick-figures')
             <div style="text-align: right" class="">
                 @include('desk.widgets.add-to-cart')
             </div>

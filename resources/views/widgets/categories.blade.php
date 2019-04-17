@@ -1,10 +1,10 @@
 <?php $category_w_collection = isset($categories_w) ? $categories_w : Auth::user()->shop->categories()->orderBy('created_at','desc')->get() ?>
    <div class="card">
        <div class="card-header">
-            <h5>{{isset($categories_w_title) ? $categories_w_title: 'Categories' }}</h5>
+            <h6>{{isset($categories_w_title) ? $categories_w_title: 'Product categories' }}</h6>
             @if(Auth::user()->isAdminOrManager())
                 <div class="text-right">
-                    <a class="btn btn-secondary btn-sm" href="{{route('categories.create')}}">
+                    <a class="btn btn-outline-secondary btn-sm" href="{{route('categories.create')}}">
                         <i class="fa fa-plus-circle"></i>  Add New Category
                     </a>            
                 </div>
@@ -18,8 +18,9 @@
                     @endforeach
                 </div>
             @else
-                <div class="alert alert-danger text-center">
-                    <i class="fa fa-exclamation-triangle"></i>  No category found
+                <div class="py-2 text-center text-muted">
+                    <h2><i class="fa fa-exclamation-triangle"></i></h2>
+                      No category found
                 </div>
             @endif
 

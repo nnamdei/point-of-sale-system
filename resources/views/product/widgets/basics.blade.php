@@ -7,14 +7,6 @@
             <div class="col-sm-8">
                 <div class="list-group">
                     <div class="list-group-item">
-                        Added by 
-                        <img class="avatar" src="{{$product->user->profile->avatar()}}" alt="{{$product->user->profile->firstname}}" width="30px" height="30px">
-                        <small>{{$product->user->profile->fullname()}}, {{$product->created_at->diffForHumans()}}</small>
-                        @if($product->created_at->diffForHumans() !== $product->updated_at->diffForHumans())
-                            <small style="margin-left: 20px"><i class="fa fa-clock"></i>  last updated {{$product->updated_at->diffForHumans()}}</small>                
-                        @endif
-                    </div>
-                    <div class="list-group-item">
                         Shop: <a href="{{route('shop.show',[$product->shop->id])}}">{{$product->shop->name}}</a>
                     </div>
                     <div class="list-group-item">
@@ -27,7 +19,7 @@
                         
                     </div>
                     <div class="list-group-item">
-                        Category : <small><a href="{{route('categories.show',['id' => $product->category->id])}}">{{$product->category->name}} </a> <span class="badge badge-secondary">{{$product->category->products()->count() > 1 ? $product->category->products()->count() - 1 : 0}}</span> other products</small>
+                        Category : @include('category.templates.category-name',['category' => $product->category_()])
                     </div>
                     
                     <div class="list-group-item">
@@ -36,6 +28,19 @@
                             <small>{{$product->description}}</small>
                             @else
                             <small class="text-danger">No description</small>
+                        @endif
+                    </div>
+                    <div class="list-group-item">
+                        <div class="my-1">
+                            added {{$product->created_at->toDayDateTimeString()}}, {{$product->created_at->diffForHumans()}}
+                        </div>
+                        <div class="d-flex">
+                            <div class="ml-auto">
+                                @include('staff.templates.auth-user-name',['user' => $product->user()])
+                            </div>
+                        </div>
+                        @if($product->created_at->diffForHumans() !== $product->updated_at->diffForHumans())
+                            <div class="my-1">last updated {{$product->updated_at->diffForHumans()}}</div>
                         @endif
                     </div>
                 </div>

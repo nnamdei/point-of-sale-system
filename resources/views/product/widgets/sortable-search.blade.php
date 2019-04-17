@@ -12,6 +12,6 @@
             </select>
     </div>
     <div class="form-group text-right">
-        <button class="btn btn-success mb-2" type="submit"><i class="fa fa-search"></i> search</button>
+        <button class="btn theme-btn mb-2" type="submit"><i class="fa fa-search"></i> search</button>
     </div>
 </form>

@@ -26,9 +26,12 @@ class Sale extends Model
     }
     
     public function user(){
-        return $this->belongsTo('App\User');
+        return User::withTrashed()->where('id',$this->user_id)->first();
     }
     
+    public function attendant(){
+        return $this->user() == null ? null : $this->user()->profile();
+    }
 
 
 }

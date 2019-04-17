@@ -1,11 +1,11 @@
 <div class="list-group-item no-radius">
-    <div class="row">
-        <div class="col-3 text-center">
+    <div class="d-flex">
+        <div class="mr-2">
             <img src="{{$staff->avatar()}}" alt="{{$staff->fullname()}}" class="avatar" width="60px" height="60px">
         </div>
-        <div class="col-9">
-            <h5><a href="{{route('staff.show',['id'=>$staff->id])}}">{{$staff->fullname()}}</a></h5>
-            <small class="grey">{{$staff->position}}</small>
+        <div>
+            <h6><a href="{{route('staff.show',['id'=>$staff->id])}}">{{$staff->fullname()}}</a></h6>
+            <p class="grey">{{$staff->position}} @ <a href="{{route('shop.show',[$staff->shop->id])}}">{{$staff->shop->name}}</a></p>
         </div>
     </div>
 

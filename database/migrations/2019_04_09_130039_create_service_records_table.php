@@ -15,12 +15,14 @@ class CreateServiceRecordsTable extends Migration
     {
         Schema::create('service_records', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('identifier');
             $table->integer('shop_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('staff_id')->unsigned();
             $table->integer('service_id')->unsigned();
             $table->longText('note')->nullable();
             $table->float('paid');
+            $table->string('payment');
             $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
             $table->timestamps();

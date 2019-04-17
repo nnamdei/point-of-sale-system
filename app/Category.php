@@ -14,14 +14,15 @@ class Category extends Model
     protected $fillable = ['shop_id','user_id','name', 'description'];
 
     public function user(){
-        return $this->belongsTo('App\User');
+        return User::withTrashed()->where('id',$this->user_id)->first();
     }
+    
     public function shop(){
         return $this->belongsTo('App\Shop');
     }
 
     public function products(){
-        return Product::where([['category_id',$this->id],['shop_id',Auth::user()->shop->id]])->get();
+        return $this->hasMany('App\Product');
     }
 
     public function inMyShop(){

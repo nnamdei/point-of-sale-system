@@ -137,7 +137,7 @@
 
                         <div class="col">
                             <div class="form-group text-center">
-                                <input class="btn btn-success" type="submit" value="Update Product">
+                                <input class="btn theme-btn" type="submit" value="Update Product">
                             </div>
                         </div>
                     </div>

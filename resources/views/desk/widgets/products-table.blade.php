@@ -1,7 +1,7 @@
 <div class="products-table-container" style="background-color: rgba(255,255,255,.8)">
-        <table class="table table-striped table-dark table-hover  table-bordered products-table-head text-center" style="margin-bottom: 0">
+        <table class="table table-bordered products-table-head text-center" style="margin-bottom: 0">
             <thead>
-                <tr class="table-head-row">
+                <tr class="table-head-row theme-bg">
                     <th class="id"><div>id</div></th>
                     <th  class="product"><div>Product</div></th>
                     <th  class="category"><div>Category</div></th>
@@ -22,7 +22,12 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="7"><small class="text-danger"><i class="fa fa-exclamation-triangle"></i>  No product found</small></td>
+                            <td colspan="7">
+                                <div class="py-2 text-center text-muted">
+                                    <h2><i class="fa fa-exclamation-triangle"></i></h2>
+                                    No product found
+                                </div>
+                            </td>
                         </tr>
                     @endif
                 </tbody>

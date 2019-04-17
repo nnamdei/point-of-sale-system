@@ -7,7 +7,7 @@
                     <option value="POS">POS</option>
                     <option value="Transfer">Transfer</option>
                 </select>
-                <button class="btn btn-success mb-2" type="submit" style="border-radius: 0px 3px 3px 0px">Complete</button>
+                <button class="btn theme-btn mb-2" type="submit" style="border-radius: 0px 3px 3px 0px">Complete</button>
             </div>
     </div>
 </form>

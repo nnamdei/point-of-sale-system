@@ -6,7 +6,7 @@ if(isset($sales_chart)){
 ?>
 <div>
     <div id="sales-chart-container">
-        <div class="text-center">
+        <div class="text-center text-muted">
             <h1><i class="fa fa-exclamation-triangle"></i></h1> 
             <h4>Not available</h4>
         </div>

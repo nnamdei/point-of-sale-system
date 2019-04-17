@@ -1,4 +1,4 @@
-@extends('layouts.receipt')
+@extends('layouts.sale-receipt')
 
 @section('items')
 

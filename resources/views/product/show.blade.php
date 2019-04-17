@@ -2,8 +2,8 @@
 
 @section('LHS')
     <?php
-        $products_w_title = "Also in ".$product->category->name;
-        $products_w = $_product::where([['category_id',$product->category->id],['id','!=',$product->id]])->get();
+        $products_w_title = "Also in ".$product->category_()->name;
+        $products_w = $_product::where([['category_id',$product->category_()->id],['id','!=',$product->id]])->get();
     ?>
     <div class="d-none d-sm-block pt-1">
         @include('widgets.products')
@@ -12,7 +12,7 @@
 
 @section('main')
     <div class="content-fixed-head">
-        <div class="white-bg" style="padding: 5px">
+        <div class="bg-white" style="padding: 5px">
             <div class="row">
                 <div class="col-6 text-left">
                     <strong>{{$product->name}}</strong>

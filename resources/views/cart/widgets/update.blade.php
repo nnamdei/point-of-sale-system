@@ -11,7 +11,7 @@
             </div>
             <div>
                 <label for="">`</label>
-                <button type="submit" class="btn btn-success btn-block" style="border-radius: 0px 3px 3px 0px"><i class="fa fa-sync"></i> update cart</button>
+                <button type="submit" class="btn theme-btn btn-block" style="border-radius: 0px 3px 3px 0px"><i class="fa fa-sync"></i> update cart</button>
             </div>
         </div>
         @elseif($item->model->isVariable())
@@ -52,13 +52,13 @@
                             @endif
                         </div>
                         <div class="text-right mt-2">
-                            <button class="btn btn-sm btn-secondary" role="button" onclick="javascript: duplicate('.single-variant','.variables-container')"><i class="fa fa-plus-circle" ></i> Add another {{$variant->variable}}</button>
+                            <button class="btn btn-sm btn-outline-secondary" role="button" onclick="javascript: duplicate('.single-variant','.variables-container')"><i class="fa fa-plus-circle" ></i> Add another {{$variant->variable}}</button>
                         </div>
 
                     @endforeach
             @endif
             <div>
-                <button type="submit" class="btn btn-success"><i class="fa fa-sync"></i> update cart</button>
+                <button type="submit" class="btn theme-btn"><i class="fa fa-sync"></i> update cart</button>
             </div>
         @endif
 </form>

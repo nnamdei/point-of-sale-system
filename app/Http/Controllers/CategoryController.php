@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function __construct(){
-        $this->middleware('manager')->except(['show']);
+        $this->middleware('manager')->except(['show','index']);
     }
 
     /**
@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category.index');
+        return view('category.index')->with('categories',Auth::user()->shop->categories);
     }
 
     /**
@@ -41,11 +41,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|unique:categories',
+            'name' => 'required',
             'shop' => 'required',
-        ],['unique' => 'That category already exist']);
+        ]);
 
         $shop = Shop::findorfail($request->shop);
+
+        if(Category::where([['shop_id',$shop->id],['name',$request->name]])->count() > 0){
+            return redirect()->back()->with('error', 'category '.$request->name.' already exist in '.$shop->name);
+        }
+
         $category = new Category;
         $category->user_id= Auth::id();
         $category->shop_id = $shop->id;
@@ -64,14 +69,15 @@ class CategoryController extends Controller
      */
     public function show($id)
     {    
-        if(Auth::user()->isAttendant()){
-            return redirect()->route('desk.category',$id);;
-        }
         $category =  Category::findorfail($id);
 
         if(!$category->inMyShop()){
                 return redirect()->route('index')->with('info', 'You are not checked in to the shop the category is in');
         }
+        if(Auth::user()->isAttendant()){
+            return view('desk.category')->with('category',$category);
+        }
+
         return view('category.show')->with('category',$category);
     
     }
@@ -110,6 +116,10 @@ class CategoryController extends Controller
         $this->validate($request,[
             'name' => 'required'
         ]);
+
+        if(Category::where([['shop_id',$category->shop->id],['name',$request->name],['id','!=',$category->id]])->count() > 0){
+            return redirect()->back()->with('error', 'There is already category '.$request->name.' in '.$category->shop->name);
+        }
 
         $category->name = $request->name;
         $category->description = $request->description;

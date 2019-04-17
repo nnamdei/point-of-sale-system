@@ -1,55 +1,80 @@
+
 @extends('layouts.app')
 
 @section('main')
+<?php $tab = isset($tab) ? $tab : null ?>
+<div class="mt-3">
     <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card shadow-lg" style="margin-top: 5px">
-                <div class="card-header">
-                    <h5>New Shop</h5>
+        <div class="col-md-2 col-sm-4 no-padding-xs">
+            <h6>{{$shop->name}}</h6>
+            <p class="my-2 grey">Settings</p>
+            <ul class="list-group">
+                <li class="list-group-item" data-toggle="collapse" data-target="#info" aria-expanded="true" aria-controls="info">
+                    <i class="fa fa-info-circle"></i> Info
+                </li>
+                <li class="list-group-item" data-toggle="collapse" data-target="#product" aria-expanded="true" aria-controls="product">
+                    <i class="fa fa-box-open"></i> Product
+                </li>
+                <li class="list-group-item" data-toggle="collapse" data-target="#service" aria-expanded="true" aria-controls="service">
+                    <i class="fa fa-toolbox"></i> Service
+                </li>
+                <li class="list-group-item text-danger" data-toggle="collapse" data-target="#delete" aria-expanded="true" aria-controls="delete">
+                    <i class="fa fa-trash"></i> Delete
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-4 col-sm-8 no-padding-xs">
+            <div id="settings">
+                <div id="info" class="collapse {{$tab === null || $tab === 'info' ? 'show' : '' }}"  data-parent="#settings">
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title grey">Info</h6>
+                        </div>
+                        <div class="card-body">
+                            @include('shop.settings.info')
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="{{route('shop.update',[$shop->id])}}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="">Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="shop name" value="{{$shop->name}}" required> 
-                            @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
-                            @endif
+                
+                <div id="product" class="collapse {{$tab === 'product' ? 'show' : '' }}" data-parent="#settings">
+                    <div class="card-header">
+                        <h6 class="card-title grey">Product</h6>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            @include('shop.settings.product')
                         </div>
-
-                        <div class="form-group {{ $errors->has('shop_address') ? ' has-error' : '' }}">
-                            <label for="">Address</label>
-                            <input type="text" name="shop_address" class="form-control" placeholder="shop address" value="{{$shop->address}}" required> 
-                            @if ($errors->has('shop_address'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('shop_address') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group {{ $errors->has('about_shop') ? ' has-error' : '' }}">
-                            <label for="">About</label>
-                            <textarea name="about_shop" class="form-control">{{$shop->about}}</textarea>
-                            @if ($errors->has('about_shop'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('about_shop') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-block theme-btn">update shop</button>
-                        </div>
-
-
-                    </form>
+                    </div>
                 </div>
+
+                <div id="service" class="collapse {{$tab === 'service' ? 'show' : '' }}" data-parent="#settings">
+                    <div class="card-header">
+                        <h6 class="card-title grey">Service</h6>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            @include('shop.settings.service')
+                        </div>
+                    </div>
+                </div>
+
+                <div id="delete" class="collapse {{$tab === 'delete' ? 'show' : '' }}" data-parent="#settings"">
+                    <div class="card-header">
+                        <h6 class="card-title text-danger">Delete {{$shop->name}}</h6>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            @include('shop.settings.delete')
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+            
     </div>
+</div>
 @endsection
 

@@ -25,7 +25,7 @@
         }
 
         // prepare the fusion chart sales raw data
-        private function prepareSalesChart($period,$data){
+        public function prepareSalesChart($period,$data){
             
             $arrChartConfig = array(
                 "chart" => array(
@@ -55,7 +55,7 @@
         }
 
                 // prepare the fusion chart srvice records raw data
-        private function prepareServicesChart($period,$data){
+        public function prepareServicesChart($period,$data){
             
                     $arrChartConfig = array(
                         "chart" => array(
@@ -357,8 +357,8 @@
         }
 
 
-    //Fetch all transactions for a particular service 
-    public function serviceTransactions($service_id){
+    //Fetch all records for a particular service 
+    public function serviceRecords($service_id){
         if($this->from != null && $this->to != null){
             $from_explained = new DateTime($this->from);
             $to_explained = new DateTime($this->to);
@@ -624,9 +624,13 @@
                                         ->groupBy('service_id')
                                          ->orderBy('total','desc')
                                          ->get();
-    
-                $p = new DateTime(Action::OrderBy('created_at','asc')->first()->created_at);
-                $period = "Transactions from ". $p->format('D dS M, Y')." - Present";
+                $first_action = Action::OrderBy('created_at','asc')->first();
+                if($first_action != null){
+                    $p = new DateTime($first_action->created_at);
+                    $period = "From ". $p->format('D dS M, Y')." - Present";
+                }else{
+                    $period = "From the start";
+                }
 
             }
             else{

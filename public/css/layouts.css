@@ -124,7 +124,7 @@ div::-webkit-scrollbar-thumb
 	.app-50-50-lhs-fixed .rhs-content,
 	.app-50-50-rhs-fixed .rhs-content
 	{
-		padding-top: 10px;
+		padding-top: 0px;
 	}
 }
 

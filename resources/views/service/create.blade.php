@@ -65,7 +65,7 @@
 
 
                             <div class="form-group text-center">
-                                <input class="btn btn-success" type="submit" value="Add service">
+                                <input class="btn theme-btn" type="submit" value="Add service">
                             </div>
 
                     </form>

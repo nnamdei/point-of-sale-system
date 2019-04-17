@@ -20,7 +20,7 @@
                             <textarea class="form-control" name="description" placeholder="category description">{{$category->description}}</textarea>
                         </div>
                         <div class="form-group text-center">
-                            <input class="btn btn-success" type="submit" value="Update Category">
+                            <input class="btn theme-btn" type="submit" value="Update Category">
                         </div>
                     </form>
                 </div>

@@ -1,5 +1,5 @@
-<a class="btn btn-info btn-sm m-1" title="edit service {{$service->name}}"  href="{{route('service.edit', [$service->id])}}"><i class="fa fa-pen"></i> edit</a>
-<button class="btn btn-danger btn-sm m-1" data-toggle="collapse" data-target="#delete-service-{{$service->id}}-collapse" title="delete {{$service->name}}"><i class="fa fa-times"></i> delete</button>            
+<a class="btn btn-outline-info btn-sm m-1" title="edit service {{$service->name}}"  href="{{route('service.edit', [$service->id])}}"><i class="fa fa-pen"></i> edit</a>
+<button class="btn btn-outline-danger btn-sm m-1" data-toggle="collapse" data-target="#delete-service-{{$service->id}}-collapse" title="delete {{$service->name}}"><i class="fa fa-times"></i> delete</button>            
 <div class="mt-1">
     <div class="collapse alert alert-danger" id="delete-service-{{$service->id}}-collapse" data-parent="body">
         <p>Are you sure you want to delete this service <strong>{{$service->name}} ???!</strong> in {{$service->shop->name}}</p>

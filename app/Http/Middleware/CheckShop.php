@@ -18,11 +18,11 @@ class CheckShop
     public function handle($request, Closure $next)
     {
         if(Auth::check() && Auth::user()->hasShop()){
+            return $next($request);
         }
         else{
             return redirect()->route('no.shop')->with('info','You are currently not checked in any shop yet');
         }
 
-        return $next($request);
     }
 }

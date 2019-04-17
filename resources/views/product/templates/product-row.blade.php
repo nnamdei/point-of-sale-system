@@ -28,15 +28,15 @@
             <span style="font-size: 15px" class="text-danger animated flash infinite" data-toggle="tooltip" data-placement="top" title="{{$c}}"><i class="fa fa-exclamation-triangle"></i></span>
             <?php unset($c) ?>
             @endif
+            <img class="product-preview" src="{{$product->preview()}}" alt="{{$product->name}}" width="70px" height="70px">
             <span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-title="{{$product->name}}" data-content="{{$product->description}}"><a href="{{route('products.show',['id' =>$product->id])}}">{{$product->name}}</a></span>
-            <img src="{{$product->preview()}}" alt="{{$product->name}}" width="100%">
         </div>
     </td>
 
 
     <td  class="category">
         <div>
-            <a  href="{{route('categories.show',['id' => $product->category->id])}}" data-toggle="popover" data-trigger="hover" data-placement="bottom"  data-title="{{$product->category->name}} <span class='badge badge-primary'>{{ $product->category->products()->count() > 1 ? $product->category->products()->count() - 1 : 0}}</span> <small> more products</small>" data-content="{{$product->category->description}}" >{{$product->category->name}} </a>
+            @include('category.templates.category-name', ['category' => $product->category_()])
         </div>
     </td>
 

@@ -1,8 +1,2 @@
-@extends('layouts.appCenter')
+@include('user.login')
 
-@section('header')
-    Login
-@endsection
-@section('main')
-        @include('forms.login')
-@endsection

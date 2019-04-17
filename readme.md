@@ -12,3 +12,9 @@ This application is for managing goods or products. It can be used in supermarke
 - Multiple sale. The application uses [Laravel shopping cart](https://github.com/Crinsane/LaravelShoppingcart) to add multiple items to cart for one customer.
 - Receipt printing. The application uses [barryvdh/laravel-dompdf](https://github.com/barryvdh/laravel-dompdf) to generate receipt that can be printed when a cart is checked out. The receipt is configured for Thermal printer of paper with width of 58mm.
 - Receipt verification. Every cart used for sale by the attendant has unique reference and are saved and also inscribed on the customer's receipt.This can be used for verification of customer's receipt incase of any issue.
+##New in V2.0
+- Multiple shop. You can now use the application to manage more than one store.
+- New user priviledge Admin. A new user level has been added (admin). The admin will be charge of all the shops while managers are restricted to the shop assigned to them.
+- Services. Not only product you can now manage, services can also be added and recorded by attendant. Service receipts can also be verified.
+- Aesthaetic control. You can now set the color of shops different, cool isn't it???
+- Control Low stocks notification. You can now choose to enable low stock warning and also specify the number of remaining to be considered as low

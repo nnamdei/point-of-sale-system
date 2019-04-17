@@ -16,11 +16,10 @@ class AttendantLevel
     public function handle($request, Closure $next)
     {
 
-        if(Auth::guest() || Auth::user()->isAdmin() || Auth::user()->isManager() || Auth::user()->isAttendant()){
-           
+        if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager() || Auth::user()->isAttendant())){
+            return $next($request);
         }else{
-            return redirect()->back()->with('info',"only attendant is authorized for that");
+            return redirect()->back()->with('info',"You must be at least an attendant for that priviledge");
         }
-        return $next($request);
     }
 }

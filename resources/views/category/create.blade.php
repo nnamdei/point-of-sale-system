@@ -26,7 +26,7 @@
                         <textarea class="form-control" name="description" placeholder="category description"></textarea>
                     </div>
                     <div class="form-group text-center">
-                        <input class="btn btn-success" type="submit" value="Add Category">
+                        <input class="btn theme-btn" type="submit" value="Add Category">
                     </div>
                 </form>
             </div>

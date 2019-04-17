@@ -5,22 +5,19 @@
         <div class="col-md-6">
             <div class="card shadow-lg" style="margin-top: 5px">
                 <div class="card-header">
-                    <h5>Edit service</h5>
+                    <h5>Edit service: {{$service->name}} in {{$service->shop->name}}</h5>
                 </div>
                 <div class="card-body">
-                        <form action="{{route('service.store')}}" method="POST">
+                        <form action="{{route('service.update',[$service->id])}}" method="POST">
                             @csrf
-                            <div class="form-group">
-                                <h6>Shop: {{Auth::user()->shop->name}}</h6>
-                                <input type="hidden" name="shop" value="{{Auth::user()->shop->id}}">
-                            </div>
+                            @method('PUT')
                             <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <label for="">service Name</label>
+                                        <label for="">Service Name</label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input class="form-control" type="text" name="name" placeholder="name" value="{{old('name')}}">
+                                        <input class="form-control" type="text" name="name" placeholder="name" value="{{$service->name}}">
                                         @if ($errors->has('name'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('name') }}</strong>
@@ -37,7 +34,7 @@
                                         <label for="">Description <i><small>(optional)</small></i></label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <textarea class="form-control" name="description" id="" placeholder="product description">{{old('description')}}</textarea>
+                                        <textarea class="form-control" name="description" id="" placeholder="product description">{{$service->description}}</textarea>
                                         @if ($errors->has('description'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('description') }}</strong>
@@ -53,7 +50,7 @@
                                         <label for="">Price</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="form-control" type="number" name="price" id="price"  value="{{old('price')}}">
+                                        <input class="form-control" type="number" name="price" id="price"  value="{{$service->price}}">
                                         @if ($errors->has('price'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('price') }}</strong>
@@ -65,7 +62,7 @@
 
 
                             <div class="form-group text-center">
-                                <input class="btn btn-success" type="submit" value="Add service">
+                                <input class="btn theme-btn" type="submit" value="Update service">
                             </div>
 
                     </form>

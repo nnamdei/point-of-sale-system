@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="form-group text-center mt-3">
-                    <button type="submit" class="btn btn-success" ><i class="fa fa-cart-plus"></i> Add to cart</button>
+                    <button type="submit" class="btn theme-btn" ><i class="fa fa-cart-plus"></i> Add to cart</button>
                 </div>
 
             @elseif($product->isVariable())
@@ -49,10 +49,10 @@
                         @endforeach
                     </div>
                     <div class="form-group text-center mt-3">
-                        <button type="submit" class="btn btn-success" ><i class="fa fa-cart-plus"></i> Add to cart</button>
+                        <button type="submit" class="btn theme-btn" ><i class="fa fa-cart-plus"></i> Add to cart</button>
                     </div>
                 @else
-                    <div class="alert alert-warning text-center">
+                    <div class="p-2 text-center text-muted">
                         <h1><i class="fa fa-exclamation-triangle animated flash infinite"></i></h1>
                         <p>This product is a variable product and no variant has been added yet, contact the manager.</p>
                     </div>
@@ -60,14 +60,14 @@
             @endif
         </form>
     @else
-        <div class="alert alert-info text-center">
+        <div class="p-2 text-center text-muted">
             <h1><i class="fa fa-info-circle animated flash infinite slow"></i></h1>
             <h4>Cannot add to cart</h4>
             <p>selling price has not been added to <strong>{{$product->name}}</strong> yet. Contact the manager to attach price first</p>
         </div>
     @endif
 @else
-    <div class="alert alert-warning text-center">
+    <div class="p-2 text-center text-muted">
         <h1><i class="fa fa-exclamation-triangle animated flash infinite slow"></i></h1>
         <h4>Cannot add to cart</h4>
         <p>There is no stock for <strong>{{$product->name}}</strong></p>

@@ -6,7 +6,7 @@
     <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header">
-                Update staff: <span class="theme-color">{{$staff->fullname()}}</span>
+                <h6>Update staff: <span class="theme-color">{{$staff->fullname()}}</span></h6>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('staff.update',['id'=>$staff->id]) }}" class="has-image-upload" enctype="multipart/form-data">
@@ -56,23 +56,6 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
-                                <label for="position" class="control-label">Position</label>
-
-                                <div class="">
-                                    <select name="position" id="position" class="form-control">
-                                        <option value="staff" {{$staff->position == 'staff' ? 'selected' : ''}}>Regular staff</option>
-                                        <option value="attendant" {{$staff->position == 'attendant' ? 'selected' : ''}}>Attendant</option>
-                                        <option value="manager" {{$staff->position == 'manager' ? 'selected' : ''}}>Manager</option>
-                                    </select>
-                                    @if ($errors->has('position'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('position') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div> -->
-
                         </div>
                         <div class="col-sm-4">
                         <div class="text-center">
@@ -88,7 +71,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <div class="text-center" >
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn theme-btn">
                                         Update staff
                                     </button>
                                 </div>

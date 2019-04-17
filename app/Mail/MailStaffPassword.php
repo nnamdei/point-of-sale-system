@@ -34,7 +34,9 @@ class MailStaffPassword extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->staff->fullname().', You\'ve been made '.$this->position)
+        $vowels = ['a','e','i','o','u'];
+        $position = in_array(substr($this->position,0,1),$vowels) ? 'an '.$this->position : 'a '.$this->position;
+        return $this->subject($this->staff->firstname.', You are now '.$position.'!')
                     ->view('emails.staff-password');
     }
 }
