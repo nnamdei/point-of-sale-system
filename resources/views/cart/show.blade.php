@@ -25,17 +25,19 @@
                </tr>
            </table>
 
+           <div style="display: none">
+                <div id="complete-transaction">
+                    @include('cart.widgets.payment') 
+                </div>
+            </div>
 
-           <div class="text-right">
-                <button class="btn theme-btn btn-sm" data-toggle="modal" data-target="#app-modal" data-title="Select method of payment" data-content="#complete-transaction">
+           <div class="d-flex">
+                <a href="{{route('cart.empty')}}" class="btn btn-sm btn-outline-danger">
+                    <i class="fa fa-ban"></i> empty cart
+                </a>
+                <button class="btn theme-btn btn-sm ml-auto" data-toggle="modal" data-target="#app-modal" data-title="Select method of payment" data-content="#complete-transaction">
                     <i class="fa fa-sign-out-alt"></i> Checkout
                 </button>
-
-                <div style="display: none">
-                    <div id="complete-transaction">
-                        @include('cart.widgets.payment') 
-                    </div>
-                </div>
            </div>
 
         </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use DNS1D;
+use DNS2D;
 use App\User;
 use App\Staff;
 use App\Admin;
@@ -15,7 +17,16 @@ class AppController extends Controller
     public function __construct(){
         // $this->middleware('check-shop')->except(['noShop']);
     }
+    public function generateSerial(){
+        $serial = '1-6'.rand(100,999).'-'.rand(1000,9999).'-'.rand(100,999).'-'.rand(10,99);
+        return $serial;
+    }
 
+    public function barcode(){
+        $serial = $this->generateSerial();
+         $barcode = DNS1D::getBarcodePNG('1', "C39+",3,33);
+         return view('barcode')->with('barcode', $barcode)->with('serial',$serial);
+    }
     public function index(){
         if(Auth::check()){
             if(!Auth::user()->hasShop()){

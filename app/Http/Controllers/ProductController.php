@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use Auth;
+use DNS1D;
+use DNS2D;
 use App\Shop;
+use App\Barcode;
 use App\Product;
 use App\Variant;
 use App\Category;
@@ -13,12 +17,15 @@ use App\Inventory\ProductsCollectionInsight;
 use App\Inventory\FusionCharts;
 use App\Inventory\Transaction;
 use App\Matto\FileUpload;
+use App\Traits\BarcodeTrait;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 class ProductController extends Controller
     {
+        use BarcodeTrait;
+        
         public function __construct(){
             $this->middleware('product-activated');
             $this->middleware('manager')->except(['find','show','index']);
@@ -30,6 +37,7 @@ class ProductController extends Controller
                                 ->products()
                                 ->search($request->get('q'))
                                 ->with('category')
+                                ->with('barcodes')
                                 ->with('variants')
                                 ->get();
         }
@@ -170,8 +178,6 @@ class ProductController extends Controller
         return view('product.create');
     }
 
- 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -193,7 +199,7 @@ class ProductController extends Controller
         $shop = Shop::findorfail($request->shop);
 
         if(Product::where([['shop_id',$shop->id],['name',$request->name]])->count() > 0){
-            return redirect()->back()->with('error', 'There is already '.$request->name.' in '.$product->shop->name);
+            return redirect()->back()->with('error', 'There is already '.$request->name.' in '.$shop->name);
         }
 
         $product = new Product();
@@ -213,9 +219,9 @@ class ProductController extends Controller
                     );
             $product->preview = isset($upload->slugs[0]) ? $upload->slugs[0] : null;
         }
-
         $product->save();
-
+        $this->attachProductBarcode($product);
+       
         $manager = new StockManager($product->id);
         if($product->isSimple()){
             $stock = isset($request->stock) && is_numeric($request->stock) ? $request->stock : 0;
@@ -227,7 +233,37 @@ class ProductController extends Controller
             return redirect()->route('products.show',['id'=>$product->id])->with($manager->report($newVariables));
         }
     }
-    
+
+    // Attached a scanned barcode to a product
+    public function attachBarcode(Request $request, $id){
+        $this->validate($request,[
+            'content' => 'required'
+        ],
+           [
+               'required' => 'Barcode scan failed!'
+           ] 
+        );
+        $product = Product::findorfail($id);
+        if($this->attachBarcodeFromProduct($product, $request->content) != null){
+            return redirect()->back()->with(['success' => 'Barcode attached to '.$product->name, 'scanner' => 'off']);
+        }
+
+    }
+
+    public function generateBarcode($id){
+        $product = Product::findorfail($id);
+        $barcodes = $this->attachProductBarcode($product);
+        if($barcodes->count() > 0){
+            return redirect()->back()->with('success', 'Barcode generated for '.$product->name);
+        }
+        return redirect()->back()->with('error', 'Barcode generation for '.$product->name.' failed');
+    }
+
+    public function printBarcode($id){
+       $barcode = Barcode::findorfail($id);
+       $code = PDF::loadView('product.barcode', ['barcode' => $barcode]);
+       return $code->stream($barcode->read().'.pdf');
+    }
 
     /**
      * Display the specified resource.
@@ -340,7 +376,8 @@ class ProductController extends Controller
         if(!$product->inMyShop()){
                 return redirect()->route('index')->with('info', 'You are not checked in to the shop the product is in');
         }
-            $manager = new StockManager($product->id);
+        
+        $manager = new StockManager($product->id);
         $newVariables = $manager->storeVariables($request);
 
         return redirect()->route('products.show',['id'=>$product->id])->with($manager->report($newVariables));
@@ -379,7 +416,9 @@ class ProductController extends Controller
         $product->sale = 0;
         if($product->isVariable()){
             $this->deleteVariants($product);
+            $this->deleteProductBarcodes($product);
         }
+        $product->save();
         $manager = new StockManager($product->id);
         $manager->action(Auth::id(),$product->id,5,0,0);
 
@@ -411,12 +450,14 @@ class ProductController extends Controller
                 return redirect()->route('index')->with('info', 'You are not checked in to the shop the product is in');
         }
 
-            if($product->isSimple()){
+        if($product->isSimple()){
             return redirect()->back()->with('info', $product->name." is already a simple product");
         }
         $product->type = 'simple';
         $product->save();
         $this->deleteVariants($product);
+        $this->deleteProductBarcodes($product);
+
         return redirect()->back()->with('success',$product->name.' converted to simple product');
     }
 
@@ -435,6 +476,7 @@ class ProductController extends Controller
         // reset the stock and sales
         $product->stock = 0;
         $product->sale = 0;
+        $this->deleteProductBarcodes($product);
 
         $product->save();
 

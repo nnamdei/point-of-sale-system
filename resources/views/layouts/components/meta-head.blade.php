@@ -15,6 +15,6 @@
         @endphp
 @endif
 <title>{{ Auth::check() && Auth::user()->hasShop() ? Auth::user()->shop->name : config('app.name') }}</title>
-<link rel="shortcut icon" href="{{asset('storage/images/assets/pos.png')}}" type="image/x-icon">
+<link rel="shortcut icon" href="{{asset('storage/assets/pos.png')}}" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">

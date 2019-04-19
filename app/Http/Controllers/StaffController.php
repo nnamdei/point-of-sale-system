@@ -39,7 +39,7 @@ class StaffController extends Controller
            $auth->password = Hash::make($password);
            $auth->deleted_at = null;
            $auth->save();
-           event(new StaffAuthorization($staff,$position,$password));
+        //    event(new StaffAuthorization($staff,$position,$password));
            return true;
         }
         elseif(!$this->emailAlreadyAuthorized($staff->email)){ //check if the email is not authorized for another staff

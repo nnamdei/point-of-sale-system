@@ -11,9 +11,12 @@
 |
 */
 Auth::routes();
-
+Route::get('barcode/{content}','TestController@barcode');
 Route::get('system/status','SystemController@status')->name('system.status');
-
+Route::get('scanner',function(){
+    Session::put('scanner',request()->power);
+    echo json_encode(['status' => request()->power]);
+})->name('scanner.power');
 Route::group(['middleware' => ['system-status']], function(){
     Route::get('/', 'AppController@index')->name('index');
     Route::post('admin','AdminController@store')->name('admin.store');
@@ -30,6 +33,7 @@ Route::group(['middleware' => ['system-status','authorized']],function(){
 Route::group(['middleware' => ['system-status','authorized','check-shop','check-desk']],function(){
     Route::get('find','ProductController@find');
     Route::get('desk','DeskController@index')->name('desk');
+    Route::post('desk/scan','DeskController@scanBarcode')->name('product.scan');
     Route::get('desk/products','DeskController@products')->name('desk.products');
     Route::get('desk/product/{id}','DeskController@product')->name('desk.product');
     // Route::put('desk/product/{id}/sell','DeskController@recordSale')->name('desk.sale')->middleware('sales-disabled');
@@ -54,16 +58,19 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
     Route::put('password','UserController@updatePassword')->name('user.password.update');
 
     Route::resource('products','ProductController');
+    Route::post('product/{id}/barcode/attach','ProductController@attachBarcode')->name('product.barcode.attach');
+    Route::post('product/{id}/barcode/generate','ProductController@generateBarcode')->name('product.barcode.generate');
+    Route::get('product/barcode/{id}','ProductController@printBarcode')->name('product.barcode.print');
     Route::put('product/{id}/convert/simple','ProductController@convertToSimple')->name('product.to.simple');
     Route::put('product/{id}/convert/variable','ProductController@convertToVariable')->name('product.to.variable');
     Route::put('product/{id}/reset','ProductController@reset')->name('product.reset');
+    Route::put('/products/{id}/stock','ProductController@stock')->name('stock');
+    Route::post('/products/{id}/variables/add','ProductController@addVariables')->name('variables.add');
+    Route::delete('variants/{variant_id}/{index}','VariantController@removeSingleValue')->name('remove.value');
     
     Route::resource('categories','CategoryController');
     Route::resource('variants','VariantController');
 
-    Route::put('/products/{id}/stock','ProductController@stock')->name('stock');
-    Route::post('/products/{id}/variables/add','ProductController@addVariables')->name('variables.add');
-    Route::delete('variants/{variant_id}/{index}','VariantsController@removeSingleValue')->name('remove.value');
 
     Route::get('shop/{id}/lowstock','ShopController@lowStocks')->name('shop.low.stocks');
     Route::get('shop/{id}/setting','ShopController@edit')->name('shop.setting');

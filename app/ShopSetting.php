@@ -13,7 +13,8 @@ class ShopSetting extends Model
         'product_activation',
         'service_activation',
         'low_stock_warning_activation',
-        'low_stock'
+        'low_stock',
+        'scanner_activation',
     ];
 
     public function shop(){
@@ -30,6 +31,9 @@ class ShopSetting extends Model
     }
     public function serviceActivated(){
     return $this->service_activation == 1 ? true : false;
+    }
+    public function scannerActivated(){
+    return $this->scanner_activation == 1 ? true : false;
     }
     public function lowStockWarningActivated(){
     return $this->low_stock_warning_activation == 1 ? true : false;

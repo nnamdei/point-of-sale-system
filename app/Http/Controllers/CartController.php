@@ -12,12 +12,15 @@ use Session;
 use Carbon\Carbon;
 use App\CartDB;
 use App\Product;
+use App\Traits\CartTrait;
 use App\Inventory\StockManager;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 
 class CartController extends Controller
 {
+    use CartTrait;
+
     public function __construct(){
         $this->middleware('product-activated');
         $this->middleware('strictly-attendant');
@@ -28,62 +31,20 @@ class CartController extends Controller
         return view('cart.show')->with('cart',Cart::content());
     }
 
-    public function arrangeCart($request){
-        $product = Product::findorfail($request->product_id);
-        $quantity = 0;
-        $options = [];
-        $infeasibility = array();
-
-        if($product->isSimple()){
-            $rule['quantity'] = ['required','min: 1'];
-            $this->validate($request,$rule);
-            $feasibility = $product->saleFeasible($request->quantity);//check if the quantity is feasible to be sold
-            if($feasibility !== true){
-                array_push($infeasibility, 'Cannot add '.$request->quantity.' to cart, only '.$feasibility.' remaining');
-            }
-            $quantity = $request->quantity;
-        }
-        elseif($product->isVariable()){
-            foreach($product->variants as $variant){
-                $variable = $variant->variable;
-                $qty = $request->qty;
-                if($request->has($variable) && count($request->$variable) > 0){
-                    $options[$variant->variable] = array();
-                    foreach($request->$variable as $key => $value){
-                        if(isset($qty[$key]) && $qty[$key] != null && $qty[$key] > 0){
-                            $v_feasibility = $variant->saleFeasible($value,$qty[$key]);
-                            if($v_feasibility !== true){
-                                array_push($infeasibility, 'Cannot add '.$qty[$key].' of '.$value.' only '.$v_feasibility.' remaining');
-                            }else{
-                                $quantity += $qty[$key];
-                                $options[$variant->variable][$value] = (int) $qty[$key];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return [
-            'id' => $product->id,
-            'name' => $product->name,
-            'qty' => $quantity,
-            'price' => $product->selling_price,
-            'options' => $options,
-            'infeasibility' => $infeasibility
-        ];
-    }
-
     public function add(Request $request){
+        $this->validate($request,[
+            'product_id' => ['required'],
+            'quantity' => ['required','min: 1']
+        ]);
 
-        $cart_set_up = $this->arrangeCart($request);
-        // dd($cart_set_up);
+        $product = Product::findorfail($request->product_id);
+        $cart_set_up = $this->arrangeCart($product,$request->quantity);
+        //dd($cart_set_up);
         if(!empty($cart_set_up['infeasibility'])){
             return redirect()->back()->withErrors($cart_set_up['infeasibility']);
         }
-        $cart = Cart::add($cart_set_up['id'],$cart_set_up['name'],$cart_set_up['qty'],$cart_set_up['price'],$cart_set_up['options'])->associate('App\Product');
+        $cart = Cart::add($cart_set_up['id'],$cart_set_up['name'],$cart_set_up['qty'],$cart_set_up['price'],$cart_set_up['opts'])->associate('App\Product');
         return redirect()->back()->with('success',$cart_set_up['qty'].' of '.$cart_set_up['name'].' added to the cart');
-
     }
 
     public function update(Request $request){
@@ -147,6 +108,7 @@ class CartController extends Controller
             
             // add other details to the cart in the database
             $cart_db = CartDB::where('identifier',$cartID)->firstorfail();
+            $cart_db->shop_id = Auth::user()->shop->id;
             $cart_db->user_id = Auth::id();
             $cart_db->payment = request()->payment_method;
             $cart_db->created_at = now();
@@ -166,6 +128,7 @@ class CartController extends Controller
             {//if there are no errors in recording the sales
                     $receipt = PDF::loadView('desk.templates.sale-receipt', ['cart' => $cart_db,'contents' => Cart::content()]);//Load the receipt
                     Cart::destroy();
+                    session('scanner','off');
                     return $receipt->stream('receipt.pdf');
                 }
                 else{

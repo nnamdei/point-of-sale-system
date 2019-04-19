@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-8 no-padding-xs">
                 <div class="list-group">
                     <div class="list-group-item">
                         Shop: <a href="{{route('shop.show',[$product->shop->id])}}">{{$product->shop->name}}</a>
@@ -16,7 +16,6 @@
                                     {!!$product->variables()!!}
                                 </small>
                             @endif
-                        
                     </div>
                     <div class="list-group-item">
                         Category : @include('category.templates.category-name',['category' => $product->category_()])
@@ -45,9 +44,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="text-center">
+            <div class="col-sm-4 no-padding-xs">
+                <div class="text-center py-2">
                     <img src="{{$product->preview()}}" alt="{{$product->name}}" width="100%">
+                </div>
+                <div class="py-2">
+                    <h6 class="text-center"><i class="fa fa-barcode"></i> Barcode</h6>
+                    @include('product.widgets.barcode')
                 </div>
             </div>
         </div>

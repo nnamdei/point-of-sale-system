@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Variant;
 use App\Product;
-
+use App\Traits\BarcodeTrait;
 use App\Inventory\StockManager;
 use Illuminate\Http\Request;
 
 class VariantController extends Controller
 {
-
+    use BarcodeTrait;
+    
     public function __construct(){
         $this->middleware('manager');
     }
@@ -115,11 +116,13 @@ class VariantController extends Controller
         for($i=0; $i<count($request->new_values); $i++){//check for new values;
             if($request->new_values[$i] !== null && !is_numeric($request->new_values[$i])){
                 $_nv = str_replace('-','_',str_slug($request->new_values[$i]));
-                array_push($newValuesArray,$_nv);
-                $newValueStock = $request->new_stocks[$i] !== null && is_numeric($request->new_stocks[$i]) ? $request->new_stocks[$i] : 0;
-                array_push($newStocksArray,$newValueStock);
-                array_push($newSalesArray, 0);
-                $newStock +=  $newValueStock;
+                if(!in_array($_nv,$prevValuesArray)){ //if the value is not existing before
+                    array_push($newValuesArray,$_nv);
+                    $newValueStock = $request->new_stocks[$i] !== null && is_numeric($request->new_stocks[$i]) ? $request->new_stocks[$i] : 0;
+                    array_push($newStocksArray,$newValueStock);
+                    array_push($newSalesArray, 0);
+                    $newStock +=  $newValueStock;
+                }
             }
             
         }
@@ -130,6 +133,8 @@ class VariantController extends Controller
         $variant->stocks = join('|', $newStocksArray);
         $variant->sales = join('|', $newSalesArray);
         $variant->save();
+
+        $this->attachVariantBarcode($variant);
 
         $manager = new StockManager($variant->product->id);
         $manager->addStock($newStock);
@@ -160,6 +165,7 @@ class VariantController extends Controller
               array_splice($values,$i,1);
               array_splice($stocks,$i,1);
               array_splice($sales,$i,1);
+              $this->deleteVariantValueBarcode($variant,$value); //delete the corresponding barcode
             }
         }
         //if there are still other values
@@ -196,6 +202,8 @@ class VariantController extends Controller
         $variantStock = $variant->totalStock();
         $variantSale =  $variant->totalSale();
         $variant->delete();
+
+        $this->deleteVariantBarcodes($variant);
 
         $manager = new StockManager($variant->product->id);
         $manager->removeStock($variantStock);

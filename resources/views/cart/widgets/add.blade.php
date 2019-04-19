@@ -37,7 +37,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="" class="label-control">Quantity</label>
-                                                <input type="number" name="qty[]" class="form-control" onchange="javascript: checkQty(this)" placeholder="quantity..." required>
+                                                <input type="number" name="quantity[]" class="form-control" onchange="javascript: checkQty(this)" placeholder="quantity..." required>
                                             </div>
                                         </div>
                                     </div>
