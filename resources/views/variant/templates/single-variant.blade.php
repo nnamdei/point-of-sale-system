@@ -19,7 +19,7 @@
             @endif
         </div>
 
-        <div class="col-12">
+        <!-- <div class="col-12">
             <label for="">Stock</label>
             <input class="form-control" type="text" name="v_stocks" placeholder="stock seperated with |" value="{{$variant['stocks']}}">
             @if ($errors->has('v_stocks'))
@@ -27,7 +27,7 @@
                     <strong>{{ $errors->first('v_stocks') }}</strong>
                 </span>
             @endif
-        </div>
+        </div> -->
 
     </div>
 </div>

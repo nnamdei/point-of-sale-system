@@ -181,20 +181,14 @@ class StockManager{
                 'variant' => null
         );
 
-        if($request->variable !== null && $request->values !== null && $request->v_stocks !== null){//if any of the field is not null
-            $initSales = array();
+        if($request->variable !== null && $request->values !== null){//if any of the field is not null
+                $initSales = array();
             $values =  explode('|',$request->values);
-            $stocks = explode('|',$request->v_stocks);
-            if(count($values) === count($stocks)){
-                $response['variant'] = [
-                    'variable' => $request->variable,
-                    'values' => $values,
-                    'stocks' => $stocks,
-                ];
-            }
-            else{
-                $response['error'][] = "Variable ".$request->variable." could not be added: ".count($values)." values provided, but ".count($stocks)." stocks given"; 
-            }
+
+            $response['variant'] = [
+                'variable' => $request->variable,
+                'values' => $values,
+            ];
         }
         else{
             $response['warning'][] = "Some fields are missing for variant <strong>".$request->variable."</strong>";
@@ -220,35 +214,27 @@ class StockManager{
 
         if(isset($_v['variant'])){
                 $v = $_v['variant'];
+                $stocks = array();
                 $sales = array();
                 $variant = new Variant();
                 $variant->product_id = $product->id;
 
                 $normalizedValues = array_map(function($value){ 
                     return str_replace('-','_',str_slug($value));
-                },$v['values']);
-                
-                $normalizedStocks = array();
-                $totalStock = 0;
-                for($i = 0; $i<count($v['stocks']); $i++){
-                    if(is_numeric($v['stocks'][$i])){
-                        array_push($normalizedStocks, $v['stocks'][$i]);
-                        $response['success'][] = "<strong>".$v['stocks'][$i]." ".$v['variable']." ".$v['values'][$i]."</strong> of  <strong>$product->name</strong> added";
-                        $totalStock += $v['stocks'][$i];
-                    }else{//if string was provided, change it to zero
-                        array_push($normalizedStocks, 0);
-                        $response['warning'][] = "stock input for <strong>".$v['values'][$i]."</strong> is invalid, <strong>0</strong> used instead";
-                     }
-                     array_push($sales, 0);
+                },$v['values']);//strip off white spaces
+
+                for($i = 0; $i<count($v['values']); $i++){
+                    array_push($stocks, 0);
+                    array_push($sales, 0);
                 }
-                //couple back the values, stocks and sales
+                //couple back the values, and stocks
                 $variant->variable = str_replace('-','_',str_slug($v['variable']));
                 $variant->values = join('|',$normalizedValues);
-                $variant->stocks = join('|',$normalizedStocks);
+                $variant->stocks = join('|',$stocks);
                 $variant->sales = join('|',$sales);
                 $variant->save();
-                $this->addStock($totalStock);
-                $response['success'][] = "$totalStock total stocks added to ".$product->name;    
+                
+                $response['success'][] = $product->name.' added successfully and '.count($v['values']).' variants added';    
         }
         else{
             $response['info'][] = "No variable was added to <strong>$product->name</strong>";

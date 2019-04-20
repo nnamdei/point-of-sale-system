@@ -93,40 +93,28 @@ class VariantController extends Controller
         }
 
         $rules = array();
-        $prevValuesArray = $variant->values();
-        $newValuesArray = array();
+        $newValuesArray = $variant->values();
         $newStocksArray = $variant->stocks();
         $newSalesArray = $variant->sales();
 
-        foreach($prevValuesArray as $value){
-            $rules[$value] = 'required|string';//validating each of the previous field, this way, the new value array will still be consistent
-            if(!is_numeric($request->$value)){
-                $_v = str_replace('-','_',str_slug($request->$value));
-                array_push($newValuesArray,$_v); //push the new value name
-            }
-            else{//push the formal value
-                array_push($newValuesArray,$value);
-            }
-           
-        }
-        $this->validate($request, $rules, ['required' => 'one or more values is/are invalid','string' => 'values can only contain alphabet or alphanumeric']);
         $feedback = "variant <strong>$variant->variable</strong> updated.";
-        $newStock = 0;
-
-        for($i=0; $i<count($request->new_values); $i++){//check for new values;
-            if($request->new_values[$i] !== null && !is_numeric($request->new_values[$i])){
-                $_nv = str_replace('-','_',str_slug($request->new_values[$i]));
-                if(!in_array($_nv,$prevValuesArray)){ //if the value is not existing before
-                    array_push($newValuesArray,$_nv);
+        if(count($request->new_values) > 0){ //if there are new values
+            $newStock = 0;
+            for($i=0; $i<count($request->new_values); $i++){//check for new values;
+                if($request->new_values[$i] !== null && !is_numeric($request->new_values[$i])){
+                    $_nv = str_replace('-','_',str_slug($request->new_values[$i]));
                     $newValueStock = $request->new_stocks[$i] !== null && is_numeric($request->new_stocks[$i]) ? $request->new_stocks[$i] : 0;
-                    array_push($newStocksArray,$newValueStock);
-                    array_push($newSalesArray, 0);
-                    $newStock +=  $newValueStock;
+                    if(!in_array($_nv,$newValuesArray)){ //if the value is not existing before
+                        array_push($newValuesArray,$_nv);
+                        array_push($newStocksArray,$newValueStock);
+                        array_push($newSalesArray, 0);
+                        $newStock +=  $newValueStock;
+                    }
                 }
+                
             }
-            
+            $feedback .= $newStock > 0 ? " <strong>$newStock</strong> more stock added to ".$variant->product->name."" : '';
         }
-        $feedback .= $newStock > 0 ? " <strong>$newStock</strong> more stock added to ".$variant->product->name."" : '';
 
         $variant->variable = $request->variable;
         $variant->values = join('|', $newValuesArray);
@@ -134,7 +122,9 @@ class VariantController extends Controller
         $variant->sales = join('|', $newSalesArray);
         $variant->save();
 
-        $this->attachVariantBarcode($variant);
+        if($variant->product->barcodes->count() > 0){ //if the product has barcodes already, regenerate it to include the new variant value
+            $this->attachVariantBarcode($variant);
+        }
 
         $manager = new StockManager($variant->product->id);
         $manager->addStock($newStock);
