@@ -28,7 +28,7 @@ class ProductController extends Controller
         
         public function __construct(){
             $this->middleware('product-activated');
-            $this->middleware('manager')->except(['find','show','index']);
+            $this->middleware('manager')->except(['find','show','index','printBarcode']);
         }  
 
         public function find(Request $request)

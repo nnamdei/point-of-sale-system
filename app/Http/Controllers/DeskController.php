@@ -80,6 +80,7 @@ class DeskController extends Controller
         ]);
         $cart = null;
         $product = null;
+        $quantity = 1;
 
         $barcode = Barcode::where('barcode_content',$request->content)->first();
         if($barcode == null){
@@ -92,7 +93,6 @@ class DeskController extends Controller
             $id = (int) $content[0];
             $product = Product::find($id);
             $option = array();
-            $quantity = 1;
     
             if($product == null){
                 return redirect()->back()->with('barcode_error', '<strong>FAILED!</strong> Product not found');
@@ -105,7 +105,7 @@ class DeskController extends Controller
                             if(!isset($content[$i])){
                                 return redirect()->route('desk.cart')->with('barcode_error','<strong>FAILED! </strong>'.$variant->variable.' of '.$product->name.' could be read'); 
                             }
-                            $option[$variant->variable][$content[$i]] = 1;
+                            $option[$variant->variable][$content[$i]] = $quantity;
                         }
                     }
                 }
@@ -114,7 +114,17 @@ class DeskController extends Controller
         }
         elseif($barcode->isAttached()){
             $product = $barcode->product;
-            $cart = $this->arrangeCart($product,1);
+            $cart = $this->arrangeCart($product,$quantity);
+        }
+
+        if($product != null){
+            $alreadyInCart = $product->inCart();
+            if($alreadyInCart != null){ //if the product was found in the cart
+                $totalNow = $alreadyInCart->qty + $quantity;
+                if($product->saleFeasible($totalNow) !== true){ //check if more can still be added
+                    return redirect()->back()->with('barcode_error','Limit of '.$product->name.' reached! All remaining '.$product->remaining().' already in cart');
+                }
+            }
         }
 
         if($product !== null && $cart !== null){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use PDF;
 use Auth;
 use DateTime;
 use App\Sale;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Inventory\FusionCharts;
 use App\Inventory\Transaction;
+use App\Inventory\StockManager;
 
 class TransactionController extends Controller
 {
@@ -55,6 +57,7 @@ class TransactionController extends Controller
         }
 
     }
+
     public function saleReceipt($ref){
 
         $cart = CartDB::where('identifier',$ref)->first();
@@ -75,6 +78,18 @@ class TransactionController extends Controller
         }
         $summary['total'] = $summary['subtotal'] + $summary['tax'];
  
+        if(request()->get('print') != null && request()->get('print') == 'true'){ //reprint the receipt
+            $receipt = PDF::loadView('desk.templates.sale-receipt',
+                 [
+                    'cart' => $cart,
+                    'contents' => $contents,
+                    'tax' => $summary['tax'],
+                    'total' => $summary['total'],
+                    'attendant' => $cart->user() == null ? 'Nil' : $cart->user()->profile()->fullname()
+                ]);//Load the receipt
+                return $receipt->stream('receipt.pdf');
+        }
+
         return view('transactions.receipts.sale')->with('ref', $ref)
                                 ->with('cart', $cart)
                                 ->with('summary',$summary)
@@ -89,6 +104,28 @@ class TransactionController extends Controller
         }
         return view('transactions.receipts.service')->with('ref',$ref)
                                                     ->with('service_record', $record);
+    }
+
+    public function revokeSale($id){
+        $sale = Sale::find($id);
+        if($sale == null){
+            return redirect()->back()->with('error', 'Sale record not found');
+        }
+        $product = $sale->product();
+        $m = new StockManager($product->id);
+        if($product->isSimple()){
+            $m->removeSale($sale->quantity);
+        }
+        elseif($product->isVariable()){
+            $cart = $sale->cart;
+            foreach(unserialize($cart->content) as $item){//go through the cart
+                if($item->id == $product->id){
+                    $m->updateVariableSales($sale->cart->id,$item,$remove = true);
+                }
+            }
+        }
+        $sale->delete();
+        return redirect()->back()->with('success',$sale->product()->name.' sale revoked');
     }
 
 }

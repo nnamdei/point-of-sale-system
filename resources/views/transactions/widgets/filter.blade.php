@@ -2,7 +2,7 @@
 <?php
     $today = new DateTime();
 ?>
-    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#_sales" class="btn btn-outline-secondary btn-sm m-1" ><span class="badge badge-success">{{$today->format('d/m')}}</span> Today </a>
+    <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>#_sales" class="btn btn-outline-secondary btn-sm m-1" ><span class="badge theme-bg">{{$today->format('d/m')}}</span> Today </a>
     <button class="btn btn-outline-secondary btn-sm m-1" data-toggle="collapse" data-target="#day-filter" aria-expanded="false" aria-controls="#day-filter"><i class="fa fa-calendar"></i> A Specific Day</button>
     <button class="btn btn-outline-secondary btn-sm m-1" data-toggle="collapse" data-target="#period-filter" aria-expanded="false" aria-controls="#period-filter"><i class="fa fa-calendar-alt"></i> Range of Period</button>
     <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?'); ?>?all=1#sales" class="btn btn-outline-secondary btn-sm m-1" >All</a>

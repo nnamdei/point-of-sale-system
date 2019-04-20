@@ -30,12 +30,12 @@
             <tr>
                 <td></td>
                 <td>Tax</td>
-                <td class="text-right">{{Cart::tax()}}</td>
+                <td class="text-right">{{$tax}}</td>
             </tr>
             <tr>
                 <td></td>
                 <th>Total</th>
-                <th class="text-right">{{Cart::total()}}</th>
+                <th class="text-right">{{$total}}</th>
             </tr>
         </table>
     @else

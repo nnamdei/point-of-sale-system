@@ -48,7 +48,7 @@
 
 <body>
     <div class="text-center">
-        <div><strong>{{Auth::user()->shop->name}}</strong></div>
+        <div><strong style="font-size: 1.1rem">{{Auth::user()->shop->name}}</strong></div>
         <div>{{Auth::user()->shop->address}}</div>
         <div> {{Auth::user()->shop->email}}</div>
         <div>{{Auth::user()->shop->phone}}</div>
@@ -63,21 +63,28 @@
         @yield('service')
     </div>
 
-<div style="margin-top: 20px">
-    <div>
-        <small>Attendant: {{Auth::user()->profile()->fullname()}}</small>
+
+    <div style="margin-top: 20px">
+        <div>
+            Attendant: {{$attendant}}
+        </div>
+        <div>
+            Payment: {{$service_record->payment}}
+        </div>
+        <div>
+            Issued: {{$service_record->created_at->toDayDateTimeString()}}
+        </div>
     </div>
-    <div>
-        <small>Payment: {{$service_record->payment}}</small>
+    <div style="margin-top: 15px">
+        <div>
+            <h5 class="text-center">Thank you for your patronage</h5>
+            <small><i>***Any alteration renders this receipt invalid</i></small>
+        </div>
+        <div class="container text-right">
+            <small>printed: {{ \Carbon\Carbon::now()->toDayDateTimeString() }}</small>
+        </div>
     </div>
-    <div class="container text-right">
-        <small>{{ \Carbon\Carbon::now()->toDayDateTimeString() }}</small>
-    </div>
-    <div>
-        <p class="text-center">Thank you for your patronage</p>
-        <small><i>***Any alteration renders this receipt invalid</i></small>
-    </div>
-</div>
+
 </body>
 
 </html>

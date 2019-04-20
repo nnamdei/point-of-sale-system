@@ -24,7 +24,7 @@
                 </div>
             @endif
        </div>
-       @if($services_w instanceof \Illuminate\Pagination\LengthAwarePaginator )
+       @if($service_w_collection instanceof \Illuminate\Pagination\LengthAwarePaginator )
         <div class="card-footer">
             {{$services_w->links()}}
         </div>

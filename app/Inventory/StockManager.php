@@ -50,8 +50,7 @@ class StockManager{
 
     public function addSale($cart_id,$item){
         $product = Product::find($this->product_id);
-        $remaining = $product->remaining() - $item->qty;
-        if($remaining < 0 ){
+        if($item->qty > $product->remaining()){
             return ['error' => ["$item->qty sales of $product->name not feasible, only <strong>".$product->remaining()."</strong> remaining"]];
         }
          else{
@@ -60,7 +59,16 @@ class StockManager{
             $this->sale(Auth::id(),$product->id,$cart_id,$product->selling_price,$item->qty);
             return ['success' => ["$item->qty sales added to $product->name"]];
          }
+    }
+    
+    public function removeSale($qty){
+        $product = Product::find($this->product_id);
+        $product->sale = $product->sale - $qty;
+        $product->save();
 
+        $this->action(Auth::id(),$product->id,3,$product->selling_price,$qty);
+
+        return ['success' => ["$qty sales removed from $product->name"]];
     }
 
     public function removeStock($qty){
@@ -74,15 +82,7 @@ class StockManager{
     }
     
 
-    public function removeSale($qty){
-        $product = Product::find($this->product_id);
-        $product->stock = $product->sale - $qty;
-        $product->save();
 
-        $this->action(Auth::id(),$product->id,3,$product->selling_price,$qty);
-
-        return ['success' => ["$qty sales removed from $product->name"]];
-    }
 
     public function updateVariableStocks($request){
 
@@ -120,7 +120,7 @@ class StockManager{
 
     
     // update the sales from an item in the cart
-    public function updateVariableSales($cart_id,$item){
+    public function updateVariableSales($cart_id,$item, $remove = false){
         $response = array(
                         'error' => array(),
                         'success' => array(),
@@ -140,30 +140,41 @@ class StockManager{
                         $newSales = array();
                         for($i = 0; $i<count($values); $i++){
                             $qty = isset($variable[$values[$i]]) ? $variable[$values[$i]] : null;
-                            if($qty !== null){
-                                if($remainings[$i] - $qty < 0){
-                                    $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
-                                    array_push($newSales,$sales[$i]);
-                                }else{
-                                     $s = $sales[$i]+$qty;
+                            if($qty !== null){ 
+                                if(!$remove){ //if adding, not removing
+                                    if($remainings[$i] - $qty < 0){
+                                        $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
+                                        array_push($newSales,$sales[$i]);
+                                    }else{
+                                        $s = $sales[$i]+$qty;
+                                        array_push($newSales,$s);
+                                        $response['success'][] = $item->qty." of ".$product->name." sold";
+                                    }
+                                }
+                                else{ //removing sale...
+                                    $s = $sales[$i]-$qty;
                                     array_push($newSales,$s);
-                                    $response['success'][] = $item->qty." of ".$product->name." sold";
+                                    $this->removeSale($qty);
+                                    $response['success'][] = $qty." sale of ".$values[$i].' of '.$product->name." removed";
                                 }
                             }
-                            else{
+                            else{ //push the old value
                                 array_push($newSales,$sales[$i]);
                             }
                         }
                         $variant->sales = join('|',$newSales);
                         $variant->save();
+
                         if(empty($response['error'])){
-                            $this->addSale($cart_id,$item);
+                            if(!$remove){
+                                $this->addSale($cart_id,$item);
+                            }
                         }
-                        return $response;
                     }
                 }
             }
         }
+        return $response;
     }
     
 

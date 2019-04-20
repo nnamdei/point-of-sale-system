@@ -126,9 +126,9 @@ class CartController extends Controller
             }
             if(empty($sale['error']))
             {//if there are no errors in recording the sales
-                    $receipt = PDF::loadView('desk.templates.sale-receipt', ['cart' => $cart_db,'contents' => Cart::content()]);//Load the receipt
+                    $receipt = PDF::loadView('desk.templates.sale-receipt', ['cart' => $cart_db,'contents' => Cart::content(), 'tax' => Cart::tax(), 'total' => Cart::total(),'attendant' => Auth::user()->profile()->fullname()]);//Load the receipt
                     Cart::destroy();
-                    session('scanner','off');
+                    session('scanner','off'); //turn off the scanner
                     return $receipt->stream('receipt.pdf');
                 }
                 else{

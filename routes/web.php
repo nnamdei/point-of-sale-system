@@ -52,6 +52,7 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
 
     Route::get('transactions','TransactionController@index')->name('transactions');
     Route::get('receipt','TransactionController@verifyReceipt')->name('receipt.verify');
+    Route::delete('transaction/sale/{id}/revoke', 'TransactionController@revokeSale')->name('sale.revoke');
 
     Route::resource('staff','StaffController');
     Route::get('password','UserController@editPassword')->name('user.password.edit');

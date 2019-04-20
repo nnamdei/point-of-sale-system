@@ -28,6 +28,7 @@
                         <th class="text-center">Price</th>
                         <th class="text-center">Quantity</th>
                         <th class="text-center">Total</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +57,11 @@
                                                 @endforeach
                                             @endif                                        
                                         </div>
-                                    
+                                        @if($cart->sale($item->id)->trashed())
+                                            <div class="ml-auto">
+                                                <i class="fa fa-times text-danger" style="font-size: 30px" data-toggle="tooltip" title="sale revoked {{$cart->sale($item->id)->deleted_at->toDayDateTimeString()}}"></i>
+                                            </div>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="text-center">&#8358; {{number_format($item->price)}}</td>
@@ -64,6 +69,15 @@
                                     {{number_format($item->qty)}}
                                 </td>
                                 <td class="text-center">{{number_format($item->total)}}</td>
+                                <td class="text-right">
+                                    @if(!$cart->sale($item->id)->trashed())
+                                        <form action="{{route('sale.revoke',[$cart->sale($item->id)->id])}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="revoke sale"><i class="fa fa-times"></i></button>
+                                        </form>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     @else
@@ -112,6 +126,9 @@
                         </tr>
 
                     </table>
+                    <div class="text-right">
+                        <a href="{{route('receipt.verify',['receipt' => 'sale', 'ref' => $ref, 'print' => 'true'])}}" class="btn btn-sm theme-btn" data-toggle="tooltip" title="print receipt"><i class="fa fa-print"></i></a>
+                    </div>
             @else
                 <div class="grey text-center">
                     <h1><i class="fa fa-exclamation-triangle"></i></h1>
