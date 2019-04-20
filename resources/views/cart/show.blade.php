@@ -62,6 +62,7 @@
                         <td>
                             <div class="d-flex">
                                 <div>
+                                    <img src="{{$item->model->preview()}}" alt="" width="50px" height="50px" class="product-preview">
                                     <a href="{{route('desk.product',[$item->model->id])}}">{{$item->name}}</a> 
                                     @if(count($item->options) > 0)
                                         @foreach($item->options as $variant => $variable)

@@ -9,7 +9,7 @@
         // Set the Options for "Bloodhound" suggestion engine
         var engine = new Bloodhound({
             remote: {
-                url: '/find?q=%QUERY%',
+                url: '{{route('product.find')}}?q=%QUERY%',
                 wildcard: '%QUERY%'
             },
             datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
@@ -41,7 +41,6 @@
                             result += '<div class="row align-items-center">';
                                 result += '<div class="col-4">';
                                     result += '<img class="product-preview" src="'+ROOT+(data.preview == null ? '/storage/images/products/default.png' : '/storage/images/products/'+data.preview)+'" width="80px" height="80px">';
-                                    result += data.barcode != null ? '<div class="text-center text-muted"><small>'+data.barcode.serial+'<small></div>': '';
                                 result += '</div>';
                                 result += '<div class="col-8">';
                                     result += '<strong class="product-name"><a href="{{route('products.index')}}/'+data.id+'">'+data.name+'</a> </strong>';
@@ -51,6 +50,16 @@
                                         result += '<div class="col-6"> <span class="badge badge-success">&#8358;'+data.selling_price+'</span></div>';
                                         result += '<div class="col-6">Available: <span class="badge theme-bg">'+(data.stock - data.sale)+'</span>  </div>';
                                     result += '</div>';
+                                    if(data.barcodes.length > 0){
+                                        for(var i=0;i<data.barcodes.length; ++i){
+                                            if(data.barcodes[i].src == 'generated'){
+                                                result += '<div class="text-center text-muted"><small>'+data.barcodes[i].serial+'<small></div>';
+                                            }else if(data.barcodes[i].src == 'attached'){
+                                                result += '<div class="text-center text-muted"><small>'+data.barcodes[i].barcode_content+'<small></div>';
+                                            }
+                                        }
+                                    }
+
                                 result += '</div>';
                             result += '</div>';
                     result += '</div>';

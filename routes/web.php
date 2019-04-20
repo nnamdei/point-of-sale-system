@@ -31,7 +31,7 @@ Route::group(['middleware' => ['system-status','authorized']],function(){
 });
     
 Route::group(['middleware' => ['system-status','authorized','check-shop','check-desk']],function(){
-    Route::get('find','ProductController@find');
+    Route::get('find','ProductController@find')->name('product.find');
     Route::get('desk','DeskController@index')->name('desk');
     Route::post('desk/scan','DeskController@scanBarcode')->name('product.scan');
     Route::get('desk/products','DeskController@products')->name('desk.products');
@@ -60,6 +60,7 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
     Route::resource('products','ProductController');
     Route::post('product/{id}/barcode/attach','ProductController@attachBarcode')->name('product.barcode.attach');
     Route::post('product/{id}/barcode/generate','ProductController@generateBarcode')->name('product.barcode.generate');
+    Route::delete('product/{id}/barcode/remove','ProductController@removeBarcode')->name('product.barcode.remove');
     Route::get('product/barcode/{id}','ProductController@printBarcode')->name('product.barcode.print');
     Route::put('product/{id}/convert/simple','ProductController@convertToSimple')->name('product.to.simple');
     Route::put('product/{id}/convert/variable','ProductController@convertToVariable')->name('product.to.variable');

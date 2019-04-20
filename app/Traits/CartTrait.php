@@ -14,7 +14,7 @@ trait CartTrait
         if($product->isSimple()){
             $feasibility = $product->saleFeasible($quantity);//check if the quantity is feasible to be sold
             if($feasibility !== true){
-                array_push($infeasibility, 'Cannot add '.$quantity.' to cart, only '.$feasibility.' remaining');
+                array_push($infeasibility, 'Cannot add '.$quantity.' of '.$product->name.' to cart, only '.$feasibility.' remaining');
             }
             $qty = $quantity;
         }
@@ -30,7 +30,7 @@ trait CartTrait
                             if(isset($quantity[$key]) && $quantity[$key] != null && $quantity[$key] > 0){
                                 $v_feasibility = $variant->saleFeasible($value,$quantity[$key]);
                                 if($v_feasibility !== true){
-                                    array_push($infeasibility, 'Cannot add '.$quantity[$key].' of '.$value.' only '.$v_feasibility.' remaining');
+                                    array_push($infeasibility, 'Cannot add '.$quantity[$key].' of '.$value.' of '.$product->name.'. Only '.$v_feasibility.' remaining');
                                 }else{
                                     $qty += $quantity[$key];
                                     $opts[$variant->variable][$value] = (int) $quantity[$key];
@@ -44,6 +44,10 @@ trait CartTrait
                 $opts = $options;
             }
            
+        }
+
+        if(!$product->sellingPriceSet()){
+            array_push($infeasibility, 'Cannot add '.$product->name.' to cart. Selling price not set yet ');
         }
 
         return [

@@ -220,7 +220,6 @@ class ProductController extends Controller
             $product->preview = isset($upload->slugs[0]) ? $upload->slugs[0] : null;
         }
         $product->save();
-        $this->attachProductBarcode($product);
        
         $manager = new StockManager($product->id);
         if($product->isSimple()){
@@ -244,8 +243,12 @@ class ProductController extends Controller
            ] 
         );
         $product = Product::findorfail($id);
+        $barcode = Barcode::where('barcode_content', $request->content)->get();
+        if($barcode->count() > 0){ //check if the barcode is not attached to another product already
+            return redirect()->back()->with('barcode_error', 'Barcode already attached to '.$barcode->count().' product '.$barcode->first()->name.'<a href="'.route('products.show',$barcode->first()->product->id).'">'.$barcode->first()->product->name.'</a>');
+        }
         if($this->attachBarcodeFromProduct($product, $request->content) != null){
-            return redirect()->back()->with(['success' => 'Barcode attached to '.$product->name, 'scanner' => 'off']);
+            return redirect()->back()->with(['barcode_success' => 'Barcode attached to '.$product->name, 'scanner' => 'off']);
         }
 
     }
@@ -263,6 +266,18 @@ class ProductController extends Controller
        $barcode = Barcode::findorfail($id);
        $code = PDF::loadView('product.barcode', ['barcode' => $barcode]);
        return $code->stream($barcode->read().'.pdf');
+    }
+
+    public function removeBarcode($id){
+        $product = Product::findorfail($id);
+        if($product->barcodes->count() > 0){
+            foreach($product->barcodes as $barcode){
+                $barcode->delete();
+            }
+            return redirect()->back()->with('success',$product->name.' barcodes removed');
+        }
+        return redirect()->back()->with('warning',$product->name.' does not have any barcode yet');
+
     }
 
     /**

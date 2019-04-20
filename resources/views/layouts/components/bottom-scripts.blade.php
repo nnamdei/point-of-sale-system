@@ -27,10 +27,16 @@
 <!-- Extra scripts -->
 <script>
  SCANNER_ON = false;
- scanner_active_sound = new Audio('{{asset('storage/assets/buzz.mp3')}}');
 
  @if(session('scanner') == 'on')//check from laravel session if scanner should still be on
  	onScanner($('.barcode-scanner'));
+ @endif
+ @if(session('barcode_error'))//if there is error in scanning
+ 	buzzSound();
+	toastr.error('{!!session('barcode_error')!!}')
+ @endif
+ @if(session('barcode_success'))//if there is error in scanning
+	toastr.success('{!!session('barcode_success')!!}')
  @endif
    
 $('.scanner-toggle').click(function(){
@@ -59,18 +65,16 @@ $('.scanner-receptor').blur(function(){
 });
 
 
-function turnOnSound(sound, repeat = false){
-	var playPromise = sound.play().then(function(){
+function turnOnSound(sound, start = 0, repeat = false){
+	sound.currentTime = start;
+	sound.play().then(function(){
 		if(repeat){
 			sound.addEventListener('ended', function(){
 			this.currentTime = 0;
 			this.play();
 			});
 		}
-	},
-	function(){//if promise rejected
-		// sound.play()
-	});
+	})
 	
 }
 function turnOffSound(sound){
@@ -78,6 +82,10 @@ function turnOffSound(sound){
 	sound.pause();
 }
 
+function buzzSound(){
+	buzz = new Audio('{{asset('storage/assets/buzz.mp3')}}');
+	turnOnSound(buzz,7);
+}
 function onScanner(scanner){
 	setScannerStatus('on',function(response){
 		SCANNER_ON = true;
@@ -88,7 +96,7 @@ function onScanner(scanner){
 		scanner.find('.scanner-aud').attr('src','');
 		scanner.find('.scanner-status').html('ON');
 		scanner.find('.scanner-toggle').addClass('fa-toggle-on');
-		turnOnSound(scanner_active_sound, repeat = true);
+		// turnOnSound(scanner_active_sound, repeat = true);
 		// toastr.success('scanner turned on');
 	})
 }
@@ -101,7 +109,7 @@ function offScanner(scanner){
 		scanner.find('.scanner-img').removeAttr('active');
 		scanner.find('.scanner-status').html('OFF')
 		scanner.find('.scanner-toggle').removeClass('fa-toggle-on').addClass('fa-toggle-off');
-		turnOffSound(scanner_active_sound);
+		// turnOffSound(scanner_active_sound);
 		toastr.success('Scanner turned off!');
 	});
 }

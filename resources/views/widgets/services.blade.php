@@ -2,7 +2,7 @@
     <div class="card">
        <div class="card-header">
        <h6>{{isset($services_w_title) ? $services_w_title: 'Services' }}</h6>
-         @if(Auth::user()->isAdminOrManager())
+        @if(Auth::user()->isAdminOrManager())
             <div class="text-right">
                 <a href="{{route('service.create')}}" class="btn btn-outline-secondary btn-sm" >
                     <i class="fa fa-plus-circle"></i>  Add New Service
@@ -23,8 +23,12 @@
                       No service found
                 </div>
             @endif
-
        </div>
+       @if($services_w instanceof \Illuminate\Pagination\LengthAwarePaginator )
+        <div class="card-footer">
+            {{$services_w->links()}}
+        </div>
+        @endif
    </div>
 
 

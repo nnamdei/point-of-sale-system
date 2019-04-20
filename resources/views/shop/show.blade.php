@@ -2,7 +2,7 @@
 @section('styles')
 <style>
     .shop-products-services .card-body{
-        max-height:80vh;
+        max-height:70vh;
         overflow: auto;
     }
 </style>
@@ -96,19 +96,19 @@
         </ul>
         <div class="tab-content" id="myTabContent" style="overflow: auto">
             <div class="tab-pane fade {{request()->get('tab') == null || request()->get('tab') == 'products' ? 'show active' : ''}}" id="shop-products" role="tabpanel" aria-labelledby="shop-products-tab">
-                    @include('widgets.products',['products_w_title' => 'Products in '.$shop->name, 'products_w' => $shop->products])
+                    @include('widgets.products',['products_w_title' => 'Products in '.$shop->name.' ('.$shop->products->count().')', 'products_w' => $shop->products()->orderBy('created_at','desc')->paginate(5)])
             </div>
             <!--Table Tab-->
 
             <div class="tab-pane fade {{request()->get('tab') == 'services' ? 'show active' : ''}}" id="shop-services" role="tabpanel" aria-labelledby="shop-services-tab">
-                @include('widgets.services',['services_w_title' => 'Services in '.$shop->name, 'services_w' => $shop->services])
+                @include('widgets.services',['services_w_title' => 'Services in '.$shop->name.' ('.$shop->services->count().')', 'services_w' => $shop->services()->orderBy('created_at','desc')->paginate(5)])
             </div> 
             <!-- Stock chart tab -->
         </div>
         @elseif($shop->setting->productActivated())
-            @include('widgets.products',['products_w_title' => 'Products in '.$shop->name, 'products_w' => $shop->products])
+            @include('widgets.products',['products_w_title' => 'Products in '.$shop->name.' ('.$shop->products->count().')', 'products_w' => $shop->products()->orderBy('created_at','desc')->paginate(5)])
         @elseif($shop->setting->serviceActivated())
-            @include('widgets.services',['services_w_title' => 'Services in '.$shop->name, 'services_w' => $shop->services])
+            @include('widgets.services',['services_w_title' => 'Services in '.$shop->name.' ('.$shop->services->count().')', 'services_w' => $shop->services()->orderBy('created_at','desc')->paginate(5)])
         @endif
     </div>
 

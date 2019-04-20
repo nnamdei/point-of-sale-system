@@ -24,6 +24,7 @@ class Product extends Model
             'categories.name' => 10,
             'products.selling_price' => 10,
             'barcodes.serial' => 10,
+            'barcodes.barcode_content' => 10,
         ],
         'joins' => [
             'categories' => ['products.category_id', 'categories.id'],

@@ -1,8 +1,10 @@
-<?php $product_w_collection = isset($products_w) ? $products_w : Auth::user()->shop->products()->orderBy('created_at','desc')->take(10)->get() ?>
+<?php
+ $product_w_collection = isset($products_w) ? $products_w : Auth::user()->shop->products()->orderBy('created_at','desc')->take(10)->get();
+?>
     <div class="card">
        <div class="card-header">
        <h6>{{isset($products_w_title) ? $products_w_title: 'Recent Products' }}</h6>
-         @if(Auth::user()->isAdminOrManager())
+        @if(Auth::user()->isAdminOrManager())
             <div class="text-right">
                 <a href="{{route('products.create')}}" class="btn btn-outline-secondary btn-sm" >
                     <i class="fa fa-plus-circle"></i>  Add New Product
@@ -23,8 +25,12 @@
                       No product found
                 </div>
             @endif
-
        </div>
+       @if($products_w instanceof \Illuminate\Pagination\LengthAwarePaginator )
+        <div class="card-footer">
+            {{$products_w->links()}}
+        </div>
+        @endif
    </div>
   
 

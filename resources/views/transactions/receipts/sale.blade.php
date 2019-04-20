@@ -38,6 +38,7 @@
                                     <div class="d-flex">
                                         <div>
                                             @if($item->model != null)
+                                                <img src="{{$item->model->preview()}}" alt="" width="50px" height="50px" class="product-preview">
                                                 <a href="{{route('products.show',[$item->model->id])}}">{{$item->name}}</a> 
                                             @else
                                                 <div>

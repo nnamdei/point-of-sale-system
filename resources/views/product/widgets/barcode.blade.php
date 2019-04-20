@@ -4,12 +4,22 @@
         <div class="text-center mb-1">
             <img src="data:image/png;base64,{{$barcode->barcode}}" alt="barcode" class="barcode"/>
             <div>
-                {{$barcode->serial}} {{$barcode->attribute}}
-                <a href="{{route('product.barcode.print',[$barcode->id])}}" class="btn theme-btn btn-sm" data-toggle="" title="print barcode"><i class="fa fa-print"></i></a>
+                @if($barcode->isGenerated())
+                    {{$barcode->serial}} {{$barcode->attribute}}
+                @elseif($barcode->isAttached())
+                    {{$barcode->barcode_content}}
+                @endif
+                <a href="{{route('product.barcode.print',[$barcode->id])}}" class="btn theme-btn btn-sm" title="print barcode"><i class="fa fa-print"></i></a>
             </div>
-            
         </div>
     @endforeach
+</div>
+<div class="text-right">
+    <form action="{{route('product.barcode.remove',[$product->id])}}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="remove barcodes"><i class="fa fa-times"></i></button>
+    </form>
 </div>
 @else
     <div class="text-center">
