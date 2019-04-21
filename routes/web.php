@@ -90,6 +90,7 @@ Route::group(['middleware' => 'superadmin'],function(){
     Route::get('system','SystemController@setup')->name('system');
     Route::put('system','SystemController@update')->name('system.update');
     Route::get('system/clear-cache','SystemController@clearSystemCache')->name('system.cache.clear');
+    Route::post('system/artisan','SystemController@runArtisan')->name('system.artisan.run');
 });
 
 

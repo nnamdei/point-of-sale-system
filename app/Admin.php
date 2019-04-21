@@ -11,11 +11,11 @@ class Admin extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'user_id', 'firstname', 'lastname', 'email','level'
+         'firstname', 'lastname', 'email','level'
     ];
 
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->hasOne('App\User');
     }
 
 

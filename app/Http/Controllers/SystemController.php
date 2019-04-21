@@ -17,6 +17,10 @@ class SystemController extends Controller
     public function __construct(){
         $this->middleware('superadmin')->except(['status']);
     }
+    private function verifyPassword($password){
+        $superadmin = Admin::where('level', 'superadmin')->first();
+        return Hash::check($password, $superadmin->user->password) ? true : false;
+    }
     
     public function status(){
         $software = Software::first();
@@ -34,7 +38,7 @@ class SystemController extends Controller
             'status' => ['required'],
             'password' => ['required']
         ]);
-        if(Hash::check($request->password, Auth::user()->password)){
+        if($this->verifyPassword($request->password)){
             $software = Software::first();
             $software->package = $request->package;
             $software->status = $request->status;
@@ -53,5 +57,20 @@ class SystemController extends Controller
         Artisan::call('route:clear');
         Artisan::call('view:clear');
         return redirect()->back()->with('info','System cache cleared!');
+    }
+
+    public function runArtisan(Request $request){
+        $this->validate($request,[
+            'command' => 'required',
+        ]);
+
+        try {
+            
+            Artisan::call($request->command, [$request->parameter => $request->value]);
+        } catch (\Exception $e) {
+            return "<pre>$request->command</pre><p style='color: red'>".$e->getMessage()."</p>";
+        }
+        return "<pre>$request->command</pre><p style='color: green'>Success</p>";
+        return redirect()->back()->with('error', 'Failed!');
     }
 }
