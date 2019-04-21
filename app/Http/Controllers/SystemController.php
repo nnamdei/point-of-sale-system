@@ -64,9 +64,16 @@ class SystemController extends Controller
             'command' => 'required',
         ]);
 
+        $parameters = array();
+        if(count($request->parameter) > 0){
+            for($i = 0;$i< count($request->parameter); ++$i){
+                if($request->parameter[$i] != null && $request->value[$i] != null){
+                    $parameters[$request->parameter[$i]] = $request->value[$i];
+                }
+            }
+        }
         try {
-            
-            Artisan::call($request->command, [$request->parameter => $request->value]);
+            Artisan::call($request->command,$parameters);
         } catch (\Exception $e) {
             return "<pre>$request->command</pre><p style='color: red'>".$e->getMessage()."</p>";
         }

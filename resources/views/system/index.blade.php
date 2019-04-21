@@ -11,6 +11,7 @@
             background-color: #eee
         }
         .command{
+            font-family: Courier;
             border-radius: 0;
             padding: 20px;
             background-color: #f7f7f7;
@@ -24,7 +25,8 @@
         </div>
         <div class="row justify-content-center mt-3 white">
             <div class="col-md-4 col-sm-8 no-padding-xs">
-
+                <a href="{{route('index')}}" class="btn btn-sm"><i class="fa fa-home"></i> Index</a>
+                <a href="{{route('system.cache.clear')}}" class="btn btn-sm"><i class="fa fa-sync"></i> clear system cache</a>
                 <form action="{{route('system.artisan.run')}}" method="post" autofill="off" > 
                     @csrf
                     <div>
@@ -32,21 +34,43 @@
                         <input type="text" class="form-control command" name="command" placeholder="artisan command..." value="{{old('command')}}" required>
                         <div class="row my-2">
                             <div class="col-6">
-                                <input type="text" class="form-control command" name="parameter" placeholder="parameter..." value="{{old('parameter')}}">
+                                <input type="text" class="form-control command" name="parameter[]" placeholder="parameter..." value="{{old('parameter')}}">
                             </div>
                             <div class="col-6">
-                                <input type="text" class="form-control command" name="value" placeholder="value..." value="{{old('value')}}">
+                                <input type="text" class="form-control command" name="value[]" placeholder="value..." value="{{old('value')}}">
                             </div>
                         </div>
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="parameter[]" placeholder="parameter..." value="{{old('parameter')}}">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="value[]" placeholder="value..." value="{{old('value')}}">
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="parameter[]" placeholder="parameter..." value="{{old('parameter')}}">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="value[]" placeholder="value..." value="{{old('value')}}">
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="parameter[]" placeholder="parameter..." value="{{old('parameter')}}">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control command" name="value[]" placeholder="value..." value="{{old('value')}}">
+                            </div>
+                        </div>
+                        
                     </div>
                     
                     <div class="form-group text-center">
                         <button type="submit" class="btn">Run >>></button>
                     </div>
                 </form>
-                <a href="{{route('system.cache.clear')}}" class="btn btn-sm"><i class="fa fa-sync"></i> clear system cache</a>
-                <a href="{{route('index')}}" class="btn btn-sm"><i class="fa fa-home"></i> Index</a>
-
             </div>
             <div class="col-md-4 col-sm-8 no-padding-xs">
                 <form action="{{route('system.update')}}" method="POST">
