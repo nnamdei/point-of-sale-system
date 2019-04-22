@@ -32,7 +32,7 @@ trait CartTrait
                                 if($v_feasibility !== true){
                                     array_push($infeasibility, 'Cannot add '.$quantity[$key].' of '.$value.' of '.$product->name.'. Only '.$v_feasibility.' remaining');
                                 }else{
-                                    $qty += $quantity[$key];
+                                    $qty += (int) $quantity[$key];
                                     $opts[$variant->variable][$value] = (int) $quantity[$key];
                                 }
                             }
@@ -41,6 +41,7 @@ trait CartTrait
                 }
             }
             else{
+                $qty = $quantity;
                 $opts = $options;
             }
            

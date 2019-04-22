@@ -143,7 +143,7 @@ class StockManager{
                             if($qty !== null){ 
                                 if(!$remove){ //if adding, not removing
                                     if($remainings[$i] - $qty < 0){
-                                        $response['error'][] = "Sale not feasible, only $remainings[$i] remains";
+                                        $response['error'][] = "Sale of ".$values[$i]." of ".$product->name." not feasible, only $remainings[$i] remains";
                                         array_push($newSales,$sales[$i]);
                                     }else{
                                         $s = $sales[$i]+$qty;

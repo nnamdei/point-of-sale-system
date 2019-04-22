@@ -39,7 +39,7 @@ trait BarcodeTrait
     }
 
     protected function getBarcode($content){
-       return DNS1D::getBarcodePNG($content, "C39",.7,30);
+       return DNS1D::getBarcodePNG($content, "C39+",1.5,30);
     }
 
     protected function attachProductBarcode($product){
