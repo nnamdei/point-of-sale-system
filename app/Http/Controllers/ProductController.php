@@ -233,53 +233,6 @@ class ProductController extends Controller
         }
     }
 
-    // Attached a scanned barcode to a product
-    public function attachBarcode(Request $request, $id){
-        $this->validate($request,[
-            'content' => 'required'
-        ],
-           [
-               'required' => 'Barcode scan failed!'
-           ] 
-        );
-        $product = Product::findorfail($id);
-        $barcode = Barcode::where('barcode_content', $request->content)->get();
-        if($barcode->count() > 0){ //check if the barcode is not attached to another product already
-            return redirect()->back()->with('barcode_error', 'Barcode already attached to '.$barcode->count().' product '.$barcode->first()->name.'<a href="'.route('products.show',$barcode->first()->product->id).'">'.$barcode->first()->product->name.'</a>');
-        }
-        if($this->attachBarcodeFromProduct($product, $request->content) != null){
-            return redirect()->back()->with(['barcode_success' => 'Barcode attached to '.$product->name, 'scanner' => 'off']);
-        }
-
-    }
-
-    public function generateBarcode($id){
-        $product = Product::findorfail($id);
-        $barcodes = $this->attachProductBarcode($product);
-        if($barcodes->count() > 0){
-            return redirect()->back()->with('success', 'Barcode generated for '.$product->name);
-        }
-        return redirect()->back()->with('error', 'Barcode generation for '.$product->name.' failed');
-    }
-
-    public function printBarcode($id){
-       $barcode = Barcode::findorfail($id);
-       $code = PDF::loadView('product.barcode', ['barcode' => $barcode]);
-       return $code->stream($barcode->read().'.pdf');
-    }
-
-    public function removeBarcode($id){
-        $product = Product::findorfail($id);
-        if($product->barcodes->count() > 0){
-            foreach($product->barcodes as $barcode){
-                $barcode->delete();
-            }
-            return redirect()->back()->with('success',$product->name.' barcodes removed');
-        }
-        return redirect()->back()->with('warning',$product->name.' does not have any barcode yet');
-
-    }
-
     /**
      * Display the specified resource.
      *

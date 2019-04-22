@@ -89,7 +89,7 @@
 			<!-- Right side nav -->
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<div class="px-2">@include('desk.widgets.barcode-scanner',['action' => route('product.scan')])</div>
+					<div class="px-2">@include('desk.widgets.barcode-scanner',['action' => route('scan.to.cart')])</div>
 				</li>
 				<li class="nav-item">
 					@include('desk.widgets.cart')
