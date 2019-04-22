@@ -113,7 +113,7 @@
         @endforeach
     @else
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <div class="py-2 text-center text-muted">
                     <h2><i class="fa fa-exclamation-triangle"></i></h2>
                     No sale

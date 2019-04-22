@@ -9,6 +9,7 @@ use App\Shop;
 use App\Staff;
 use Illuminate\Http\Request;
 use App\Inventory\Transaction;
+use App\Matto\FileUpload;
 use App\Events\StaffAuthorization;
 
 
