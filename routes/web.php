@@ -63,7 +63,7 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
 
     Route::put('/products/{id}/stock','ProductController@stock')->name('stock');
     Route::post('/products/{id}/variables/add','ProductController@addVariables')->name('variables.add');
-    Route::delete('variants/{variant_id}/{index}','VariantsController@removeSingleValue')->name('remove.value');
+    Route::delete('variants/{variant_id}/{index}','VariantController@removeSingleValue')->name('remove.value');
 
     Route::get('shop/{id}/lowstock','ShopController@lowStocks')->name('shop.low.stocks');
     Route::get('shop/{id}/setting','ShopController@edit')->name('shop.setting');
