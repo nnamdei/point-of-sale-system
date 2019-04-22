@@ -106,21 +106,23 @@ class TransactionController extends Controller
                                                     ->with('service_record', $record);
     }
 
-    public function revokeSale($id){
+    public function revokeSale(Request $request,$id){
         $sale = Sale::find($id);
         if($sale == null){
             return redirect()->back()->with('error', 'Sale record not found');
         }
         $product = $sale->product();
         $m = new StockManager($product->id);
-        if($product->isSimple()){
-            $m->removeSale($sale->quantity);
-        }
-        elseif($product->isVariable()){
-            $cart = $sale->cart;
-            foreach(unserialize($cart->content) as $item){//go through the cart
-                if($item->id == $product->id){
-                    $m->updateVariableSales($sale->cart->id,$item,$remove = true);
+        if($request->deduct_sales != null){
+            if($product->isSimple()){
+                $m->removeSale($sale->quantity);
+            }
+            elseif($product->isVariable()){
+                $cart = $sale->cart;
+                foreach(unserialize($cart->content) as $item){//go through the cart
+                    if($item->id == $product->id){
+                        $m->updateVariableSales($sale->cart->id,$item,$remove = true);
+                    }
                 }
             }
         }

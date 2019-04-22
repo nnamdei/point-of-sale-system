@@ -8,7 +8,11 @@
                     <div class="inputs-container">
                         <div class="form-group">
                             <label for="" class="label-control">Quantity</label>
-                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add" onchange="javascript: checkQty(this)" required>
+                            <div class="text-center text-muted">
+                                <h6><i class="fa fa-info-circle"></i> Input negative value to remove stocks</h6>
+                            </div>
+
+                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add" required>
                         </div>
                     </div>
 
@@ -23,7 +27,7 @@
                         @foreach($product->variants as $variant)
                             <h5 class="text-center theme-bg py-2">{{$variant->variable}}</h5>
                             <div class="text-center text-muted">
-                                <h6><i class="fa fa-info-circle"></i> Input 0 where no stock is been added to any {{$variant->variable}}</h6>
+                                <h6><i class="fa fa-info-circle"></i> Input 0 where no stock is been added to any {{$variant->variable}}, or negative value to remove stock</h6>
                             </div>
                             <input type="hidden" name="v_id" value="{{$variant->id}}">
                             @foreach($variant->values() as $value)

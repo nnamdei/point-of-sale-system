@@ -71,11 +71,23 @@
                                 <td class="text-center">{{number_format($item->total)}}</td>
                                 <td class="text-right">
                                     @if(!$cart->sale($item->id)->trashed())
-                                        <form action="{{route('sale.revoke',[$cart->sale($item->id)->id])}}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="revoke sale"><i class="fa fa-times"></i></button>
-                                        </form>
+                                        <button type="submit" class="btn btn-sm btn-danger" data-toggle="collapse" data-target="#revoke-sale-{{$cart->sale($item->id)->id}}-collapse">
+                                            <i class="fa fa-times" data-toggle="tooltip" title="revoke sale"></i>
+                                        </button>
+                                        <div class="collapse p-2" id="revoke-sale-{{$cart->sale($item->id)->id}}-collapse" data-parent="body">
+                                            <form action="{{route('sale.revoke',[$cart->sale($item->id)->id])}}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="deduct_sales" name="deduct_sales" value="true">
+                                                        <label class="custom-control-label" for="deduct_sales"> Deduct <strong>{{$cart->sale($item->id)->quantity}}</strong> from total sales</label>
+                                                    </div>
+                                                    <p class="text-muted"><i class="fa fa-info-circle"></i> By deducting <strong>{{$cart->sale($item->id)->quantity}}</strong> from total sales, <strong>{{$cart->sale($item->id)->quantity}}</strong> will also be added to total remaining</p>
+                                                </div>
+                                                <button type="submit" class="btn btn-sm btn-danger">Revoke sale</button>
+                                            </form>
+                                        </div>
                                     @endif
                                 </td>
                             </tr>
