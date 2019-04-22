@@ -35,7 +35,7 @@
             <tr>
                 <td></td>
                 <th>Total</th>
-                <th class="text-right">{{$total}}</th>
+                <th class="text-right">N {{number_format($total)}}</th>
             </tr>
         </table>
     @else

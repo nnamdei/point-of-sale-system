@@ -16,8 +16,8 @@ class BarcodeController extends Controller
     use BarcodeTrait;
 
     public function __construct(){
-        // $this->middleware('premium');
-        // $this->middleware('manager')->except(['addToCartWithScanner']);
+        $this->middleware('premium');
+        $this->middleware('manager')->except(['addToCartWithScanner']);
     }
 
     public function addToCartWithScanner(Request $request){
