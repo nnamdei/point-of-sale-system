@@ -55,15 +55,15 @@ class CartController extends Controller
         if($item == null){
             return redirect()->back()->with('error',"The item was not found in the cart");
         }
-        
-        $cart_update = $this->arrangeCart($request);
+
+        $cart_update = $this->arrangeCart($item->model, $request->quantity);
 
         if(!empty($cart_update['infeasibility'])){
             return redirect()->back()->withErrors($cart_update['infeasibility']);
         }
 
         $update = Cart::update(request()->row_id, ['qty' => $cart_update['qty']]);
-        $update->options = $cart_update['options'];
+        $update->options = $cart_update['opts'];
         return redirect()->back()->with('success', $cart_update['name'].' updated in the cart');
 
     }

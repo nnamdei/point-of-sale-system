@@ -162,14 +162,14 @@ class StockManager{
                                 array_push($newSales,$sales[$i]);
                             }
                         }
-                        $variant->sales = join('|',$newSales);
-                        $variant->save();
-
                         if(empty($response['error'])){
                             if(!$remove){
                                 $this->addSale($cart_id,$item);
                             }
                         }
+                            
+                        $variant->sales = join('|',$newSales);
+                        $variant->save();
                     }
                 }
             }
