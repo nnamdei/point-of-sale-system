@@ -190,6 +190,9 @@
 							<a href="{{route('user.password.edit')}}" class="dropdown-item"><i class="fa fa-key theme-color"></i> Edit password</a>
 							<div class="dropdown-divider"></div>
 
+							<a href="{{route('backup.index')}}" class="dropdown-item"><i class="fa fa-database theme-color"></i> Backup</a>
+							<div class="dropdown-divider"></div>
+
 							@if(Auth::user()->isSuperAdmin())
 								<a href="{{route('system')}}" class="dropdown-item"><i class="fa fa-cog theme-color"></i> System ({{$_software::first()->status}})</a>
 								<div class="dropdown-divider"></div>

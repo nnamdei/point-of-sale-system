@@ -85,6 +85,12 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
     Route::post('service/{id}/record','ServiceRecordController@record')->name('service.record');
 
 });
+Route::group(['middleware' => 'admin'], function(){
+    Route::get('backup', 'BackupController@index')->name('backup.index');
+    Route::get('backup/create', 'BackupController@create')->name('backup.create');
+    Route::get('backup/download/{file_name}', 'BackupController@download')->name('backup.download');
+    Route::get('backup/delete/{file_name}', 'BackupController@delete')->name('backup.delete');
+});
 
 Route::group(['middleware' => 'superadmin'],function(){
     Route::get('system','SystemController@setup')->name('system');
@@ -92,5 +98,7 @@ Route::group(['middleware' => 'superadmin'],function(){
     Route::get('system/clear-cache','SystemController@clearSystemCache')->name('system.cache.clear');
     Route::post('system/artisan','SystemController@runArtisan')->name('system.artisan.run');
 });
+
+
 
 

@@ -63,6 +63,7 @@ class SystemController extends Controller
         $this->validate($request,[
             'command' => 'required',
         ]);
+        $outputs = [];
 
         $parameters = array();
         if(count($request->parameter) > 0){
@@ -74,10 +75,12 @@ class SystemController extends Controller
         }
         try {
             Artisan::call($request->command,$parameters);
+            $outputs[] = Artisan::output();
         } catch (\Exception $e) {
-            return "<pre>$request->command</pre><p style='color: red'>".$e->getMessage()."</p>";
+            $outputs[] = $e->getMessage();
         }
-        return "<pre>$request->command</pre><p style='color: green'>Success</p>";
+        return view('system.index')->with('outputs',$outputs)->with('system',Software::first());
+
         return redirect()->back()->with('error', 'Failed!');
     }
 }
