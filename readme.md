@@ -27,7 +27,7 @@ This application is for managing goods or products and their sales. It can be us
 - Sales receipts are now reprintable as many times as you want. meanwhile the issued date will still be maintained on the receipt
 
 ## New in V2.2
-- Backup Feature. You can now backup your data - both code base and database in a zip file for future restoration if need arises. Backup credit: [spatie/laravel-backup]https://github.com/spatie/laravel-backup)
+- Backup Feature. You can now backup your data - both code base and database in a zip file for future restoration if need arises. Backup credit: [spatie/laravel-backup](https://github.com/spatie/laravel-backup)
 
 ## Installation
 Run 

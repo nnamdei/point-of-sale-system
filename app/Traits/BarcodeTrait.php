@@ -11,7 +11,7 @@ trait BarcodeTrait
 {
 
     protected function generateUniqueSerial($product){
-        $serial = substr($product->shop->name,0,1).$product->id.rand(100000,999999);
+        $serial = substr($product->shop->name,0,1).'-'.$product->id.'-'.rand(100,999).'-'.rand(1000,9999).'-'.rand(100,999).'-'.rand(10,99);
         if(Barcode::where('serial',$serial)->count() > 0){ //confirm that the serial is not existing already
             return $this->generateUniqueSerial($product);
         }
@@ -28,8 +28,9 @@ trait BarcodeTrait
             $product_serial = $this->generateUniqueSerial($product);
         }
         foreach($variant->values() as $value){
+            $content = $product->id.'$'.$value;
             $serials[] = [
-                        'content' => $product_serial.'$'.$value,
+                        'content' => $content,
                         'serial' => $product_serial,
                         'attribute' => '['.$variant->variable.':'.$value.']',
                     ];
@@ -44,13 +45,14 @@ trait BarcodeTrait
     protected function attachProductBarcode($product){
         $barcodes = array();
         if($product->isSimple()){
+            $content = $product->id;
             $serial = $this->generateUniqueSerial($product);
-            $barcode = $this->getBarcode($serial);
+            $barcode = $this->getBarcode($content);
             $barcodes[] = Barcode::create([
                 'product_id' => $product->id,
                 'serial' => $serial,
                 'barcode' => $barcode,
-                'barcode_content' => $serial,
+                'barcode_content' => $content,
             ]);
            
         }
@@ -89,7 +91,7 @@ trait BarcodeTrait
                 'serial' => $serial['serial'],
                 'attribute' => $serial['attribute'],
                 'barcode' => $barcode,
-                'barcode_content' => $serial['content']
+                'barcode_content' => $serial['content'],
                 ]);
             }
         }
