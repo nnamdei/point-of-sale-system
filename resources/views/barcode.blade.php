@@ -1,14 +1,18 @@
-@extends('layouts.plain')
-@section('main')
-    <div class="bg-white p-5">
-        <div class="text-center">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Barcode - {{$serial}}</title>
+        <style>
+            /* @page { size: 25mm 25mm  } */
+        </style>
+    </head>
+    <body>
+        <div style="text-align: center">
             <img src="data:image/png;base64,{{$barcode}}" alt="barcode" class="barcode"/>
             <div>
-            {{$serial}}
+                {{$serial}}
             </div>
-        </div>
-        <div class="mt-2">
-            <input type="text" class="form-control" autofocus>
-        </div>
-    </div>
-@endsection
+        </div> 
+    </body>
+</html>
+

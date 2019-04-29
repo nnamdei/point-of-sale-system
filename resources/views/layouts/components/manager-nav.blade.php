@@ -190,6 +190,9 @@
 							<a href="{{route('user.password.edit')}}" class="dropdown-item"><i class="fa fa-key theme-color"></i> Edit password</a>
 							<div class="dropdown-divider"></div>
 
+							<a href="{{route('barcode.generate')}}" class="dropdown-item"><i class="fa fa-barcode theme-color"></i> Generate barcode</a>
+							<div class="dropdown-divider"></div>
+
 							<a href="{{route('backup.index')}}" class="dropdown-item"><i class="fa fa-database theme-color"></i> Backup</a>
 							<div class="dropdown-divider"></div>
 

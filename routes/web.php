@@ -11,7 +11,7 @@
 |
 */
 Auth::routes();
-Route::get('barcode/{content}','TestController@barcode');
+
 Route::get('system/status','SystemController@status')->name('system.status');
 Route::get('scanner',function(){
     Session::put('scanner',request()->power);
@@ -85,7 +85,8 @@ Route::group(['middleware' => ['system-status','authorized','check-shop','check-
     Route::post('service/{id}/record','ServiceRecordController@record')->name('service.record');
 
 });
-Route::group(['middleware' => 'admin'], function(){
+Route::group(['middleware' => ['system-status','authorized', 'admin']], function(){
+    Route::get('barcode/generate','BarcodeController@generateRandomBarcode')->name('barcode.generate');
     Route::get('backup', 'BackupController@index')->name('backup.index');
     Route::get('backup/create', 'BackupController@create')->name('backup.create');
     Route::get('backup/download/{file_name}', 'BackupController@download')->name('backup.download');
