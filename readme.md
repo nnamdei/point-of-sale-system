@@ -21,6 +21,11 @@ This application is for managing goods or products and their sales. It can be us
 - Aesthaetic control. You can now set the color of shops different, cool isn't it???
 - Control Low stocks notification. You can now choose to enable low stock warning and also specify the number of remaining to be considered as low
 
+## New in V2.1
+- Barcode. Barcode are now available. You can now attach barcode to product or generate one if product doesn't have. You can now also use barcode scanner to add product to cart. Barcode credit: [milon/barcode](https://github.com/milon/barcode)
+- sales can now be revoked.
+- Sales receipts are now reprintable as many times as you want. meanwhile the issued date will still be maintained on the receipt
+
 ## Installation
 Run 
 ```

@@ -9,7 +9,7 @@
         // Set the Options for "Bloodhound" suggestion engine
         var engine = new Bloodhound({
             remote: {
-                url: '/find?q=%QUERY%',
+                url: '{{route('product.find')}}?q=%QUERY%',
                 wildcard: '%QUERY%'
             },
             datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
@@ -31,25 +31,35 @@
                 empty: [
                     '<div class="list-group search-results-dropdown"><div class="list-group-item"><i class="fa fa-exclamation-triangle"></i> No product found</div></div>'
                 ],
-                pending: '<div class="list-group-item search-results-dropdown text-center">Hold on, searching...<div class="py-3 text-center"><img src="'+ROOT+'/storage/images/assets/loading.gif'+'" height="70px"></div></div>',
+                pending: '<div class="list-group-item search-results-dropdown text-center">Hold on, searching...<div class="py-3 text-center"><img src="{{asset('storage/assets/loading.gif')}}" height="70px"></div></div>',
                 header: [
                     '<div  class="search-result-container"><strong><i class="fa fa-search"></i> Results Found...</strong></div>'
                 ],
                 suggestion: function (data) {
 
                     var result = '<div class="search-result">';
-                            result += '<div class="row">';
+                            result += '<div class="row align-items-center">';
                                 result += '<div class="col-4">';
                                     result += '<img class="product-preview" src="'+ROOT+(data.preview == null ? '/storage/images/products/default.png' : '/storage/images/products/'+data.preview)+'" width="80px" height="80px">';
                                 result += '</div>';
                                 result += '<div class="col-8">';
-                                    result += '<strong class="product-name"><a href="'+ROOT+'/product/'+data.id+'">'+data.name+'</a> </strong>';
-                                    result += '<small class="grey">in '+data.category.name+'</small><br>';
-                                    result += '<small>'+(data.description == null ? '<span class="text-danger">no description</span>' : data.description) +'</small>';
+                                    result += '<strong class="product-name"><a href="{{route('products.index')}}/'+data.id+'">'+data.name+'</a> </strong>';
+                                    result += '<small class="text-muted">in '+data.category.name+'</small><br>';
+                                    result += data.description != null ? '<small>'+data.description+'</small>' : '';
                                     result += '<div class="row">';
                                         result += '<div class="col-6"> <span class="badge badge-success">&#8358;'+data.selling_price+'</span></div>';
-                                        result += '<div class="col-6">Available: <span class="badge badge-secondary">'+(data.stock - data.sale)+'</span>  </div>';
+                                        result += '<div class="col-6">Available: <span class="badge theme-bg">'+(data.stock - data.sale)+'</span>  </div>';
                                     result += '</div>';
+                                    if(data.barcodes.length > 0){
+                                        for(var i=0;i<data.barcodes.length; ++i){
+                                            if(data.barcodes[i].src == 'generated'){
+                                                result += '<div class="text-center text-muted"><small>'+data.barcodes[i].serial+'<small></div>';
+                                            }else if(data.barcodes[i].src == 'attached'){
+                                                result += '<div class="text-center text-muted"><small>'+data.barcodes[i].barcode_content+'<small></div>';
+                                            }
+                                        }
+                                    }
+
                                 result += '</div>';
                             result += '</div>';
                     result += '</div>';
@@ -60,7 +70,12 @@
         }).bind('typeahead:select', function(ev, suggestion) {
             $(this).typeahead('val',suggestion.name)
         }); 
+
+
+
     }); 
+
+
 </script>
 
 <!-- Extra script that should live in the head -->

@@ -97,7 +97,7 @@
 							<div class="dropdown-divider"></div>
 							@if(Auth::user()->shop->products->count() > 0)
 								<div style="max-height: 70vh; overflow: auto">
-									@foreach(Auth::user()->shop->products()->take(10)->get() as $p)
+									@foreach(Auth::user()->shop->products()->orderBy('created_at','desc')->take(10)->get() as $p)
 										<a class="dropdown-item" href="{{route('products.show',[$p->id])}}">
 											<div class="d-flex">
 												<img class="product-preview" src="{{$p->preview()}}" alt="{{$p->name}}" width="40px" height="40px">
@@ -151,7 +151,7 @@
 							<div class="dropdown-divider"></div>
 							@if(Auth::user()->shop->services->count() > 0)
 								<div style="max-height: 70vh; overflow: auto">
-									@foreach(Auth::user()->shop->services()->take(10)->get() as $s)
+									@foreach(Auth::user()->shop->services()->orderBy('created_at','desc')->take(10)->get() as $s)
 										<a class="dropdown-item" href="{{route('service.show',[$s->id])}}"><i class="fa fa-toolbox theme-color"></i> {{$s->name}} <small>({{number_format($s->price)}})</small></a>
 										<div class="dropdown-divider"></div>
 									@endforeach
@@ -188,6 +188,12 @@
 							@endif
 
 							<a href="{{route('user.password.edit')}}" class="dropdown-item"><i class="fa fa-key theme-color"></i> Edit password</a>
+							<div class="dropdown-divider"></div>
+
+							<a href="{{route('barcode.generate')}}" class="dropdown-item"><i class="fa fa-barcode theme-color"></i> Generate barcode</a>
+							<div class="dropdown-divider"></div>
+
+							<a href="{{route('backup.index')}}" class="dropdown-item"><i class="fa fa-database theme-color"></i> Backup</a>
 							<div class="dropdown-divider"></div>
 
 							@if(Auth::user()->isSuperAdmin())

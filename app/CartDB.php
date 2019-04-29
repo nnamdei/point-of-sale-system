@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Sale;
 use Illuminate\Database\Eloquent\Model;
 
 class CartDB extends Model
@@ -15,6 +16,11 @@ class CartDB extends Model
     
     public function attendant(){
         return $this->user() == null ? null : $this->user()->profile();
+    }
+
+    //get the sale record of an item in the cart
+    public function sale($product_id){
+        return Sale::withTrashed()->where([['cart_id', $this->id],['product_id',$product_id]])->first();
     }
 
 }

@@ -93,13 +93,13 @@
 
                 $period = $from_explained->format('D dS M, Y')." - ".$to_explained->format('D dS M, Y');
             
-                $sales = Sale::where('product_id',$product_id)
-                            ->whereBetween('created_at',[$this->from, $this->to])
+                $sales = Sale::withTrashed()->where('product_id',$product_id)
+                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                             ->OrderBy('created_at','desc')
                             ->get();
 
                 $activities = Action::where('product_id',$product_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->OrderBy('created_at','desc')
                                     ->get();
             }
@@ -108,7 +108,7 @@
                 $day = $date->format('Y-m-d');
                 $period = $date->format('D dS M, Y ');
 
-                $sales = Sale::where('product_id',$product_id)
+                $sales = Sale::withTrashed()->where('product_id',$product_id)
                             ->whereDate('created_at',$date)
                             ->OrderBy('created_at','desc')
                             ->get();
@@ -121,7 +121,7 @@
         elseif($this->all == 1){
             $period = 'All';
 
-            $sales = Sale::where('product_id',$product_id)
+            $sales = Sale::withTrashed()->where('product_id',$product_id)
                         ->OrderBy('created_at','desc')
                         ->get();
 
@@ -134,7 +134,7 @@
                     $today = $today_date->format('Y-m-d');
                     $period = "Today: ".date('D dS M, Y ',time());
 
-                    $sales = Sale::where('product_id',$product_id)
+                    $sales = Sale::withTrashed()->where('product_id',$product_id)
                                 ->whereDate('created_at',$today)
                                 ->OrderBy('created_at','desc')
                                 ->get();
@@ -163,45 +163,45 @@
 
                 $period = $from_explained->format('D dS M, Y')." - ".$to_explained->format('D dS M, Y');
             
-                $sales = Sale::where('user_id',$user_id)
-                            ->whereBetween('created_at',[$this->from, $this->to])
+                $sales = Sale::withTrashed()->where('user_id',$user_id)
+                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                             ->OrderBy('created_at','desc')
                             ->get();
 
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                             ->where('user_id',$user_id)
-                            ->whereBetween('created_at',[$this->from, $this->to])
+                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                             ->groupBy('product_id')
                             ->orderBy('total','desc')
                             ->first();
 
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                             ->where('user_id',$user_id)
-                            ->whereBetween('created_at',[$this->from, $this->to])
+                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                             ->groupBy('product_id')
                             ->orderBy('total','asc')
                             ->first();
 
                 $activities = Action::where('user_id',$user_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->OrderBy('created_at','desc')
                                     ->get();
 
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('user_id',$user_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->groupBy('product_id')
                                     ->orderBy('total','desc')
                                     ->get();
 
                 $service_records = ServiceRecord::where('user_id',$user_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->OrderBy('created_at','desc')
                                     ->get();
 
                 $servicesChartData = ServiceRecord::select(DB::raw('sum(paid) as total,service_id'))
                                         ->where('user_id',$user_id)
-                                        ->whereBetween('created_at',[$this->from, $this->to])
+                                        ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                         ->groupBy('service_id')
                                         ->orderBy('total','desc')
                                         ->get();
@@ -212,19 +212,19 @@
                 $day = $date->format('Y-m-d');
                 $period = $date->format('D dS M, Y ');
 
-                $sales = Sale::where('user_id',$user_id)
+                $sales = Sale::withTrashed()->where('user_id',$user_id)
                             ->whereDate('created_at',$date)
                             ->OrderBy('created_at','desc')
                             ->get();
 
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->whereDate('created_at',$day)
                                 ->groupBy('product_id')
                                 ->orderBy('total','desc')
                                 ->first();
 
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->whereDate('created_at',$day)
                                 ->groupBy('product_id')
@@ -236,7 +236,7 @@
                                     ->OrderBy('created_at','desc')
                                     ->get();
 
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('user_id',$user_id)
                                     ->whereDate('created_at',$date)
                                     ->groupBy('product_id')
@@ -259,17 +259,17 @@
         elseif($this->all == 1){
             $period = 'All';
 
-            $sales = Sale::where('user_id',$user_id)
+            $sales = Sale::withTrashed()->where('user_id',$user_id)
                         ->OrderBy('created_at','desc')
                         ->get();
             
-            $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+            $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                         ->where('user_id',$user_id)
                         ->groupBy('product_id')
                         ->orderBy('total','desc')
                         ->first();
 
-            $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+            $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                             ->where('user_id',$user_id)
                             ->groupBy('product_id')
                             ->orderBy('total','asc')
@@ -279,7 +279,7 @@
                                 ->OrderBy('created_at','desc')
                                 ->get();
 
-            $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+            $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->groupBy('product_id')
                                 ->orderBy('total','desc')
@@ -300,19 +300,19 @@
                     $today = $today_date->format('Y-m-d');
                     $period = "Today: ".date('D dS M, Y ',time());
 
-                    $sales = Sale::where('user_id',$user_id)
+                    $sales = Sale::withTrashed()->where('user_id',$user_id)
                                 ->whereDate('created_at',$today)
                                 ->OrderBy('created_at','desc')
                                 ->get();
 
-                    $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                    $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->whereDate('created_at',$today)
                                 ->groupBy('product_id')
                                 ->orderBy('total','desc')
                                 ->first();
 
-                    $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                    $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->whereDate('created_at',$today)
                                 ->groupBy('product_id')
@@ -325,7 +325,7 @@
                                 ->OrderBy('created_at','desc')
                                 ->get();
                     
-                    $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                    $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('user_id',$user_id)
                                 ->whereDate('created_at',$today)
                                 ->groupBy('product_id')
@@ -367,7 +367,7 @@
             $period = $from_explained->format('D dS M, Y')." - ".$to_explained->format('D dS M, Y');
         
             $service_records = ServiceRecord::where('service_id',$service_id)
-                        ->whereBetween('created_at',[$this->from, $this->to])
+                        ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                         ->OrderBy('created_at','desc')
                         ->get();
         }
@@ -416,13 +416,13 @@
             $period = $from_explained->format('D dS M, Y')." - ".$to_explained->format('D dS M, Y');
         
             $service_records = ServiceRecord::where('staff_id',$staff_id)
-                                ->whereBetween('created_at',[$this->from, $this->to])
+                                ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                 ->OrderBy('created_at','desc')
                                 ->get();
 
             $servicesChartData = ServiceRecord::select(DB::raw('sum(paid) as total,service_id'))
                                     ->where('staff_id',$staff_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->groupBy('service_id')
                                     ->orderBy('total','desc')
                                     ->get();
@@ -493,45 +493,45 @@
                 $to_explained = new DateTime($this->to);
                 $period = $from_explained->format('D dS M, Y')." - ".$to_explained->format('D dS M, Y');
               
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                         ->where('shop_id',$shop_id)
-                                        ->whereBetween('created_at',[$this->from, $this->to])
+                                        ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                         ->groupBy('product_id')
                                         ->orderBy('total','desc')
                                         ->first();
         
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                         ->where('shop_id',$shop_id)
-                                        ->whereBetween('created_at',[$this->from, $this->to])
+                                        ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                         ->groupBy('product_id')
                                         ->orderBy('total','asc')
                                         ->first();
         
-                $sales = Sale::where('shop_id',$shop_id)
-                                    ->whereBetween('created_at',[$this->from, $this->to])
+                $sales = Sale::withTrashed()->where('shop_id',$shop_id)
+                                    ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                     ->OrderBy('created_at','desc')
                                     ->get();
     
                 $activities = Action::where('shop_id',$shop_id)
-                                            ->whereBetween('created_at',[$this->from, $this->to])
+                                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                              ->OrderBy('created_at','desc')
                                              ->get();
                                                       
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                             ->where('shop_id',$shop_id)
-                                            ->whereBetween('created_at',[$this->from, $this->to])
+                                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                              ->groupBy('product_id')
                                              ->orderBy('total','desc')
                                              ->get();
 
                 $service_records = ServiceRecord::where('shop_id',$shop_id)
-                                            ->whereBetween('created_at',[$this->from, $this->to])
+                                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                              ->OrderBy('created_at','desc')
                                              ->get();
 
                 $servicesChartData = ServiceRecord::select(DB::raw('sum(paid) as total,service_id'))
                                             ->where('shop_id',$shop_id)                            
-                                            ->whereBetween('created_at',[$this->from, $this->to])
+                                            ->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to)
                                             ->groupBy('service_id')
                                              ->orderBy('total','desc')
                                              ->get();
@@ -542,13 +542,13 @@
                 $day = $date->format('Y-m-d');
                 $period = $date->format('D dS M, Y ');
 
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->whereDate('created_at',$day)
                                     ->groupBy('product_id')
                                     ->orderBy('total','desc')
                                     ->first();
 
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('shop_id',$shop_id)
                                     ->whereDate('created_at',$day)
                                     ->groupBy('product_id')
@@ -556,7 +556,7 @@
                                     ->first();
 
 
-                $sales = Sale::where('shop_id',$shop_id)
+                $sales = Sale::withTrashed()->where('shop_id',$shop_id)
                                 ->whereDate('created_at',$day)
                                 ->OrderBy('created_at','desc')
                                 ->get();
@@ -568,7 +568,7 @@
                                         ->get();
                                              
 
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('shop_id',$shop_id)                    
                                     ->whereDate('created_at',$day)
                                     ->groupBy('product_id')
@@ -588,19 +588,19 @@
                                      ->get();
             }
             elseif($this->all == 1){
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                             ->where('shop_id',$shop_id)            
                             ->groupBy('product_id')
                             ->orderBy('total','desc')
                             ->first();
 
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                 ->where('shop_id',$shop_id)                
                                 ->groupBy('product_id')
                                 ->orderBy('total','asc')
                                 ->first();
 
-                $sales = Sale::where('shop_id',$shop_id)
+                $sales = Sale::withTrashed()->where('shop_id',$shop_id)
                                 ->orderBy('created_at','desc')
                                 ->get();
 
@@ -609,7 +609,7 @@
                                     ->get();
 
 
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                         ->where('shop_id',$shop_id)                        
                                         ->groupBy('product_id')
                                         ->orderBy('total','desc')
@@ -638,14 +638,14 @@
                 $today = $today_date->format('Y-m-d');
                 $period = "Today: ".date('D dS M, Y ',time());
 
-                $mostSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $mostSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('shop_id',$shop_id)                    
                                     ->whereDate('created_at',$today)
                                     ->groupBy('product_id')
                                     ->orderBy('total','desc')
                                     ->first();
 
-                $leastSold = Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $leastSold = Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('shop_id',$shop_id)                    
                                     ->whereDate('created_at',$today)
                                     ->groupBy('product_id')
@@ -653,7 +653,7 @@
                                     ->first();
 
 
-                $sales = Sale::where('shop_id',$shop_id)
+                $sales = Sale::withTrashed()->where('shop_id',$shop_id)
                                     ->whereDate('created_at',$today)
                                     ->OrderBy('created_at','desc')
                                     ->get();
@@ -664,7 +664,7 @@
                                         ->get();
                 
 
-                $salesChartData =  Sale::select(DB::raw('sum(quantity) as total,product_id'))
+                $salesChartData =  Sale::withTrashed()->select(DB::raw('sum(quantity) as total,product_id'))
                                     ->where('shop_id',$shop_id)                    
                                     ->whereDate('created_at',$today)
                                     ->groupBy('product_id')

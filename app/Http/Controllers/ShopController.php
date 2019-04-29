@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Hash;
 use App\Shop;
+use App\CartDB;
 use App\Software;
 use App\ShopSetting;
 use Illuminate\Http\Request;
@@ -153,6 +154,7 @@ class ShopController extends Controller
         $setting = $shop->setting;
 
         $setting->product_activation = $request->product_activation == null ? 0 : 1;
+        $setting->scanner_activation = $request->scanner_activation == null ? 0 : 1;
         $setting->low_stock_warning_activation = $request->low_stock_warning_activation == null ? 0 : 1;
         $setting->low_stock = $request->low_stock == null ? 5 : $request->low_stock;
         $setting->save();
@@ -193,6 +195,18 @@ class ShopController extends Controller
             'password' => ['required']
         ]);
         if(Hash::check($request->password, Auth::user()->password)){
+            /*
+                delete all shopping cart recorded by all staff of this shop.
+                I used foreign key before, but the cart won't store unless you
+                store shop id with it and I couldn't pass the shop id to Cart::store()
+                in CartController
+            */
+            $carts = CartDB::where('shop_id', $shop->id)->get();
+            if($carts->count() > 0){
+                foreach($carts as $cart){
+                    $cart->delete();
+            }
+        }
             $shop->forceDelete();
             return redirect()->route('shop.index')->with('success', $shop->name.' deleted');
         }

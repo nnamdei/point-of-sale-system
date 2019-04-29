@@ -1,19 +1,38 @@
+<?php
+    $valid = 0;
+    $valid_count = 0;
+    $revoked = 0;
+    $revoked_count = 0;
+    foreach($sales as $s){
+        if($s->trashed()){
+            $revoked += $s->price * $s->quantity;
+            $revoked_count++;
+        }else{
+            $valid += $s->price * $s->quantity;
+            $valid_count++;
+        }
+    }
+?>
 <table class="table table-light table-bordered">
     <thead >
         <tr class="bg-white" >
-            <td class="text-center " colspan="{{Auth::user()->isAdminOrManager() ? 3 : 2}}" style="border:0">
-                <h5 class="theme-color"><i class="fa fa-calendar theme-color"></i> {{$period}}</h5>
+            <td class="" colspan="{{Auth::user()->isAdminOrManager() ? 3 : 2}}" style="border:0">
+                <strong class="theme-color"><i class="fa fa-calendar theme-color"></i> {{$period}}</strong>
             </td>
-            <?php
-                $totalSale = 0;
-                foreach($sales as $s){
-                    $totalSale += $s->price * $s->quantity;
-                }
-            ?>
-            <td colspan="2" style="border:0"><h2><span class="" data-toggle="tooltip" title="Total sales: {{$period}}">&#8358;{{number_format($totalSale)}}</span></h2></td>
+            <td colspan="3">
+                <div>
+                    <span class="theme-color"><i class="fa fa-sync"></i> Total ({{$revoked_count + $valid_count}}) - <strong data-toggle="tooltip" title="Total sales: {{$period}}">&#8358; {{number_format($valid + $revoked)}}</strong></span>
+                </div>
+                <div>
+                   <span class="text-danger"><i class="fa fa-times"></i> Revoked ({{$revoked_count}}) -  <strong data-toggle="tooltip" title="Total revoked: {{$period}}">&#8358; {{number_format($revoked)}}</strong></span> 
+                </div>
+                <div>
+                    <span class="text-success"><i class="fa fa-check"></i> Valid ({{$valid_count}}) -  <strong class="text-success" data-toggle="tooltip" title="Total valid: {{$period}}">&#8358; {{number_format($valid)}}</strong></span>
+                </div>
+            </td>
             <td class="text-center" style="border:0"><i class="fa fa-arrow-up"></i> Highest Sold: 
                 @if(isset($mostSold))
-                    <a href="{{Auth::user()->isAdminOrManager() ? route('products.show',['id'=>$mostSold->product()->id]) : route('desk.product',['id'=>$mostSold->product()->id])}}" data-toggle="tooltip" data-placement="top" title="{{$mostSold->total}} sold {{$period}}"> {{$mostSold->product()->name}} <span class="badge badge-primary">{{$mostSold->total}}</span></a>
+                    <a href="{{route('products.show',['id'=>$mostSold->product()->id])}}" data-toggle="tooltip" data-placement="top" title="{{$mostSold->total}} sold {{$period}}"> {{$mostSold->product()->name}} <span class="badge badge-primary">{{$mostSold->total}}</span></a>
                 @else
                     <small class="text-danger"><i class="fa fa-exclamation-triangle"></i>  Not availbale</small>
                 @endif
@@ -21,13 +40,14 @@
             <td class="text-center" style="border:0">
                 <i class="fa fa-arrow-down"></i> Least Sold:
                 @if(isset($leastSold))
-                    <a href="{{Auth::user()->isAdminOrManager() ? route('products.show',['id'=>$leastSold->product()->id]) : route('desk.product',['id'=>$leastSold->product()->id])}}" data-toggle="tooltip" data-placement="top" title="{{$leastSold->total}} sold {{$period}}"> {{$leastSold->product()->name}} <span class="badge badge-warning">{{$leastSold->total}}</span></a>
+                    <a href="{{route('products.show',['id'=>$leastSold->product()->id])}}" data-toggle="tooltip" data-placement="top" title="{{$leastSold->total}} sold {{$period}}"> {{$leastSold->product()->name}} <span class="badge badge-warning">{{$leastSold->total}}</span></a>
                 @else
                     <small class="text-danger"><i class="fa fa-exclamation-triangle"></i>  Not availbale</small>
                 @endif
              </td>
         </tr>
         <tr class="theme-bg border-0">
+            <td>status</td>
             <td>Product</td>
             <td>Category</td>
             <td>Price sold</td>
@@ -42,7 +62,14 @@
     <tbody>
     @if($sales->count() > 0)
         @foreach($sales as $sale)
-            <tr>
+            <tr class="{{$sale->trashed() ? 'text-danger' : ''}}">
+                <td>
+                    @if($sale->trashed())
+                        <i class="fa fa-times text-danger" style="font-size: 30px" data-toggle="tooltip" title="revoked {{$sale->deleted_at->toDayDateTimeString()}}"></i>
+                    @else
+                        <i class="fa fa-check text-success" style="font-size: 30px"></i>
+                    @endif
+                </td>
                  <td>
                  <img class="product-preview" src="{{$sale->product()->preview()}}" alt="{{$sale->product()->name}}" width="70px" height="70px">
                 @if($sale->product()->trashed())
@@ -86,7 +113,7 @@
         @endforeach
     @else
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <div class="py-2 text-center text-muted">
                     <h2><i class="fa fa-exclamation-triangle"></i></h2>
                     No sale

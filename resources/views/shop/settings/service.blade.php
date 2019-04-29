@@ -1,7 +1,6 @@
 <form action="{{$_software::first()->isPremium() ? route('shop.setting.service',[$shop->id]): '#'}}" method="post">
     @csrf
     @method('PUT')
-
     @if(!$_software::first()->isPremium())
        @include('system.premium-only')
     @endif

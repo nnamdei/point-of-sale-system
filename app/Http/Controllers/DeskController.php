@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use DB;
+use Cart;
 use Auth;
-use App\Product;
-use App\Category;
+use Session;
 use App\Sale;
 use App\User;
+use App\Barcode;
+use App\Product;
+use App\Category;
+use App\Traits\CartTrait;
 use App\Inventory\StockManager;
 use App\Inventory\Transaction;
 
 class DeskController extends Controller
 {
+    use CartTrait;
+
     public function __construct(){
         $this->middleware('attendant');
         $this->middleware('strictly-attendant')->except(['close','open']);
@@ -66,26 +72,4 @@ class DeskController extends Controller
         return view('desk.category')->with('category',Category::find($id));
     }
 
-
-    // public function recordSale(Request $request, $id){
-    //     $product = Product::find($id);
-    //     if($product == null){
-    //         return redirect()->back()->with('error','The product was not found');
-    //     }
-
-    //         $manager = new StockManager($id);
-    //         if($product->isSimple()){ //carryout basic validation for simple product
-    //             $this->validate($request, ['quantity' => 'required|numeric']);
-    //             $sale = $manager->addSale($request->quantity);
-    //             return redirect()->route('desk')->with($manager->report($sale));
-    //          }
-    //      elseif($product->isVariable()){
-    //         $this->validate($request, [
-    //             'variable' => 'required',
-    //             'quantity' => 'required|numeric'
-    //             ]);
-    //             $sale = $manager->updateVariableSales($request);
-    //         return redirect()->route('desk')->with($manager->report($sale));
-    //      }
-    // }
 }

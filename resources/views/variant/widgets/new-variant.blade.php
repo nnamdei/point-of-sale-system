@@ -1,6 +1,6 @@
 <div id="add-variant-to-product-{{$product->id}}">
     <a class="btn btn-success btn-sm" href="#new-variables-for-product-{{$product->id}}" data-toggle="collapse" data-target="#new-variables-for-product-{{$product->id}}" aria-expanded="false" aria-controls="#new-variables-for-product-{{$product->id}}" ><i class="fa fa-plus"></i> Add Variable</a>
-    <div class="collapse" id="new-variables-for-product-{{$product->id}}" data-parent="#add-variant-to-product-{{$product->id}}">
+    <div class="collapse p-2" id="new-variables-for-product-{{$product->id}}" data-parent="#add-variant-to-product-{{$product->id}}">
         <form action="{{route('variables.add',['id' => $product->id])}}" method="POST">
             {{csrf_field()}}
             @include('variant.templates.add-variants')

@@ -9,10 +9,33 @@
 ?>
 
     body{
-        background: url('{{asset("storage/images/assets/bg-lines.jpg")}}');
+        background: url('{{asset("storage/assets/bg-lines.jpg")}}');
         background-attachment: fixed;
         min-height: 100vh;
         font-size: 13px;   
+    }
+    /* .barcode-scanner[data-status='enabled'] form{
+        display: block;
+    }   
+    .barcode-scanner[data-status='disabled'] form{
+        display: none;
+    } */
+    .scanner-img{
+        filter: grayscale(100%);
+        opacity: 0.2;
+    }
+    .scanner-img[active]{
+        opacity: 1;
+    }
+    .scanner-receptor{
+        width: 30px;
+        height: 30px;
+        text-indent: -100px;
+        border-radius: 50%;
+        background-color: #f7f7f7;
+    }
+    .scanner-receptor[active]{
+        background-color: #ff1111;
     }
     nav{
         background-color: #fff;

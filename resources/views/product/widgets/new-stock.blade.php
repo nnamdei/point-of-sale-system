@@ -8,7 +8,11 @@
                     <div class="inputs-container">
                         <div class="form-group">
                             <label for="" class="label-control">Quantity</label>
-                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add" onchange="javascript: checkQty(this)" required>
+                            <div class="text-center text-muted">
+                                <h6><i class="fa fa-info-circle"></i> Input negative value to remove stocks</h6>
+                            </div>
+
+                            <input class="form-control" type="number" name="quantity" placeholder="quantity to add" required>
                         </div>
                     </div>
 
@@ -17,17 +21,20 @@
                     </div>
                 </div>
             @elseif($product->isVariable())
+                
                 @if($product->variants->count() > 0)
                     <div class="inputs-container">
                         @foreach($product->variants as $variant)
-                            <h5 class="text-center" style="background-color: #24292E; color: #fff; padding: 10px 5px; margin-bottom: 0">{{$variant->variable}}</h5>
+                            <h5 class="text-center theme-bg py-2">{{$variant->variable}}</h5>
+                            <div class="text-center text-muted">
+                                <h6><i class="fa fa-info-circle"></i> Input 0 where no stock is been added to any {{$variant->variable}}, or negative value to remove stock</h6>
+                            </div>
                             <input type="hidden" name="v_id" value="{{$variant->id}}">
-                            
                             @foreach($variant->values() as $value)
                             <div style="padding: 10px; background-color: {{($loop->index % 2) == 0 ? ' #f5f8fa' : '#fff' }}">
                                     <div class="form-group">
                                         <small>{{$value}}:</small>
-                                        <input class="form-control" type="number" name="{{$variant->variable.'_'.$value}}" placeholder="quantity of {{$variant->variable.' '.$value}}" onchange="javascript: checkQty(this)" required>
+                                        <input class="form-control" type="number" name="{{$variant->variable.'_'.$value}}" placeholder="quantity of {{$variant->variable.' '.$value}}" onchange="" required>
                                     </div>
                             </div>
                                 

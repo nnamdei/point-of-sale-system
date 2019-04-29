@@ -4,9 +4,14 @@ namespace App;
 
 use App\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Sale extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     protected $fillable = ['shop_id','user_id','product_id','cart_id','price','quantity'];
 
     public function shop(){

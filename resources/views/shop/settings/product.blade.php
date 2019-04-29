@@ -23,6 +23,14 @@
             <input type="number" class="form-control" name="low_stock" value="{{$shop->setting->lowStock()}}">
         </div>
     </div>
+    <hr>
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="scanner-activation" name="scanner_activation" value="true" {{$shop->setting->scannerActivated() ? 'checked' : ''}} {{!$_software::first()->isPremium() ? 'disabled': ''}}>
+        <label class="custom-control-label" for="scanner-activation"> Enable barcode scanner</label>
+        @if(!$_software::first()->isPremium())
+            <span class="text-info"><i class="fa fa-exclamation-triangle"></i> Available only in premium</span>
+        @endif
+    </div>
 
     <div class="form-group">
         <button type="submit" class="btn theme-btn">save</button>

@@ -9,6 +9,7 @@ use App\Shop;
 use App\Staff;
 use Illuminate\Http\Request;
 use App\Inventory\Transaction;
+use App\Matto\FileUpload;
 use App\Events\StaffAuthorization;
 
 
@@ -39,7 +40,7 @@ class StaffController extends Controller
            $auth->password = Hash::make($password);
            $auth->deleted_at = null;
            $auth->save();
-           event(new StaffAuthorization($staff,$position,$password));
+        //    event(new StaffAuthorization($staff,$position,$password));
            return true;
         }
         elseif(!$this->emailAlreadyAuthorized($staff->email)){ //check if the email is not authorized for another staff

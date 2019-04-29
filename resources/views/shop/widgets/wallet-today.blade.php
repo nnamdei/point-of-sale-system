@@ -8,22 +8,21 @@
         if(Auth::user()->isAttendant()){
             $sales_collection = $shop->todaySales()
                                     ->where('user_id', Auth::id())
-                                    ->select(DB::raw('sum(quantity) as total, price,user_id'))
                                     ->get();
             $service_record_collection = $shop->todayServiceRecords()
                                         ->where('user_id', Auth::id())
-                                        ->groupBy('staff_id')
-                                        ->select(DB::raw('sum(paid) as total,staff_id'))
+                                        ->groupBy('service_id')
+                                        ->select(DB::raw('sum(paid) as total,staff_id,service_id'))
                                         ->get();
         
         }elseif(Auth::user()->isAdminOrManager()){
             $sales_collection = $shop->todaySales()
-                                    ->groupBy('user_id')
-                                    ->select(DB::raw('sum(quantity) as total, price,user_id'))
+                                    ->groupBy('product_id')
+                                    ->select(DB::raw('sum(quantity) as total, price,user_id,product_id'))
                                     ->get();
             $service_record_collection = $shop->todayServiceRecords()
-                                        ->groupBy('staff_id')
-                                        ->select(DB::raw('sum(paid) as total,staff_id'))
+                                        ->groupBy('service_id')
+                                        ->select(DB::raw('sum(paid) as total,staff_id,service_id'))
                                         ->get();
         }
 
@@ -56,6 +55,8 @@
                                                 <div class="dropdown-item">
                                                     <div class="d-flex">
                                                         <div>
+                                                            <img src="{{$_s->product()->preview()}}" alt="" width="30px" height="30px" class="product-preview">
+                                                            <a href="{{route('products.show',[$_s->product()->id])}}">{{$_s->product()->name}}</a>
                                                             @include('staff.templates.auth-user-name',['user' => $_s->user()])
                                                         </div>
                                                         <div class="ml-auto">
@@ -92,6 +93,7 @@
                                             <div class="dropdown-item">
                                                 <div class="d-flex">
                                                     <div>
+                                                        <a href="{{route('service.show',[$r->service()->id])}}">{{$r->service()->name}}</a>
                                                         @include('staff.templates.staff-name',['staff' => $_r->staff()])
                                                     </div>
                                                     <div class="ml-auto">

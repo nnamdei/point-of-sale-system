@@ -23,10 +23,13 @@ class Product extends Model
             'products.description' => 10,
             'categories.name' => 10,
             'products.selling_price' => 10,
+            'barcodes.serial' => 10,
+            'barcodes.barcode_content' => 10,
         ],
         'joins' => [
             'categories' => ['products.category_id', 'categories.id'],
-            'variants' => ['products.id','variants.product_id']
+            'variants' => ['products.id','variants.product_id'],
+            'barcodes' => ['products.id','barcodes.product_id']
         ]
 
         ];
@@ -37,7 +40,9 @@ class Product extends Model
     public function category(){
         return $this->belongsTo('App\Category');
     }
-
+    public function barcodes(){
+        return $this->hasMany('App\Barcode');
+    }
     public function category_(){
         return Category::withTrashed()->where('id',$this->category_id)->first();
     }
