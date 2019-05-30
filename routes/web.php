@@ -11,6 +11,10 @@
 |
 */
 Auth::routes();
+Route::get('installation/migrate', 'InstallationController@migrate');
+Route::get('installation/seed', 'InstallationController@seed');
+Route::get('installation/symlink', 'InstallationController@symlink');
+Route::get('installation/post-installation', 'InstallationController@postInstallation');
 
 Route::get('system/status','SystemController@status')->name('system.status');
 Route::get('scanner',function(){

@@ -19,6 +19,7 @@
 |
 */
 
+// require __DIR__.'/../poss2.2/bootstrap/autoload.php';
 require __DIR__.'/../bootstrap/autoload.php';
 
 /*
@@ -33,6 +34,7 @@ require __DIR__.'/../bootstrap/autoload.php';
 |
 */
 
+//  $app = require_once __DIR__.'/../poss2.2/bootstrap/app.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
