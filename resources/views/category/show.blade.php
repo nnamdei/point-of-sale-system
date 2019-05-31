@@ -61,13 +61,11 @@
 @endsection
 
 @section('main')
-<?php
-        $products_w_title = "Products in $category->name";
-        $products_w = $category->products;
-    ?>
-    <div class="mt-2">
-        @include('widgets.products')
-    </div>
+        <div class="bg-white p-2">
+            <h6>Products in {{$category->name}}</h6>
+        </div>
+        @include('widgets.products-grid', ['products_w' => $category->products])
+   
 @endsection
 
 @section('RHS')    

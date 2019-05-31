@@ -52,7 +52,7 @@ class ServiceRecordController extends Controller
             'customer_phone' => $request->customer_phone
         ]);
 
-        $receipt = PDF::loadView('desk.templates.service-receipt', ['service_record' => $record]);//Load the receipt
+        $receipt = PDF::loadView('desk.templates.service-receipt', ['service_record' => $record, 'attendant' => Auth::user()->profile()->fullname()]);//Load the receipt
         return $receipt->stream('receipt.pdf');
     }
 

@@ -22,7 +22,7 @@
 				
 				<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="nav-bar-categories-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa fa-th-list theme-color"></i> Product categories <sup class="badge badge-secondary">{{Auth::user()->shop->categories->count()}}</sup>
+							<i class="fa fa-th-list theme-color"></i> Categories <sup class="badge badge-secondary">{{Auth::user()->shop->categories->count()}}</sup>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown" >
 							@if(Auth::user()->shop->categories->count() > 0)
@@ -89,7 +89,7 @@
 			<!-- Right side nav -->
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<div class="px-2">@include('desk.widgets.barcode-scanner',['action' => route('scan.to.cart')])</div>
+					<div class="px-2">@include('desk.widgets.barcode-scanner',['action' => route('scan.product')])</div>
 				</li>
 				<li class="nav-item">
 					@include('desk.widgets.cart')

@@ -36,13 +36,11 @@
 @endsection
 
 @section('main')
-<?php
-        $products_w_title = "Products in $category->name";
-        $products_w = $_product::where('category_id',$category->id)->get();
-    ?>
-    <div  style="margin-top: 5px">
-         @include('widgets.products')
-    </div>
+            <div class="mt-2">
+                <h6>Products in {{$category->name}}</h6>
+                @include('widgets.products-grid', ['products_w' => $category->products])
+            </div>
+   
 @endsection
 
 @section('RHS')    

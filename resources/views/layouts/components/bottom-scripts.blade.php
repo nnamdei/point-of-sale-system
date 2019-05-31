@@ -64,6 +64,23 @@ $('.scanner-receptor').blur(function(){
 	}
 });
 
+$('.scanner-action-tab').click(function(){
+	setScannerAction($(this).data('action'), callback = function(response){
+		$('.scanner-action-tab').removeClass('theme-bg');
+		if(response.action == 'view_product'){
+			toastr.info('scanner will be used to view products');
+			$('.scanner-action-tab[data-action="view_product"]').addClass('theme-bg');
+		}
+		else if(response.action == 'add_to_cart'){
+			toastr.info('scanner will be used to add products to cart');
+			$('.scanner-action-tab[data-action="add_to_cart"]').addClass('theme-bg');
+		}
+		else if(response.action == 'capture_barcode'){
+			toastr.info('scanner will be used to capture barcode');
+			$('.scanner-action-tab[data-action="capture_barcode"]').addClass('theme-bg');
+		}
+	})
+});
 
 function turnOnSound(sound, start = 0, repeat = false){
 	sound.currentTime = start;
@@ -123,6 +140,21 @@ function setScannerStatus(power, callback){
         })
         .done(function (response, textStatus, jqXHR){
 		   callback(response); //perform the callback
+		})
+		.fail(function (jqXHR, textStatus, errorThrown){
+            toastr.error(`Error: ${textStatus}:${errorThrown}`);
+        })
+}
+
+function setScannerAction(action, callback){
+	$.ajax({
+            url: '{{route('scanner.action')}}',
+            method: 'GET',
+            dataType: 'json',
+            data: {action: action}
+        })
+        .done(function (response, textStatus, jqXHR){
+			callback(response); //perform the callback
 		})
 		.fail(function (jqXHR, textStatus, errorThrown){
             toastr.error(`Error: ${textStatus}:${errorThrown}`);

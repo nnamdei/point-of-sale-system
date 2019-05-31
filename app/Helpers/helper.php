@@ -1,5 +1,7 @@
 <?php
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 if(!function_exists('humanFilesize')){
     function humanFilesize($size, $precision = 2) {
@@ -26,5 +28,20 @@ if(!function_exists('ageFrom')){
     function ageFrom($timestamp) {
       $init = new DateTime(date('Y-m-d H:i:s',$timestamp));
         return $init->diff(new DateTime());
+    }
+}
+
+if(!function_exists('themeColor')){
+    function themeColor() {
+      return Auth::check() && Auth::user()->hasShop() ? Auth::user()->shop->setting->theme() : config('app.theme');
+    }
+}
+
+if(!function_exists('formatNum')){
+    function formatNum($num) {
+        if($num > 1000){
+            $abbr = round($num/1000,2).'k';
+        }
+        return "<span data-toggle='tooltip' title='&#8358; ".number_format($num)."'>&#8358; ".(isset($abbr) ? $abbr : $num)."</span>";
     }
 }

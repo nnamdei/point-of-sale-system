@@ -27,17 +27,17 @@
     </div>
     @if(Auth::user()->isAdminOrManager())
         @if($product->isSimple())
-        <div class="text-center text-muted">
-                    <p>Attach barcode from product</p>
-                    @include('desk.widgets.barcode-scanner',['action' => route('product.barcode.attach',[$product->id])])
-            </div>
-        @endif
-        @if($product->isSimple() || ($product->isVariable() && $product->variants->count() > 0))
             <div class="text-center text-muted">
-                <form action="{{route('product.barcode.generate',[$product->id])}}" method="post">
-                    @csrf
-                    <button type="submit" class="btn theme-btn btn-sm"><i class="fa fa-sync"></i> Generate barcode</button>
-                </form>
+                @if(session()->has('captured_barcode') && session('captured_barcode') !== '')
+                    <p>You recently captured the barcode <strong><code>{{session('captured_barcode')}}</code></strong></p>
+                    <form action="{{route('product.barcode.attach',[$product->id])}}" method="post">
+                        @csrf
+                        <input type="hidden" name="content" value="{{session('captured_barcode')}}">
+                        <button type="submit" class="btn btn-sm theme-btn">Attach captured barcode</button>
+                    </form>
+                @else
+                   <p><i class="fa fa-info-circle"></i> Turn on the scanner from above and capture the barcode to attach to this product</p> 
+                @endif
             </div>
         @endif
     @endif

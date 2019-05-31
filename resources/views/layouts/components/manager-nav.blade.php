@@ -70,7 +70,7 @@
 				@if(Auth::user()->hasShop() && Auth::user()->shop->setting->productActivated())
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="nav-bar-categories-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa fa-th-list theme-color"></i> Product categories <sup class="badge badge-secondary">{{Auth::user()->shop->categories->count()}}</sup>
+							<i class="fa fa-th-list theme-color"></i> Categories <sup class="badge badge-secondary">{{Auth::user()->shop->categories->count()}}</sup>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown" >
 							@if(Auth::user()->shop->categories->count() > 0)
@@ -127,18 +127,6 @@
 							</a>
 						</li>
 					@endif
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="nav-bar-product-search-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-							<i class="fa fa-search theme-color" ></i> Search product
-						</a>
-						<div class="dropdown-menu" aria-labelledby="nav-bar-cart-product-search-dropdown" style="width: 300px">
-							<div class="p-1">
-								@include('product.widgets.sortable-search')
-							</div>
-						</div>
-					</li>
-
 				@endif
 
 				@if(Auth::user()->hasShop() && Auth::user()->shop->setting->serviceActivated())
@@ -171,6 +159,21 @@
 
 			<!-- Right side nav -->
 			<ul class="navbar-nav ml-auto">
+				@if(session()->has('captured_barcode'))
+					<li class="nav-item">
+						<div class="pt-2 d-flex">
+							<div class="animated flash infinite slow theme-bg px-2 py-1" data-toggle="tooltip" title="{{session('captured_barcode')}}">
+								<i class="fa fa-barcode"></i>
+							</div>
+							<a href="{{route('captured.barcode.clear')}}" class="text-danger" data-toggle="tooltip" title="clear captured barcode"> <i class="fa fa-times-circle"></i></a>
+						</div>
+					</li>
+				@endif
+				<li class="nav-item">
+					<div class="px-2">
+						@include('desk.widgets.barcode-scanner',['action' => route('scan.product')])
+					</div>
+				</li>
 
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="auth-user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
