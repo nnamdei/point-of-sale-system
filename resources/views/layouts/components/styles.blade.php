@@ -4,9 +4,6 @@
 <link href="{{ asset('css/vendors/normalize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/layouts.css') }}" rel="stylesheet">
 <style>
-<?php  
-        $theme_color = Auth::check() && Auth::user()->hasShop() ? Auth::user()->shop->setting->theme() : config('app.theme');
-?>
 
     body{
         background: url('{{asset("storage/assets/bg-lines.jpg")}}');
@@ -51,7 +48,7 @@
     .lhs-fixed .card-header,
     #insights-container .ngn
     {
-        color : {{$theme_color}}
+        color : {{themeColor()}}
     }
     .white{
         color: #fff;
@@ -72,11 +69,11 @@
     .theme-btn,
     .btn-outline-secondary:hover
     {
-    background-color:  {{$theme_color}};
+    background-color:  {{themeColor()}};
     color: #fff;
     }
     .theme-gradient-bg{
-    background: linear-gradient({{$theme_color}},#f7f7f7);
+    background: linear-gradient({{themeColor()}},#f7f7f7);
     }
     .btn-outline-secondary:hover
     {
@@ -116,9 +113,17 @@
 .avatar,
 .product-preview{
     border-radius: 50%;
-    border: 1px solid {{$theme_color}};
+    border: 1px solid {{themeColor()}};
 }
 
+/* pagination nav */
+.page-link{
+    color: {{themeColor()}};
+}
+.page-item.active .page-link{
+    background-color: {{themeColor()}};
+    border: 1px solid {{themeColor()}};
+}
 #insights-container .ngn{
     font-size: 30px;
     font-weight: bolder;
@@ -289,6 +294,42 @@ table.products-table-head tr:first-child th{
 }
 .products-table-body .product-row:hover .hidden{
     display: block;
+}
+
+.product-grid{
+    width: 100%;
+    height: 200px;
+    border-radius: 3px;
+    box-shadow: 0px 5px 5px rgba(0,0,0,.2)
+}
+.product-grid .hidden-info{
+    display: none;
+    max-height: 120px;
+    overflow: auto;
+    transition: all .3s easeinout; 
+}
+.product-grid:hover .hidden-info{
+    display: block;
+}
+.grid-details-container{
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    background-color: rgba(255,255,255,.9);
+    border-radius: 0px 0px 3px 3px;
+}
+.grid-details-container .price{
+    background-color:{{themeColor()}};
+    color: #fff;
+}
+
+.grid-cart{
+    position: absolute;
+    right: 3px;
+    top: 0;
+    background-color: #fff;
+    border-radius: 3px 3px 3px 3px;
 }
 
 

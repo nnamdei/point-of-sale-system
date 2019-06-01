@@ -11,12 +11,22 @@
 |
 */
 Auth::routes();
+Route::get('installation/migrate', 'InstallationController@migrate');
+Route::get('installation/seed', 'InstallationController@seed');
+Route::get('installation/symlink', 'InstallationController@symlink');
+Route::get('installation/post-installation', 'InstallationController@postInstallation');
 
 Route::get('system/status','SystemController@status')->name('system.status');
-Route::get('scanner',function(){
+Route::get('scanner/power',function(){
     Session::put('scanner',request()->power);
     echo json_encode(['status' => request()->power]);
 })->name('scanner.power');
+
+Route::get('scanner/action',function(){
+    Session::put('scanner_action',request()->action);
+    echo json_encode(['action' => request()->action]);
+})->name('scanner.action');
+Route::get('scanner/clear', 'BarcodeController@clearCapturedBarcode')->name('captured.barcode.clear');
 Route::group(['middleware' => ['system-status']], function(){
     Route::get('/', 'AppController@index')->name('index');
     Route::post('admin','AdminController@store')->name('admin.store');
@@ -33,7 +43,7 @@ Route::group(['middleware' => ['system-status','authorized']],function(){
 Route::group(['middleware' => ['system-status','authorized','check-shop','check-desk']],function(){
     Route::get('find','ProductController@find')->name('product.find');
     Route::get('desk','DeskController@index')->name('desk');
-    Route::post('desk/scan','BarcodeController@addToCartWithScanner')->name('scan.to.cart');
+    Route::post('desk/scan','BarcodeController@scanProduct')->name('scan.product');
     Route::get('desk/products','DeskController@products')->name('desk.products');
     Route::get('desk/product/{id}','DeskController@product')->name('desk.product');
     // Route::put('desk/product/{id}/sell','DeskController@recordSale')->name('desk.sale')->middleware('sales-disabled');

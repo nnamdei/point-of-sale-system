@@ -1,7 +1,7 @@
 <div class="list-group-item no-radius list-group-item-action flex-column align-items-start has-operations" >
     <div class="d-flex">
         <div class="mr-2">
-            <img class="product-preview" src="{{$product->preview()}}" alt="{{$product->name}}" width="40px" height="40px">
+            <img class="product-preview" src="{{$product->preview()}}" alt="{{$product->name}}" width="70px" height="70px">
         </div>
         <div>
             <strong class="d-block mb-1"> <a href="{{route('products.show',['id' => $product->id])}}">{{$product->name}}</a> (&#8358; {{number_format($product->selling_price)}})</strong>

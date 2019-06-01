@@ -35,10 +35,14 @@ class ShopSetting extends Model
     public function scannerActivated(){
     return $this->scanner_activation == 1 ? true : false;
     }
+    public function scannerAction(){
+        return $this->scanner_action;
+    }
     public function lowStockWarningActivated(){
     return $this->low_stock_warning_activation == 1 ? true : false;
     }
     public function lowStock(){
     return $this->low_stock;
     }
+
 }

@@ -7,8 +7,8 @@
 
 
 @section('main')
-<div style="margin-top: 5px">
-
+<div class="bg-white mt-2" >
+    
     <ul class="nav nav-tabs " id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="products-table-tab" data-toggle="tab" href="#products-table" role="tab" aria-controls="products-table" aria-selected="true"><i class="fa fa-table"></i></a>
@@ -22,7 +22,12 @@
         <li class="nav-item">
             <a class="nav-link" id="products-remainings-chart-tab" data-toggle="tab" href="#products-remainings-chart" role="tab" aria-controls="products-remainings-chart" aria-selected="false"><i class="fa fa-chart-bar"></i> remains</a>
         </li>
+        <li class="ml-auto">
+            @include('product.widgets.sortable-search')
+        </li>
     </ul>
+       
+    
 
     <div class="tab-content" id="myTabContent" style="overflow: auto">
         <div class="tab-pane fade show active" id="products-table" role="tabpanel" aria-labelledby="products-table-tab">

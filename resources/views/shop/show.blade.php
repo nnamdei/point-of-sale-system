@@ -96,7 +96,19 @@
         </ul>
         <div class="tab-content" id="myTabContent" style="overflow: auto">
             <div class="tab-pane fade {{request()->get('tab') == null || request()->get('tab') == 'products' ? 'show active' : ''}}" id="shop-products" role="tabpanel" aria-labelledby="shop-products-tab">
-                    @include('widgets.products',['products_w_title' => 'Products in '.$shop->name.' ('.$shop->products->count().')', 'products_w' => $shop->products()->orderBy('created_at','desc')->paginate(20)])
+                <div class="">
+                    <div class="d-flex bg-white p-2">
+                        <h6>Products in {{$shop->name}}</h6>
+                        @if(Auth::user()->isAdminOrManager())
+                            <div class="ml-auto">
+                                <a href="{{route('products.create')}}" class="btn btn-outline-secondary btn-sm" >
+                                    <i class="fa fa-plus-circle"></i>  Add New Product
+                                </a>            
+                            </div>
+                        @endif
+                        </div>
+                        @include('widgets.products-grid', ['products_w' => $shop->products()->orderby('created_at', 'desc')->paginate(2)])
+                </div>
             </div>
             <!--Table Tab-->
 
@@ -106,7 +118,19 @@
             <!-- Stock chart tab -->
         </div>
         @elseif($shop->setting->productActivated())
-            @include('widgets.products',['products_w_title' => 'Products in '.$shop->name.' ('.$shop->products->count().')', 'products_w' => $shop->products()->orderBy('created_at','desc')->paginate(20)])
+            <div class="">
+                    <div class="d-flex bg-white p-2">
+                        <h6>Products in {{$shop->name}}</h6>
+                        @if(Auth::user()->isAdminOrManager())
+                            <div class="ml-auto">
+                                <a href="{{route('products.create')}}" class="btn btn-outline-secondary btn-sm" >
+                                    <i class="fa fa-plus-circle"></i>  Add New Product
+                                </a>            
+                            </div>
+                        @endif
+                    </div>
+                    @include('widgets.products-grid', ['products_w' => $shop->products()->orderby('created_at', 'desc')->paginate(20)])
+            </div>
         @elseif($shop->setting->serviceActivated())
             @include('widgets.services',['services_w_title' => 'Services in '.$shop->name.' ('.$shop->services->count().')', 'services_w' => $shop->services()->orderBy('created_at','desc')->paginate(20)])
         @endif

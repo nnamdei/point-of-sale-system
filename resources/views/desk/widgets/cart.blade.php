@@ -1,5 +1,5 @@
 <div class="nav-item dropdown" >
-    <a class="nav-link dropdown-toggle" href="#" id="nav-bar-cart-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px" >
+    <a class="nav-link dropdown-toggle" href="#" id="nav-bar-cart-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px" >
     <sup class="badge badge-secondary">{{Cart::count()}}</sup><i class="fa fa-shopping-cart theme-color"></i> &#8358; {{Cart::total()}} 
     </a>
     <div class="dropdown-menu pt-0" aria-labelledby="nav-bar-cart-dropdown" style="min-width: 250px">
