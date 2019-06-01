@@ -64,7 +64,7 @@
         <div class="bg-white p-2">
             <h6>Products in {{$category->name}}</h6>
         </div>
-        @include('widgets.products-grid', ['products_w' => $category->products])
+        @include('widgets.products-grid', ['products_w' => $category->products()->orderby('created_at', 'desc')->paginate(20)])
    
 @endsection
 

@@ -116,6 +116,14 @@
     border: 1px solid {{themeColor()}};
 }
 
+/* pagination nav */
+.page-link{
+    color: {{themeColor()}};
+}
+.page-item.active .page-link{
+    background-color: {{themeColor()}};
+    border: 1px solid {{themeColor()}};
+}
 #insights-container .ngn{
     font-size: 30px;
     font-weight: bolder;

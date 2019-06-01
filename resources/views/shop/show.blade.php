@@ -107,7 +107,7 @@
                             </div>
                         @endif
                         </div>
-                        @include('widgets.products-grid', ['products_w' => $shop->products])
+                        @include('widgets.products-grid', ['products_w' => $shop->products()->orderby('created_at', 'desc')->paginate(2)])
                 </div>
             </div>
             <!--Table Tab-->
@@ -129,7 +129,7 @@
                             </div>
                         @endif
                     </div>
-                    @include('widgets.products-grid', ['products_w' => $shop->products])
+                    @include('widgets.products-grid', ['products_w' => $shop->products()->orderby('created_at', 'desc')->paginate(20)])
             </div>
         @elseif($shop->setting->serviceActivated())
             @include('widgets.services',['services_w_title' => 'Services in '.$shop->name.' ('.$shop->services->count().')', 'services_w' => $shop->services()->orderBy('created_at','desc')->paginate(20)])

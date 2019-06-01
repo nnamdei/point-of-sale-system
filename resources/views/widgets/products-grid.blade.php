@@ -1,5 +1,5 @@
 <?php
- $product_w_collection = isset($products_w) ? $products_w : Auth::user()->shop->products()->orderBy('created_at','desc')->take(10)->get();
+ $product_w_collection = isset($products_w) ? $products_w : Auth::user()->shop->products()->orderBy('created_at','desc')->paginate(20);
  $layout =  isset($grid_layout) ? $grid_layout : ['xs'=> 2, 'sm'=>2, 'md'=> 3];
 ?>
  @if($product_w_collection->count() > 0)
@@ -53,6 +53,11 @@
             </div>
         @endforeach
     </div>
+    @if($product_w_collection instanceof \Illuminate\Pagination\LengthAwarePaginator )
+        <div class="">
+            {{$products_w->links()}}
+        </div>
+    @endif
 @else
     <div class="py-2 text-center text-muted">
         <h2><i class="fa fa-exclamation-triangle"></i></h2>
